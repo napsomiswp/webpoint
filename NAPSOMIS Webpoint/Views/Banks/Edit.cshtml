@@ -1,0 +1,100 @@
+﻿@model NAPSOMIS_Webpoint.Models.Bank
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h4 style="color:darkslateblue;padding-left:15px;">@ViewBag.Title</h4>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4 style="color:darkorange;padding-left:15px;">Bank</h4>
+        <div class="col-md-10" style="padding-left:15px;">
+            <p>
+                <text style="font-size:smaller;">
+                    <img src="~/Content/Images/help-hint.png" style="width:18px; height:20px;" /><b>Hint:</b> You can provide necessary input by clicking an Input Textbox and then enter or select a value. You can navigate from one Input Textbox to another using the Tab Key on the Keyboard.
+                    Please note that you will have to clear all validation errors that occur before proceeding on Saving the record. Please consult the system admin for assistance.
+                </text>
+            </p>
+            <hr />
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID_SBTS)
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.fcode, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.fcode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fcode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.fbank, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.fbank, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.fbank, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.CreatedBy, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.CreatedOn, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.CreatedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CreatedOn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.ModifiedBy, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ModifiedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.ModifiedOn, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ModifiedOn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ModifiedOn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-4" style="text-align:left; padding-top:10px;">
+            @Html.LabelFor(model => model.DeleteFlag, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.DeleteFlag)
+                    @Html.ValidationMessageFor(model => model.DeleteFlag, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12" style="padding-left:15px">
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-default" />
+            <div style="padding-top:15px; padding-bottom:15px;">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

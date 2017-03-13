@@ -1,0 +1,60 @@
+﻿@model NAPSOMIS_Webpoint.Models.ReferenceNo
+
+@{
+    ViewBag.Title = "Generate Reference No";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Generate Reference No </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "Generate";
+    s.ColCount = 1;
+
+    s.Items.AddGroupItem(g =>
+    {
+        g.Caption = "Last Generated Range";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
+        g.ColSpan = 1;
+        g.ColCount = 1;
+
+        g.Items.Add(m => m.Range).NestedExtension().TextBox(n => n.Enabled = false);
+        g.Items.Add(m => m.GeneratedBy).NestedExtension().TextBox(n => n.Enabled = false);
+        g.Items.Add(m => m.DateGenerated).NestedExtension().DateEdit(n => n.Enabled = false);
+        g.Items.Add(m => m.CurrentYear).NestedExtension().TextBox(n => n.Enabled = false);
+
+    });
+
+    s.Items.AddGroupItem(g =>
+    {
+        g.Caption = "Current Process";
+        g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        g.ColSpan = 1;
+        g.ColCount = 1;
+
+        g.Items.Add(m => m.TodaysDate).NestedExtension().DateEdit(d => { d.ShowModelErrors = true; });
+        g.Items.Add(m => m.QuantityToGenerate).NestedExtension().SpinEdit(d => { d.ShowModelErrors = true; });
+
+    });
+
+    s.Items.Add(i =>
+    {
+        i.Caption = " ";
+        i.NestedExtension().Button(b =>
+        {
+            b.Name = "generate";
+            b.Text = "Generate";
+            b.UseSubmitBehavior = true;
+            b.Width = Unit.Pixel(100);
+        });
+    });
+}).GetHtml()
+}

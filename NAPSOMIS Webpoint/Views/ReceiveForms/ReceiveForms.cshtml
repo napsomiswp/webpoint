@@ -1,0 +1,81 @@
+﻿@model NAPSOMIS_Webpoint.Models.MemberTransaction
+
+@{
+    ViewBag.Title = "Receive Forms";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Receive Form </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+
+
+@using (Html.BeginForm()){
+
+@Html.AntiForgeryToken() 
+
+@Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "ReceiveForms";
+    s.ColCount = 4;
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 4;
+ 
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Receive Form";
+            sb.Name = "firsttab";
+            sb.ColSpan = 4;
+            sb.ColCount = 4;
+
+            sb.Items.Add(b => b.fref_no);
+            sb.Items.Add(b => b.fsurname);
+            sb.Items.Add(b => b.firstname);
+            sb.Items.Add(b => b.fothname);
+            sb.Items.Add(b => b.fb_date);
+            sb.Items.Add(b => b.fjoindate);
+
+            sb.Items.AddEmptyItem();
+            sb.Items.AddEmptyItem();
+
+            sb.Items.Add(i =>
+            {
+                i.Caption = " ";
+                i.NestedExtension().Button(b =>
+                {
+                    b.Name = "clear";
+                    b.Text = "Add New";
+                    b.UseSubmitBehavior = false;
+                    b.RouteValues = new { Controller = "ReceiveForms", Action = "ReceiveForms", ParamValue = "" };
+                    b.Width = Unit.Pixel(100);
+                });
+
+            });
+
+            sb.Items.Add(i =>
+            {
+                i.Caption = " ";
+                i.NestedExtension().Button(b =>
+                {
+                    b.Name = "save";
+                    b.Text = "Accept";
+                    b.UseSubmitBehavior = true;
+                    b.Width = Unit.Pixel(100);
+                });
+            });
+
+            
+
+
+        });
+
+
+    });
+
+
+}).GetHtml()
+
+}

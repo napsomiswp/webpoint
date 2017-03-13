@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="NAPSOMIS_Webpoint.MvcApplication" Language="C#" %>

@@ -1,0 +1,64 @@
+﻿@using NAPSOMIS_Webpoint.ViewModels
+
+@model PrintCheckListTemplate
+
+@{
+    ViewBag.Title = "Print Check List";
+}
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Print Check List </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
+
+@using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "printchecklist";
+    settings.ColCount = 1;
+
+    settings.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d =>
+    {
+        d.Name = "StartDate";
+    });
+
+    settings.Items.Add(b => b.EndDate).NestedExtension().DateEdit(d =>
+    {
+        d.Name = "EndDate";
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.Caption = "";
+        b.Name = "cmdprintgroup";
+
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdprint";
+            btn.Width = Unit.Pixel(100);
+            btn.Text = "Accept";
+            btn.UseSubmitBehavior = true;
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.Caption = "";
+        b.Name = "cmdclosegroup";
+
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdclose";
+            btn.Width = Unit.Pixel(100);
+            btn.Text = "Close";
+            btn.UseSubmitBehavior = false;
+            btn.RouteValues = new { Controller = "CheckList", Action = "PrintCheckList" };
+        });
+    });
+
+}).GetHtml()
+
+    }
+

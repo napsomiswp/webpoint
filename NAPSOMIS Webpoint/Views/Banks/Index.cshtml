@@ -1,0 +1,83 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.Bank>
+
+@{
+    ViewBag.Title = "Index";
+}
+ 
+<div class="col-md-6">
+    <p><H3 style="color:darkblue;">@ViewBag.Title</H3></p>
+    <p>Showing list of records in the table. Click Edit to edit the record, Details to show the full detail of the record and Delete to remove the record. Not seeing any of these buttons means you do not have clearance to access that function.</p>
+</div>
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+    <div class="col-md-4">
+        <p>
+            @Html.ActionLink("Create New", "Create") | 
+            @Html.ActionLink("Print All", "PrintAll")
+ 
+        </p>
+        
+    </div>
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcode)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fbank)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.DeleteFlag)
+            </th>
+            <th class=whitesmokeheader></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID_SBTS }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID_SBTS }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID_SBTS }) |
+                    @Html.ActionLink("Print", "Print", new { id = item.ID_SBTS })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fcode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fbank)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeleteFlag)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

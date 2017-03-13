@@ -1,0 +1,60 @@
+﻿@model NAPSOMIS_Webpoint.Models.Bank
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h4 style="color:darkslateblue;padding-left:15px;">@ViewBag.Title</h4>
+ 
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "Create";
+    settings.ColCount = 2;
+
+    settings.Items.AddGroupItem(group =>
+    {
+        group.Caption = "Bank Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(i => i.ID_SBTS);
+        group.Items.Add(i => i.fcode);
+        group.Items.Add(i => i.fbank);
+    });
+
+    settings.Items.AddGroupItem(group =>
+    {
+        group.Caption = "Additional Info";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(i => i.CreatedBy);
+        group.Items.Add(i => i.CreatedOn);
+        group.Items.Add(i => i.ModifiedBy);
+        group.Items.Add(i => i.ModifiedOn);
+        group.Items.Add(i => i.DeleteFlag);
+    });
+
+    settings.Items.Add(i =>
+    {
+        i.Caption = " ";
+        i.NestedExtension().Button(s =>
+        {
+            s.Name = "create";
+            s.Text = "Create";
+            s.UseSubmitBehavior = true;
+            s.Width = Unit.Pixel(100);
+        });
+    });
+
+    }).GetHtml()
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

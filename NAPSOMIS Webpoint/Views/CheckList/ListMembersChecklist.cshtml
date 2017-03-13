@@ -1,0 +1,231 @@
+﻿@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models;
+
+@model PrintCheckListTemplate
+
+@{
+    ViewBag.Title = "Print Check List";
+}
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:larger;"> List/Search Members </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
+
+
+@using (Html.BeginForm("ListMembersCheckListbyReferenceNo", "CheckList", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "searchbyreference";
+    settings.ColCount = 2;
+
+    settings.Items.Add(r =>
+    {
+        r.Caption = "";
+        r.NestedExtension().TextBox(tx =>
+        {
+            r.Name = "txtreferenceno";
+            r.Caption = "Reference No:";
+
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.Name = "cmdsearchrefgroup";
+        b.Caption = "";
+
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdsearchbyreferenceno";
+            btn.Width = Unit.Pixel(100);
+            btn.Text = "Accept";
+            btn.UseSubmitBehavior = true;
+        });
+    });
+
+}).GetHtml()
+    }
+
+
+@using (Html.BeginForm("ListMembersCheckListbyDate", "CheckList", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "searchmembers";
+    settings.ColCount = 2;
+
+    settings.Items.AddGroupItem(group => {
+        group.Caption = "Search by Date";
+        group.ColSpan = 2;
+
+        group.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d =>
+        {
+            d.Name = "StartDate";
+        });
+
+        group.Items.Add(b => b.EndDate).NestedExtension().DateEdit(d =>
+        {
+            d.Name = "EndDate";
+        });
+    });
+
+     
+    settings.Items.Add(b =>
+    {
+        b.Name = "cmdsearchdategroup";
+        b.Caption = "";
+
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdsearchbydate";
+            btn.Width = Unit.Pixel(100);
+            btn.Text = "Accept";
+            btn.UseSubmitBehavior = true;
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.Name = "cmdclosegroup";
+        b.Caption = "";
+
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdclose";
+            btn.Width = Unit.Pixel(100);
+            btn.Text = "Close";
+            btn.UseSubmitBehavior = false;
+            btn.RouteValues = new { Controller = "CheckList", Action = "ListMembersCheckList" };
+        });
+    });
+
+}).GetHtml()
+
+    }
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "panellistmembers";
+    settings.HeaderText = "Search Result (Members)";
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.EnableAnimation = true;
+    settings.ShowCollapseButton = true;
+
+    settings.SetContent(() =>
+    {
+        try
+            {
+
+            NAPSOMISModel db = new NAPSOMISModel();
+
+            List<MemberTransaction> fmd = new List<MemberTransaction>();
+
+            if (Model.ReferenceNo == "")
+                {
+
+                var dmember = from s in db.MemberTransactions where s.CreatedOn >= Model.StartDate && s.CreatedOn <= Model.EndDate select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
+
+                var fullmember = dmember.ToList();
+
+                int dindex = 0;
+
+                List<NomTemp> alldependants = new List<NomTemp>();
+
+                foreach (var record in fullmember)
+                    {
+                    MemberTransaction cm = new MemberTransaction();
+
+                    cm.fref_no = record.fref_no;
+                    cm.fssno = record.fssno;
+                    cm.fsurname = record.fsurname;
+                    cm.firstname = record.firstname;
+                    cm.fothname = record.fothname;
+                    cm.fper_addr = record.fper_addr;
+                    cm.fcur_addr = record.fcur_addr;
+                    cm.fm_stat = record.fm_stat;
+                    cm.fnation = record.fnation;
+                    cm.fb_country = record.fb_country;
+                    cm.fsex = record.fsex;
+
+                    cm.ftown = record.ftown;
+                    cm.fb_date = record.fb_date;
+
+                    cm.ID_SBTS = record.ID_SBTS;
+
+                    fmd.Add(cm);
+                    }
+
+                if (fmd.Count > 0)
+                    {
+
+                    IEnumerable<MemberTransaction> memberslist = (IEnumerable<MemberTransaction>)fmd;
+
+                    if (memberslist.Count() > 0)
+                        {
+                        Html.RenderPartial("MembersTableView", memberslist);
+                        }
+
+                    }
+                }
+            else
+                {
+
+                var dmember = from s in db.MemberTransactions where s.fref_no == Model.ReferenceNo select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
+
+                var fullmember = dmember.ToList();
+
+                List<NomTemp> alldependants = new List<NomTemp>();
+
+                foreach (var record in fullmember)
+                    {
+                    MemberTransaction cm = new MemberTransaction();
+
+                    cm.fref_no = record.fref_no;
+                    cm.fssno = record.fssno;
+                    cm.fsurname = record.fsurname;
+                    cm.firstname = record.firstname;
+                    cm.fothname = record.fothname;
+                    cm.fper_addr = record.fper_addr;
+                    cm.fcur_addr = record.fcur_addr;
+                    cm.fm_stat = record.fm_stat;
+                    cm.fnation = record.fnation;
+                    cm.fb_country = record.fb_country;
+                    cm.fsex = record.fsex;
+
+                    cm.ftown = record.ftown;
+                    cm.fb_date = record.fb_date;
+
+                    cm.ID_SBTS = record.ID_SBTS;
+
+                    fmd.Add(cm);
+                    }
+
+                if (fmd.Count > 0)
+                    {
+
+                    IEnumerable<MemberTransaction> memberslist = (IEnumerable<MemberTransaction>)fmd;
+
+                    if (memberslist.Count() > 0)
+                        {
+                        Html.RenderPartial("MembersTableView", memberslist);
+                        }
+
+                    }
+
+                }
+
+            }
+
+        catch (Exception)
+            {
+
+            }
+
+    });
+}).GetHtml()
+
+

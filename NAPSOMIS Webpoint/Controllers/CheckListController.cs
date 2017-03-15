@@ -163,7 +163,7 @@ namespace NAPSOMIS_Webpoint.Controllers
  
                 mydocument.CreateDocument();
 
-                return View("/Shared/PrintPreview", mydocument);
+                return View("PrintPreview", mydocument);
                 }
             else
                 {
@@ -309,8 +309,9 @@ namespace NAPSOMIS_Webpoint.Controllers
                 mydocument.CheckListDataSource.DataSource = ctemp;
 
                 mydocument.CreateDocument();
+ 
+                return View("PrintPreview",mydocument);
 
-                return View("PrintPreview", mydocument);
                 }
             else
                 {

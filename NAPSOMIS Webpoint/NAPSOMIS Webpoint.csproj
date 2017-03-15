@@ -378,13 +378,11 @@
     <Content Include="Views\Pages\Search.cshtml" />
     <Content Include="Views\Pages\SearchGridViewPartial.cshtml" />
     <Content Include="Views\ReferenceNos\ReferenceNos.cshtml" />
-    <Content Include="Views\Shared\PrintPreview.cshtml" />
     <Content Include="Views\ReceiveForms\ReceiveForms.cshtml" />
     <Content Include="Views\CaptureRegistrationForms\CaptureRegistrationForms.cshtml" />
     <Content Include="Views\CaptureRegistrationForms\DependantCapture.cshtml" />
     <Content Include="Views\CaptureRegistrationForms\DependantTableView.cshtml" />
     <Content Include="Views\CheckList\PrintCheckList.cshtml" />
-    <Content Include="Views\CheckList\ListMembersChecklist.cshtml" />
     <Content Include="Views\CheckList\MembersTableView.cshtml" />
     <Content Include="Views\CaptureGovernmentEmployees\Form.cshtml" />
     <Content Include="Views\CaptureGovernmentEmployees\DependantCapture.cshtml" />
@@ -392,6 +390,15 @@
     <Content Include="Views\CaptureGovernmentEmployees\EditForm.cshtml" />
     <Content Include="Views\CaptureGovernmentEmployees\DependantEdit.cshtml" />
     <Content Include="Views\CaptureGovernmentEmployees\DependantEditTableView.cshtml" />
+    <Content Include="Views\CaptureRegistrationForms\DependantEdit.cshtml" />
+    <Content Include="Views\CaptureRegistrationForms\DependantEditTableView.cshtml" />
+    <Content Include="Views\CaptureRegistrationForms\EditForm.cshtml" />
+    <Content Include="Views\ListofForms\SearchList.cshtml" />
+    <Content Include="Views\ListofForms\FormsTableView.cshtml" />
+    <Content Include="Views\CheckList\ListMembersChecklist.cshtml" />
+    <Content Include="Views\ReferenceNos\PrintPreview.cshtml" />
+    <Content Include="Views\ListofForms\PrintPreview.cshtml" />
+    <Content Include="Views\CheckList\PrintPreview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -410,6 +417,7 @@
     <Compile Include="Controllers\CaptureGovernmentEmployeesController.cs" />
     <Compile Include="Controllers\CaptureRegistrationFormsController.cs" />
     <Compile Include="Controllers\CheckListController.cs" />
+    <Compile Include="Controllers\ListofFormsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.BlogPosts.cs" />
     <Compile Include="Controllers\PagesController.Contacts.cs" />
@@ -602,6 +610,9 @@
     <Compile Include="Reports\XtraReportDependantsSubReport.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\XtraReportListofForms.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\XtraReportPreviewMember.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -625,6 +636,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportDependantsSubReport.resx">
       <DependentUpon>XtraReportDependantsSubReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportListofForms.resx">
+      <DependentUpon>XtraReportListofForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportPreviewMember.resx">
       <DependentUpon>XtraReportPreviewMember.cs</DependentUpon>

@@ -106,6 +106,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                     mvm.fb_date = mt[0].fb_date;
                     mvm.fjoindate = mt[0].fjoindate;
 
+                    TempData.Remove("Dependants");
+
                     if (mt.Count > 0)
                         {
                         return View("Form", mvm);
@@ -205,6 +207,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                     mvm.ftown = mt[0].ftown;
                     mvm.ID_SBTS = mt[0].ID_SBTS;
 
+                    mvm.ModifiedBy = "DEFAULT";
+                    mvm.ModifiedOn = DateTime.Today;
 
                     //GET PARENTS INFORMATION 
                     List<ParentalTemp> p = new List<ParentalTemp>();
@@ -307,9 +311,9 @@ namespace NAPSOMIS_Webpoint.Controllers
             m.fstatus = c.fstatus;
 
             m.ftel_no = c.ftel_no;
-            m.CreatedOn = DateTime.Now;
-            m.CreatedBy = "DEFAULT";
-            m.ModifiedOn = DateTime.Now;
+
+            m.ModifiedBy = "DEFAULT";
+            m.ModifiedOn = DateTime.Today;
 
             db.MemberTransactions.Add(m);
             db.SaveChanges();
@@ -413,15 +417,47 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             }
 
- 
+         
+        public ActionResult PrepareAddNewDependant()
+            {
+            try
+                {
+
+                string refno = TempData.Peek("GovernmentEditReferenceNo").ToString();
+                NomTemp d = new NomTemp();
+                d.fref_no = refno;
+
+                return View("DependantEdit", d);
+
+                }
+            catch (Exception)
+                {
+                return View("DependantEdit");
+                }
+
+            }
+
+
         public ActionResult SaveDependantEdit(NomTemp dependant)
             {
             try
                 {
 
                 NomTemp dep = new NomTemp();
-                dep = db.NomTemps.Find(dependant.ID_SBTS);
 
+                bool isNewRecord;
+
+                if (dependant.ID_SBTS == 0)
+                    {
+                    isNewRecord = true;
+                    }
+                else
+                    {
+                    isNewRecord = false;
+                    dep = db.NomTemps.Find(dependant.ID_SBTS);
+                    }
+
+                dep.fref_no = dependant.fref_no;
                 dep.fbirth_date = dependant.fbirth_date;
                 dep.fnfirstname = dependant.fnfirstname;
                 dep.fnomsex = dependant.fnomsex;
@@ -432,14 +468,26 @@ namespace NAPSOMIS_Webpoint.Controllers
                 dep.frelation = dependant.frelation;
                 dep.fres_addr = dependant.fres_addr;
                 dep.fssno = dependant.fssno;
+
                 dep.ModifiedOn = DateTime.Today;
+                dep.ModifiedBy = "DEFAULT";
 
+                if (!isNewRecord)
+                    {
 
-                db.NomTemps.Attach(dep);
-                var entry = db.Entry(dep); 
-                entry.State = System.Data.Entity.EntityState.Modified;
- 
-                db.SaveChanges();
+                    db.NomTemps.Attach(dep);
+                    var entry = db.Entry(dep);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    }
+                else
+                    {
+                    db.NomTemps.Add(dep);
+                    db.SaveChanges();
+                    }
+
 
                 return View("DependantEdit", dep);
 
@@ -467,6 +515,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             p.fmfirstname = c.fmfirstname;
             p.fmsurname = c.fmsurname;
+
             p.fmothname = c.fmothname;
             p.ModifiedBy = "DEFAULT";
             p.ModifiedOn = DateTime.Today;
@@ -531,7 +580,9 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             m.ftel_no = c.ftel_no;
 
-            m.ModifiedOn = DateTime.Now;
+            m.ModifiedBy = "DEFAULT";
+            m.ModifiedOn = DateTime.Today;
+
             m.fdateupd = DateTime.Now;
 
 
@@ -568,7 +619,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 }
 
 
-            return RedirectToAction("EditForm");
+            return RedirectToAction("EditForm", c);
 
             }
 
@@ -812,9 +863,9 @@ namespace NAPSOMIS_Webpoint.Controllers
             m.fstatus = c.fstatus;
 
             m.ftel_no = c.ftel_no;
-            m.CreatedOn = DateTime.Now;
-            m.CreatedBy = "DEFAULT";
-            m.ModifiedOn = DateTime.Now;
+
+            m.ModifiedBy = "DEFAULT";
+            m.ModifiedOn = DateTime.Today;
 
             db.MemberTransactions.Add(m);
             db.SaveChanges();

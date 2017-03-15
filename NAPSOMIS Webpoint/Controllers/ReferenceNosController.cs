@@ -105,7 +105,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                     myreport.objectDataSource1.DataSource = myreferences;
                     myreport.CreateDocument();
                  
-                    return View("/Shared/PrintPreview", myreport);
+                    return View("PrintPreview", myreport);
                  
                 }
                 else

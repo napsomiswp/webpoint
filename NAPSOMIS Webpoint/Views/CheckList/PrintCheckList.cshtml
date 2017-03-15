@@ -7,7 +7,7 @@
 }
 <br />
 <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Print Check List </text>
+<text style="color:midnightblue; padding-left:10px; font-size:larger;"> Print Check List </text>
 <br />
 <text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
 
@@ -17,21 +17,30 @@
     @Html.DevExpress().FormLayout(settings =>
 {
     settings.Name = "printchecklist";
-    settings.ColCount = 1;
+    settings.ColCount = 2;
 
-    settings.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d =>
+    settings.Items.AddGroupItem(g =>
     {
-        d.Name = "StartDate";
-    });
+        g.ColSpan = 2;
+        g.Caption = "Search";
+        g.GroupBoxDecoration = GroupBoxDecoration.Box;
 
-    settings.Items.Add(b => b.EndDate).NestedExtension().DateEdit(d =>
-    {
-        d.Name = "EndDate";
+        g.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d =>
+        {
+            d.Name = "StartDate";
+        });
+
+        g.Items.Add(b => b.EndDate).NestedExtension().DateEdit(d =>
+        {
+            d.Name = "EndDate";
+        });
+
     });
 
     settings.Items.Add(b =>
     {
         b.Caption = "";
+        b.ColSpan = 1;
         b.Name = "cmdprintgroup";
 
         b.NestedExtension().Button(btn =>
@@ -46,6 +55,7 @@
     settings.Items.Add(b =>
     {
         b.Caption = "";
+        b.ColSpan = 1;
         b.Name = "cmdclosegroup";
 
         b.NestedExtension().Button(btn =>
@@ -57,6 +67,7 @@
             btn.RouteValues = new { Controller = "CheckList", Action = "PrintCheckList" };
         });
     });
+
 
 }).GetHtml()
 

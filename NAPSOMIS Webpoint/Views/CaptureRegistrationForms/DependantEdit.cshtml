@@ -8,8 +8,7 @@
 
 <br />
 <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Dependants for Member</text>
-
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Dependants for Reference No: @TempData["ReferenceNo"] </text>
 <br />
 <text style="font-size:small; padding-left:10px;">Please fill in all required information below</text>
 
@@ -33,7 +32,7 @@
     }
 </script>
 
-@using (Html.BeginForm("EditDependants", "CaptureGovernmentEmployees", FormMethod.Post))
+@using (Html.BeginForm("EditDependants", "CaptureRegistrationForms", FormMethod.Post))
     {
 
     @Html.AntiForgeryToken()
@@ -142,7 +141,7 @@
             });
 
             sb.Items.AddEmptyItem();
-            
+
             sb.Items.Add(i =>
             {
                 i.Caption = " ";
@@ -152,21 +151,20 @@
                     b.Text = "Add New Dependant";
                     b.UseSubmitBehavior = true;
                     b.Width = Unit.Pixel(100);
-                    b.RouteValues = new { Controller = "CaptureGovernmentEmployees", Action = "PrepareAddNewDependant" };
+                    b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "PrepareAddNewDependant" };
                 });
             });
-
 
             sb.Items.Add(i =>
             {
                 i.Caption = " ";
                 i.NestedExtension().Button(b =>
                 {
-                    b.Name = "cmdcommit";
+                    b.Name = "cmdsave";
                     b.Text = "Save";
                     b.UseSubmitBehavior = true;
                     b.Width = Unit.Pixel(100);
-                    b.RouteValues = new { Controller = "CaptureGovernmentEmployees", Action = "SaveDependantEdit" };
+                    b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "SaveDependantEdit" };
 
                 });
             });
@@ -182,7 +180,7 @@
 
     }
 
-@using (Html.BeginForm("CompleteEdit", "CaptureGovernmentEmployees", FormMethod.Post))
+@using (Html.BeginForm("CompleteEdit", "CaptureRegistrationForms", FormMethod.Post))
     {
 
     @Html.AntiForgeryToken()
@@ -227,7 +225,7 @@
 
             List<NomTemp> dep = new List<NomTemp>();
 
-            string refno = TempData.Peek("GovernmentEditReferenceNo").ToString();
+            string refno = TempData.Peek("MemberEditReferenceNo").ToString();
             dep = db.NomTemps.Where(d => d.fref_no == refno).ToList();
 
             IEnumerable<NomTemp> thenom = (IEnumerable<NomTemp>)dep;

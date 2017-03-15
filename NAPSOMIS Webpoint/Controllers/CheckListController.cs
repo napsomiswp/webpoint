@@ -163,7 +163,7 @@ namespace NAPSOMIS_Webpoint.Controllers
  
                 mydocument.CreateDocument();
 
-                return View("PrintPreview", mydocument);
+                return View("/Shared/PrintPreview", mydocument);
                 }
             else
                 {

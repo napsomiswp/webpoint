@@ -1,0 +1,246 @@
+﻿@model NAPSOMIS_Webpoint.Models.NomTemp
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models;
+
+@{
+    ViewBag.Title = "Dependant Capture";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Dependants for Reference No: @TempData["ReferenceNo"] </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please fill in all required information below</text>
+
+<script type="text/javascript">
+
+    function OnRelationSelectedIndexChanged(s, e) {
+        var relationvalue = frelation.GetText().split(";");
+        if (relationvalue[1].toString().trim() == "SON") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "DAUGHTER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "SISTER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "BROTHER") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "MOTHER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "FATHER") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "NIECE") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "NEPHEW") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "AUNTIE") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "UNCLE") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "GRAND SON") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "GRAND DAUGHTER") fnomsex.SetText("Female")
+
+    }
+</script>
+
+@using (Html.BeginForm("CaptureDependants", "CaptureGovernmentEmployees", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "CaptureMemberDependants";
+    s.ColCount = 3;
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 3;
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Add Member Dependants";
+            sb.Name = "firsttab";
+            sb.ColSpan = 3;
+            sb.ColCount = 3;
+
+            sb.Items.Add(m => m.fref_no).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fref_no";
+                b.ReadOnly = true;
+
+            });
+
+            sb.Items.Add(m => m.fnom_ssno);
+
+            sb.Items.AddEmptyItem();
+
+            sb.Items.Add(m => m.fnsurname).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fnsurname";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnfirstname.Focus();}";
+            });
+
+            sb.Items.Add(m => m.fnfirstname).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fnfirstname";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnothname.Focus();}";
+
+            });
+
+            sb.Items.Add(m => m.fnothname).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fnothname";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnomsex.Focus();}";
+            });
+
+            sb.Items.Add(m => m.fnomsex).NestedExtension().ComboBox(b =>
+            {
+                b.Name = "fnomsex";
+                b.Properties.Items.Add("Male", "M");
+                b.Properties.Items.Add("Female", "F");
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fbirth_date.Focus();}";
+            });
+
+            sb.Items.Add(m => m.fbirth_date).NestedExtension().DateEdit(b =>
+            {
+                b.Name = "fbirth_date";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)frelation.Focus();}";
+            });
+
+
+            sb.Items.Add(m => m.frelation).NestedExtension().ComboBox(b =>
+            {
+                b.Name = "frelation";
+
+                List<PDCTemplate> myrelations = (List<PDCTemplate>)TempData.Peek("MyRelations");
+
+                b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+                b.Properties.DataSource = myrelations;
+                b.Properties.TextField = "Name";
+                b.Properties.ValueField = "Code";
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fper_addr.Focus();}";
+                b.Properties.ClientSideEvents.SelectedIndexChanged = "OnRelationSelectedIndexChanged";
+            });
+
+            sb.Items.Add(m => m.fper_addr).NestedExtension().Memo(mem =>
+            {
+                mem.Name = "fper_addr";
+                mem.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fres_addr.Focus();}";
+                mem.Properties.ClientSideEvents.TextChanged = "function(s,e){fres_addr.SetText(fper_addr.GetText());}";
+            });
+
+
+            sb.Items.Add(m => m.fres_addr).NestedExtension().Memo(mem =>
+            {
+                mem.Name = "fres_addr";
+                mem.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdsave.DoClick();}";
+            });
+
+            sb.Items.AddEmptyItem();
+            sb.Items.AddEmptyItem();
+
+            sb.Items.Add(i =>
+            {
+                i.Caption = " ";
+                i.NestedExtension().Button(b =>
+                {
+                    b.Name = "cmdsave";
+                    b.Text = "Append to List";
+                    b.UseSubmitBehavior = true;
+                    b.Width = Unit.Pixel(100);
+                });
+            });
+
+
+            //sb.Items.Add(i =>
+            //{
+            //    i.Caption = " ";
+            //    i.NestedExtension().Button(b =>
+            //    {
+            //        b.Name = "clear";
+            //        b.Text = "Reload page";
+            //        b.UseSubmitBehavior = false;
+            //        b.Width = Unit.Pixel(100);
+            //        b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureDependants", ParamValue = "" };
+            //    });
+            //});
+
+
+        });
+
+
+    });
+
+
+}).GetHtml()
+
+    }
+
+@using (Html.BeginForm("CompleteCapture", "CaptureGovernmentEmployees", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+    s.Name = "CompleteMemberCapture";
+    s.ColCount = 4;
+
+    s.Items.Add(b =>
+    {
+        b.NestedExtension().Button(btn =>
+        {
+            btn.Name = "cmdComplete";
+            btn.Text = "Complete Form";
+            b.Caption = "";
+
+            btn.Width = Unit.Pixel(100);
+            btn.UseSubmitBehavior = true;
+        });
+    });
+
+}).GetHtml();
+
+    }
+
+@*  *@
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "savedependantlist";
+    settings.HeaderText = "Cached Dependants";
+
+    settings.SetContent(() =>
+    {
+
+        //NAPSOMISModel db = new NAPSOMISModel();
+        //List<NomTemp> dependants = new List<NomTemp>();
+
+        //string referenceno = TempData.Peek("ReferenceNo").ToString();
+        //dependants = db.NomTemps.Where(f => f.fref_no == referenceno).ToList();
+
+        try
+            {
+
+            List<NomTemp> thedependants = (List<NomTemp>)TempData.Peek("Dependants");
+
+            if (thedependants.Count > 0)
+                {
+
+                IEnumerable<NomTemp> thenom = (IEnumerable<NomTemp>)TempData.Peek("Dependants");
+
+                if (thenom.Count() > 0)
+                    {
+                    Html.RenderPartial("DependantTableView", thenom);
+                    }
+
+                }
+
+            }
+        catch (Exception)
+            {
+
+            }
+
+
+
+    });
+}).GetHtml()
+
+
+
+
+

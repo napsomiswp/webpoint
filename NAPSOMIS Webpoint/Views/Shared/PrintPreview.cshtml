@@ -1,5 +1,10 @@
 ﻿@model DevExpress.XtraReports.UI.XtraReport
 
+@{
+    ViewBag.Tag = "PRINT";
+}
+
+ 
 @Html.DevExpress().WebDocumentViewer(settings =>
 {
     settings.Name = "WebDocumentViewer";

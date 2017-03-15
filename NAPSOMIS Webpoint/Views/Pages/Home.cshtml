@@ -3,9 +3,27 @@
     Layout = "~/Views/Shared/_LayoutWithContiner.cshtml";
 }
 
+<head>
+
+    @*@Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "PlasticBlue" }
+    )
+
+    @Html.DevExpress().GetScripts(new Script
+    {
+    ExtensionSuite = ExtensionSuite.NavigationAndLayout
+    },
+    new Script
+        {
+        ExtensionSuite = ExtensionSuite.Editors
+        });*@
+     
+</head>
+
 <div class="container-fluid">
     <div class="row">
-        @Html.DevExpress().ImageSlider(s => {
+        @Html.DevExpress().ImageSlider(s =>
+   {
        s.Name = "ImageSlider";
        s.Width = Unit.Percentage(100);
        s.Height = Unit.Pixel(270);
@@ -13,7 +31,7 @@
        s.SettingsImageArea.ImageSizeMode = ImageSizeMode.FillAndCrop;
        s.SettingsImageArea.NavigationButtonVisibility = ElementVisibilityMode.Always;
        s.SettingsImageArea.EnableLoopNavigation = true;
-       
+
        s.SettingsImageArea.AnimationType = AnimationType.Fade;
        s.SettingsImageArea.AnimationDuration = 1000;
        s.SettingsSlideShow.Interval = 10000;
@@ -31,18 +49,19 @@
             <h2>National Social Security and Insurance Trust</h2>
             <p class="mainText">The National Social Security and Insurance Trust is a Statutory Public Trust, charged with the responsibility of administering Sierra Leone’s National Pension Scheme. By the National Social Security and Insurance Trust Act. No. 5 of 20th July 2001. The National Social Security and Insurance Trust was established “to provide retirement and other benefits to meet the contingency needs of workers and their dependents and to provide other related matters” The Trust is autonomous and belongs to the state.</p>
         </div>
-       
+
         @*<div class="col-md-12 marginTop20">
-            <a class="btn btn-primary btn-lg" href="#"><i class="glyphicon glyphicon-info-sign"></i> Learn more</a>
-        </div>*@
+                <a class="btn btn-primary btn-lg" href="#"><i class="glyphicon glyphicon-info-sign"></i> Learn more</a>
+            </div>*@
     </section>
     <br />
     <section class="row">
         <div class="col-md-4">
             <text>Commencement date: As required by Section 1, Act No. 5 of 2001 came into operation by Presidential Order in Statutory Instrument No.8 of 31st August 2001. The effective date of payment of contributions is January 2002. The Board: The Board has a fifteen-member Tripartite Board of Trustees composed of members drawn from the Government, employers and employees, responsible for policy-making. Administration of the Trust: The day-to-day administration of the Trust is vested in the Director General.</text>
             <br /> <br />
-            <p><text>The Scheme is contributory: It is financed from contributions by employers and employees It is a defined benefits social insurance scheme based on partial funding since contributions cannot pay for benefits in perpetuity Surplus funds not required now for benefits are invested.</text>
-</p>
+            <p>
+                <text>The Scheme is contributory: It is financed from contributions by employers and employees It is a defined benefits social insurance scheme based on partial funding since contributions cannot pay for benefits in perpetuity Surplus funds not required now for benefits are invested.</text>
+            </p>
 
         </div>
 
@@ -53,7 +72,7 @@
         <div class="col-md-4">
             <text>The cost of the benefits enjoyed by contributors exceeds their contributions of 15%. This is because the Scheme is partially funded The scheme is index-linked; persons are regularly reviewed and adjusted in line with National Salary increases as may be experienced by the Fund REGULATORY FRAMEWORK First and current Law: 2001 (National Social Security and Insurance Trust), implemented in 2002 Type of programme: Social Insurance system Coverage: All employees in the public and private sectors. The self-employed can be covered on a voluntary basis Source of Funds: Insured person – 5% of earnings; Employer – 10% of payroll, The Self-employed contribute 15%; and Government – None Membership: Membership is mandatory for all workers with an employer-employee relationship.</text>
         </div>
-         
+
     </section>
     <section class="row features">
         <div class="col-md-4 media">
@@ -66,8 +85,8 @@
                 <h4 class="media-heading">Our Services</h4>
                 <p>The National Social Security and Insurance Trust is a Statutory Public Trust set up by the National Social Security and Insurance Trust Act. No. 5 of 2001 to administer the Sierra Leone’s National Pension’s Scheme. The Trust was established to provide retirement and other benefits to meet the contingency needs for workers and their dependants.</p>
             </div>
-          
-             
+
+
         </div>
         <div class="col-md-4 media">
             <div class="media-left">
@@ -98,7 +117,7 @@
                     <li>The calculation and payment of benefits</li>
 
                 </ul>
-             </div>
+            </div>
         </div>
     </section>
     <section>
@@ -137,32 +156,32 @@
             </div>
         </div>
         @*<div class="row customers">
-            <div class="col-md-6">
-                <div class="media">
-                    <div class="media-left media-middle">
-                        <div class="media-object">
-                            <img src="@Url.Content("~/Content/Images/Customers/HeidiLopez.jpg")" width="100" alt="customer" class="img-circle">
+                <div class="col-md-6">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <div class="media-object">
+                                <img src="@Url.Content("~/Content/Images/Customers/HeidiLopez.jpg")" width="100" alt="customer" class="img-circle">
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Heidi Lopez</h4>
+                            <p><small>Mollis vivendum in pro. Partem tritani cu duo, te cum antiopam consequuntur. Qui in solum habemus, eripuit similique mel ad. No officiis similique nec, te fierent disputando eam. Mei legimus habemus atomorum cu, vix in ullum delicatissimi. Nec te iusto commodo.</small></p>
                         </div>
                     </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Heidi Lopez</h4>
-                        <p><small>Mollis vivendum in pro. Partem tritani cu duo, te cum antiopam consequuntur. Qui in solum habemus, eripuit similique mel ad. No officiis similique nec, te fierent disputando eam. Mei legimus habemus atomorum cu, vix in ullum delicatissimi. Nec te iusto commodo.</small></p>
-                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="media">
-                    <div class="media-left media-middle">
-                        <div class="media-object">
-                            <img src="@Url.Content("~/Content/Images/Customers/GaryRubio.jpg")" width="100" alt="customer" class="img-circle">
+                <div class="col-md-6">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <div class="media-object">
+                                <img src="@Url.Content("~/Content/Images/Customers/GaryRubio.jpg")" width="100" alt="customer" class="img-circle">
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Gary Rubio</h4>
+                            <p><small>Eos id tale tantas, id vidit impedit omnesque mea. In soluta suscipiantur usu, duo ad tale liber assueverit. Nec an aeterno detracto vulputate, usu et causae perpetua, debet soluta deseruisse in pri. Te error iudico primis vel, sed ut dicam saperet mandamus.</small></p>
                         </div>
                     </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Gary Rubio</h4>
-                        <p><small>Eos id tale tantas, id vidit impedit omnesque mea. In soluta suscipiantur usu, duo ad tale liber assueverit. Nec an aeterno detracto vulputate, usu et causae perpetua, debet soluta deseruisse in pri. Te error iudico primis vel, sed ut dicam saperet mandamus.</small></p>
-                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
     </section>
 </div>

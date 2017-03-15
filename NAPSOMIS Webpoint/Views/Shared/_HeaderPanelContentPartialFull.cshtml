@@ -1,6 +1,17 @@
 ﻿
 <!DOCTYPE html>
 <html>
+<head>
+
+    @*@Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
+    )
+    
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+    )*@
+    
+</head>
 
 <body>
     @*<div class="panelContent">*@
@@ -65,8 +76,8 @@
                        subItem.Items.Add("Receive Forms", "receiveform", "", "/ReceiveForms/ReceiveForms");
                        subItem.Items.Add("Capture Registration Forms", "captureregisform", "", "/CaptureRegistrationForms/CaptureRegistrationForms");
 
-                       subItem.Items.Add("Capture Government Employees", "", "", "/");
-                       subItem.Items.Add("Edit Government Employees", "", "", "/");
+                       subItem.Items.Add("Capture Government Employees", "captureGE", "", "/CaptureGovernmentEmployees/Form");
+                       subItem.Items.Add("Edit Government Employees", "", "", "/CaptureGovernmentEmployees/EditForm");
 
                        subItem.Items.Add("Print Checklist", "checklist", "", "/CheckList/PrintCheckList");
 
@@ -289,216 +300,7 @@
 
         </div>
  
-           
- 
-                @*<div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav" style="padding-left:30px;">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Main<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Home", "Home", "Pages")</li>
-                                <li>@Html.ActionLink("About", "BlogPosts", "Pages")</li>
-                                <li>@Html.ActionLink("Contact", "Contacts", "Pages")</li>
-                                <li>@Html.ActionLink("Administration", "Administration", "Pages")</li>
-                             </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operations<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-
-                                <li class="dropdown-submenu">
-
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Member Registration <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-                                    <ul class="dropdown-menu">
-
-                                        <li>@Html.ActionLink("Receive Forms", "ReceiveForms", "ReceiveForms")</li>
-                                        <li>@Html.ActionLink("Capture Registration Forms", "CaptureRegistrationForms", "CaptureRegistrationForms")</li>
-                                    </ul>
-                                </li>
-
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Control  <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-                                    <ul class="dropdown-menu">
-
-                                        <li>@Html.ActionLink("Generate Reference No", "ReferenceNos", "ReferenceNos")</li>
-
-                                    </ul>
-                                </li>
-
-
-
-                            </ul>
-
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Operations Second<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pension Operations Set <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-
-                                    <ul class="dropdown-menu">
-                                        <li>@Html.ActionLink("Pension Cheque", "Index", "PensionCheques")</li>
-                                        <li>@Html.ActionLink("Pension Date", "Index", "PensionDates")</li>
-                                        <li>@Html.ActionLink("Pension Frequency", "Index", "PensionFrequencies")</li>
-                                        <li>@Html.ActionLink("Pension Master", "Index", "PensionMasters")</li>
-                                        <li>@Html.ActionLink("Pensions", "Index", "Pensions")</li>
-                                        <li>@Html.ActionLink("Pension School Transaction", "Index", "PensionSchoolTransactions")</li>
-                                        <li>@Html.ActionLink("Pensio Person", "Index", "PensioPersons")</li>
-                                        <li>@Html.ActionLink("Stop Dependant Pension", "Index", "StopDependantPensions")</li>
-                                        <li>@Html.ActionLink("Government Pension Master", "Index", "GovernmentPensionMasters")</li>
-                                        <li>@Html.ActionLink("Government Pension SSN", "Index", "GovernmentPensionSSNs")</li>
-                                        <li>@Html.ActionLink("C Pension Person", "Index", "CPensionPersons")</li>
-                                        <li>@Html.ActionLink("C Pension School Transaction", "Index", "CPensionSchoolTransactions")</li>
-
-                                    </ul>
-                                </li>
-
-                                <li class="dropdown-submenu">
-
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions First <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-                                    <ul class="dropdown-menu">
-
-                                        <li>@Html.ActionLink("Beneficiary Application Transation", "Index", "BeneficiaryTransactionTransactions")</li>
-                                        <li>@Html.ActionLink("CDEP Application Transaction", "Index", "CDEPAppliationTransactions")</li>
-                                        <li>@Html.ActionLink("Batch Transaction", "Index", "BatchTransactions")</li>
-                                        <li>@Html.ActionLink("CB Application Transaction", "Index", "CBpplicationTransations")</li>
-                                        <li>@Html.ActionLink("Beneficiary Group Validity Transaction", "Index", "BeneficiaryGroupValidityTransactions")</li>
-                                        <li>@Html.ActionLink("Beneficiary Application Rejected Transaction", "Index", "bnBeneficiaryApplicationRejectedTransactions")</li>
-                                        <li>@Html.ActionLink("Member Transaction", "Index", "MemberTransactions")</li>
-                                        <li>@Html.ActionLink("Money Dependant Transaction", "Index", "MoneyDependantTransactions")</li>
-                                        <li>@Html.ActionLink("M Rec Transaction", "Index", "MRecTransactions")</li>
-                                        <li>@Html.ActionLink("Payment Transactions", "Index", "PaymentTransactions")</li>
-                                        <li>@Html.ActionLink("Nom Transaction", "Index", "NomTransactions")</li>
-                                        <li>@Html.ActionLink("Rec Transaction", "Index", "RecTransactions")</li>
-                                        <li>@Html.ActionLink("Transaction Control", "Index", "TransactionControls")</li>
-                                        <li>@Html.ActionLink("Transaction Stem", "Index", "TransactionStems")</li>
-                                        <li>@Html.ActionLink("T Nom Transaction", "Index", "TNomTransactions")</li>
-
-                                    </ul>
-
-                                </li>
-
-                                <li class="dropdown-submenu">
-
-
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions Second <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-                                    <ul class="dropdown-menu">
-
-                                        <li>@Html.ActionLink("School Transaction", "Index", "SchoolTransactions")</li>
-                                        <li>@Html.ActionLink("GRE Transaction", "Index", "GRETransactions")</li>
-                                        <li>@Html.ActionLink("G Transaction Control", "Index", "GTransactionControls")</li>
-                                        <li>@Html.ActionLink("G Transaction Stem", "Index", "GTransactionStems")</li>
-                                        <li>@Html.ActionLink("Member SIP Transaction", "Index", "MemberSIPTransactions")</li>
-                                        <li>@Html.ActionLink("Member Q Transaction", "Index", "MemberQTransactions")</li>
-                                        <li>@Html.ActionLink("Member Statement Transaction", "Index", "MemberStatementTransactions")</li>
-                                        <li>@Html.ActionLink("General Beneficiary Index Transaction", "Index", "GeneralBeneficiaryIndexTransactions")</li>
-                                        <li>@Html.ActionLink("General C Pay Transaction", "Index", "GeneralCPayTransactions")</li>
-                                        <li>@Html.ActionLink("C Pay Transaction", "Index", "CPayTransactions")</li>
-                                        <li>@Html.ActionLink("CRE Transaction", "Index", "CRETransactions")</li>
-                                        <li>@Html.ActionLink("C Transaction", "Index", "CTransactions")</li>
-                                        <li>@Html.ActionLink("C Transaction Control", "Index", "CTransationControls")</li>
-                                        <li>@Html.ActionLink("Cun Claim Transaction", "Index", "CunClaimTransactions")</li>
-                                        <li>@Html.ActionLink("D Beneficiary Index Transaction", "Index", "DBeneficiaryIndexTransactions")</li>
-
-                                    </ul>
-
-                                </li>
-
-
-                        <li class="dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Update Transactions <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-                            <ul class="dropdown-menu">
-
-                                <li>@Html.ActionLink("UpdateCapTransaction", "Index", "UpdateCapTransactions")</li>
-                                <li>@Html.ActionLink("UpdateNomTransaction", "Index", "UpdateNomTransactions")</li>
-                                <li>@Html.ActionLink("UpdatePensionTransaction", "Index", "UpdatePensionTransactions")</li>
-                                <li>@Html.ActionLink("UpdateRecTransaction", "Index", "UpdateRecTransactions")</li>
-
-                            </ul>
-                        </li>
-
-                    </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Others<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">First Set <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-
-                                    <ul class="dropdown-menu">
-                                        <li>@Html.ActionLink("Badge", "Index", "Badges")</li>
-                                        <li>@Html.ActionLink("Badge Availability Fields", "Index", "BadgeAvailabiltyFields")</li>
-                                        <li>@Html.ActionLink("Balance Check", "Index", "BalanceChecks")</li>
-                                        <li>@Html.ActionLink("Batch Stem", "Index", "BatchStems")</li>
-                                    </ul>
-
-                                </li>
-
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Second Set <img style="vertical-align:middle;width:10px; height:10px" alt="" src="~/Content/Images/go-next-view.png"></a>
-
-                                    <ul class="dropdown-menu">
-
-                                        <li>@Html.ActionLink("Best Five Years", "Index", "BestFiveYears")</li>
-                                        <li>@Html.ActionLink("Birth Stem", "Index", "BirthStems")</li>
-                                        <li>@Html.ActionLink("Capture Death", "Index", "CaptureDeaths")</li>
-                                        <li>@Html.ActionLink("Cash Denomination", "Index", "CashDenominations")</li>
-                                        <li>@Html.ActionLink("CB Batch", "Index", "CBBatchs")</li>
-                                        <li>@Html.ActionLink("CBB Batch", "Index", "CBBBatchs")</li>
-                                        <li>@Html.ActionLink("Cemp D. Name", "Index", "cemp_dnames")</li>
-                                        <li>@Html.ActionLink("Cemp Name", "Index", "cemp_names")</li>
-                                        <li>@Html.ActionLink("cemp Trn", "Index", "cemp_trns")</li>
-                                        <li>@Html.ActionLink("Cheque Stem", "Index", "ChequeStems")</li>
-
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </li>
-
-
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">System Admin <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-
-                                <li>@Html.ActionLink("Pension Log", "Index", "PensionLogs")</li>
-                                <li>@Html.ActionLink("SSNNo Log", "Index", "SSNNoLogs")</li>
-                                <li>@Html.ActionLink("Member Online Log", "Index", "MemberOnlineLogs")</li>
-                                <li>@Html.ActionLink("Export DataLog", "Index", "ExportDataLogs")</li>
-                                <li>@Html.ActionLink("Beneficiary Transaction Log", "Index", "BeneficiaryTransactionLogs")</li>
-                                <li>@Html.ActionLink("Beneficiary Transaction Log Details", "Index", "BeneficiaryTransactionLogDetails")</li>
-
-                                <li>@Html.ActionLink("Government Category", "Index", "GovernmentCategories")</li>
-
-                                <li>@Html.ActionLink("Bank", "Index", "Banks")</li>
-                                <li>@Html.ActionLink("Branch", "Index", "Branchs")</li>
-
-                                <li>@Html.ActionLink("Chiefdom", "Index", "Chiefdoms")</li>
-
-                                <li>@Html.ActionLink("District", "Index", "Districts")</li>
-                                <li>@Html.ActionLink("Province", "Index", "Provinces")</li>
-
-                                <li>@Html.ActionLink("Company Settings", "Index", "CompanySettings")</li>
-                                <li>@Html.ActionLink("Digital Archieve", "Index", "DigitalArchieves")</li>
-                                <li>@Html.ActionLink("Account Manager", "Index", "MainLogins")</li>
-                                <li>@Html.ActionLink("Zone Code", "Index", "ZoneCodes")</li>
-                                <li>@Html.ActionLink("User Groups", "Index", "UserGroups")</li>
-
-                            </ul>
-                        </li>
-
-                        <li class="newLoginButton" style="background-color:whitesmoke;">@Html.ActionLink("LogOff", "LogOff", "Accounts")</li>
-
-                    </ul>
-
-                    @Html.Partial("_LoginPartial")
-
-                    </div>*@
+            
 
         </div>
 

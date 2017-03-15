@@ -2,19 +2,19 @@
 @using NAPSOMIS_Webpoint.ViewModels
 
 @{
-    ViewBag.Title = "Capture Registration Form";
+    ViewBag.Title = "Capture Government Employees Form";
 }
 
 <br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" /> 
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Registraton Form </text>
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:larger;"> Capture Government Employees Form </text>
 <br />
 <text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
 
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
-        if (fdist.InCallback() )
+        if (fdist.InCallback())
             lastprovince = fprovince.GetValue().toString();
         else
             fdist.PerformCallback(fprovince.GetValue().toString());
@@ -26,10 +26,10 @@
             lastprovince = null;
         }
     }
-     
+
     function OnBeginCallback(s, e) {
         e.customArgs["Province"] = fprovince.GetValue();
-        
+
     }
 
     function OnEmpSelectedIndexChanged(s, e) {
@@ -42,7 +42,17 @@
         //ftel_no.SetText(employervalue[3]);
     }
 
-    function OnNationKeyDown(s,e){
+    function OnNationKeyDown(s, e) {
+        if (ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13) {
+            fb_country.Focus()
+        };
+        if (fnation.GetText() == 'S') {
+            fnation.SetText('SIERRA LEONEAN');
+            fb_country.SetText('SIERRA LEONE')
+        }
+    }
+
+    function OnNationFocus(s, e) {
         if (ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13) {
             fb_country.Focus()
         };
@@ -55,17 +65,18 @@
 </script>
 
 
-@using (Html.BeginForm("StartCaptureRegistrationForms", "CaptureRegistrationForms", FormMethod.Post))
+@using (Html.BeginForm("StartForm", "CaptureGovernmentEmployees", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
 {
 
-@Html.AntiForgeryToken()
-@Html.DevExpress().FormLayout(s =>
-{
-
-    s.Name = "StartCaptureRegistrationForms";
+    s.Name = "StartCaptureGovernmetEmployees";
     s.ColCount = 3;
 
-    s.Items.Add(b => b.fref_no).NestedExtension().TextBox (p => {
+    s.Items.Add(b => b.fref_no).NestedExtension().TextBox(p =>
+    {
         p.Name = "fref_no_2";
         p.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdloadref.DoClick();}";
     });
@@ -87,16 +98,16 @@
 
 }).GetHtml()
 
-}
+    }
 
-@using (Html.BeginForm("CaptureRegistrationForms", "CaptureRegistrationForms", FormMethod.Post))
+@using (Html.BeginForm("Form", "CaptureGovernmentEmployees", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
 {
 
-@Html.AntiForgeryToken()
-@Html.DevExpress().FormLayout(s =>
-{
-
-    s.Name = "CaptureRegistrationForms";
+    s.Name = "CaptureGovernmentForms";
     s.ColCount = 3;
 
     s.Items.AddTabbedGroupItem(group =>
@@ -109,8 +120,6 @@
             sb.Name = "firsttab";
             sb.ColSpan = 3;
             sb.ColCount = 3;
-
-
 
             sb.Items.AddGroupItem(g =>
             {
@@ -135,7 +144,8 @@
                 g.ColSpan = 3;
                 g.ColCount = 3;
 
-                g.Items.Add(m => m.fper_addr).NestedExtension().Memo(b => {
+                g.Items.Add(m => m.fper_addr).NestedExtension().Memo(b =>
+                {
                     b.Name = "fper_addr";
                     b.Height = 70;
                     b.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
@@ -145,13 +155,15 @@
 
                 });
 
-                g.Items.Add(m => m.fcur_addr).NestedExtension().Memo(b => {
+                g.Items.Add(m => m.fcur_addr).NestedExtension().Memo(b =>
+                {
                     b.Name = "fcur_addr";
                     b.Height = 70;
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fm_stat.Focus();}";
                 });
 
-                g.Items.Add(m => m.fm_stat).NestedExtension().ComboBox(b => {
+                g.Items.Add(m => m.fm_stat).NestedExtension().ComboBox(b =>
+                {
                     b.Name = "fm_stat";
                     b.Properties.Items.Add("Married", "M");
                     b.Properties.Items.Add("Single", "S");
@@ -160,26 +172,30 @@
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnation.Focus();}";
                 });
 
-                g.Items.Add(m => m.fnation).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.fnation).NestedExtension().TextBox(b =>
+                {
                     b.Name = "fnation";
                     //b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(e.htmlEvent.keycode == ASPxKey.Enter)fb_country.Focus();}";
                     b.Properties.ClientSideEvents.KeyDown = "OnNationKeyDown";
+                    b.Properties.ClientSideEvents.GotFocus = "OnNationFocus";
                 });
 
-                g.Items.Add(m => m.fb_country).NestedExtension ().TextBox(b => {
+                g.Items.Add(m => m.fb_country).NestedExtension().TextBox(b =>
+                {
                     b.Name = "fb_country";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fsex.Focus();}";
                 });
 
 
-                g.Items.Add(m => m.fsex).NestedExtension().ComboBox(b => {
+                g.Items.Add(m => m.fsex).NestedExtension().ComboBox(b =>
+                {
                     b.Name = "fsex";
                     b.Properties.Items.Add("Male", "M");
                     b.Properties.Items.Add("Female", "F");
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fprovince.Focus();}";
 
                     b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
-                   
+                    
                 });
 
             });
@@ -224,7 +240,7 @@
 
                     b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
 
-                    //b.CallbackRouteValues = new { Controller = "CaptureRegistrationForms", Action = "FilterDistrict" };
+                    //b.CallbackRouteValues = new { Controller = "CaptureGovernmetEmployees", Action = "FilterDistrict" };
                     //b.Properties.CallbackPageSize = 30;
 
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fchief.Focus();}";
@@ -249,7 +265,8 @@
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftown.Focus();}";
                 });
 
-                g.Items.Add(m => m.ftown).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.ftown).NestedExtension().TextBox(b =>
+                {
                     b.Name = "ftown";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fgen_date.Focus();}";
                 });
@@ -257,14 +274,16 @@
             });
 
 
-            sb.Items.Add(m => m.fjoindate).NestedExtension().DateEdit(b => {
+            sb.Items.Add(m => m.fjoindate).NestedExtension().DateEdit(b =>
+            {
                 b.Name = "fjoindate";
                 b.ReadOnly = true;
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnat_income.Focus();}";
 
             });
 
-            sb.Items.Add(m => m.fnat_income).NestedExtension().ComboBox(m => {
+            sb.Items.Add(m => m.fnat_income).NestedExtension().ComboBox(m =>
+            {
                 m.Name = "fnat_income";
                 m.SelectedIndex = 1;
                 m.Properties.Items.Add("Daily", "1");
@@ -274,14 +293,16 @@
                 m.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fincome.Focus();}";
             });
 
-            sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m => {
+            sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m =>
+            {
                 m.Name = "fincome";
                 m.Properties.DisplayFormatString = "C2";
 
                 m.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)foccupation.Focus();}";
             });
 
-            sb.Items.Add(m => m.foccupation).NestedExtension().ComboBox(b => {
+            sb.Items.Add(m => m.foccupation).NestedExtension().ComboBox(b =>
+            {
 
                 b.Name = "foccupation";
 
@@ -307,7 +328,8 @@
                 g.ColCount = 3;
                 g.GroupBoxDecoration = GroupBoxDecoration.Box;
 
-                g.Items.Add(m => m.ffsurname).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.ffsurname).NestedExtension().TextBox(b =>
+                {
                     b.Name = "ffsurname";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ffirstname.Focus();}";
                 });
@@ -368,80 +390,92 @@
             sb.ColCount = 3;
             sb.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
 
-            sb.Items.Add(m => m.ferno).NestedExtension().TextBox(b => {
+            sb.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+            {
                 b.Name = "ferno";
                 //b.Properties.ClientSideEvents.TextChanged = "function(s,e){alert(femp_name.SetValue(ferno.GetText());}";
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_name.Focus();}";
                 b.Properties.ClientSideEvents.TextChanged = "function(s,e){combobox.SetValue(ferno.GetText());}";
             });
 
-        sb.Items.Add(m => m.femp_name).NestedExtension().ComboBox(b =>
-        {
-            b.Name = "femp_name";
-
-            List<EmployerTemplate> myemployers = (List<EmployerTemplate>)TempData.Peek("MyEmployers");
-
-            b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
-            b.Properties.Columns.Add("Name", "Name", Unit.Pixel(350));
-            b.Properties.Columns.Add("Address", "Address", Unit.Pixel(350));
-            b.Properties.Columns.Add("TelNo", "Tel No", Unit.Pixel(100));
-
-            b.Properties.DataSource = myemployers;
-            b.Properties.TextField = "Name";
-            b.Properties.ValueField = "Name";
-            b.Properties.ShowShadow = true;
-            b.Properties.AnimationType = AnimationType.Slide;
-
-            b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-            b.Properties.ClientSideEvents.SelectedIndexChanged = "OnEmpSelectedIndexChanged";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_addr.Focus();}";
-
-        });
-
-        sb.Items.Add(m => m.femp_addr).NestedExtension().TextBox(b =>
-        {
-            b.Name = "femp_addr";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftel_no.Focus();}";
-        });
-
-        sb.Items.Add(m => m.ftel_no).NestedExtension().TextBox(b =>
-        {
-            b.Name = "ftel_no";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
-        });
-
-
-
-    });
-
-    group.Items.AddGroupItem(sb =>
-    {
-        sb.Caption = "Member's Dependants";
-        sb.Name = "thirdtab";
-        sb.ColSpan = 3;
-        sb.ColCount = 3;
-
-        sb.Items.Add(i =>
-        {
-            i.Caption = " ";
-            i.NestedExtension().Button(b =>
+            sb.Items.Add(m => m.femp_name).NestedExtension().ComboBox(b =>
             {
-                b.Name = "cmdappend";
-                b.Text = "Add Member Dependants";
-                b.UseSubmitBehavior = true;
-                b.Width = Unit.Pixel(100);
+                b.Name = "femp_name";
+
+                List<EmployerTemplate> myemployers = (List<EmployerTemplate>)TempData.Peek("MyEmployers");
+
+                b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
+                b.Properties.Columns.Add("Name", "Name", Unit.Pixel(350));
+                b.Properties.Columns.Add("Address", "Address", Unit.Pixel(350));
+                b.Properties.Columns.Add("TelNo", "Tel No", Unit.Pixel(100));
+
+                b.Properties.DataSource = myemployers;
+                b.Properties.TextField = "Name";
+                b.Properties.ValueField = "Name";
+                b.Properties.ShowShadow = true;
+                b.Properties.AnimationType = AnimationType.Slide;
+
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                b.Properties.ClientSideEvents.SelectedIndexChanged = "OnEmpSelectedIndexChanged";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_addr.Focus();}";
 
             });
+
+            sb.Items.Add(m => m.femp_addr).NestedExtension().TextBox(b =>
+            {
+                b.Name = "femp_addr";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftel_no.Focus();}";
+            });
+
+            sb.Items.Add(m => m.ftel_no).NestedExtension().TextBox(b =>
+            {
+                b.Name = "ftel_no";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
+            });
+
+            sb.Items.Add(m => m.fstaffno).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fstaffno";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
+            });
+
+            sb.Items.Add(m => m.fstatus).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fstatus";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
+            });
+
         });
 
-        sb.Items.AddEmptyItem();
-        sb.Items.AddEmptyItem();
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Member's Dependants";
+            sb.Name = "thirdtab";
+            sb.ColSpan = 3;
+            sb.ColCount = 3;
+
+            sb.Items.Add(i =>
+            {
+                i.Caption = " ";
+                i.NestedExtension().Button(b =>
+                {
+                    b.Name = "cmdappend";
+                    b.Text = "Add Member Dependants";
+                    b.UseSubmitBehavior = true;
+                    b.Width = Unit.Pixel(100);
+
+                });
+            });
+
+            sb.Items.AddEmptyItem();
+            sb.Items.AddEmptyItem();
+
+        });
 
     });
 
-});
-
-    s.Items.AddGroupItem(g => {
+    s.Items.AddGroupItem(g =>
+    {
         g.ColSpan = 3;
         g.ColCount = 3;
         g.Caption = "";
@@ -458,11 +492,11 @@
                 b.Text = "Start New Entry";
                 b.UseSubmitBehavior = false;
                 b.Width = Unit.Pixel(100);
-                b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.RouteValues = new { Controller = "CaptureGovernmentEmployees", Action = "Form", ParamValue = "" };
             });
         });
     });
 
-    }).GetHtml()
+}).GetHtml()
 
-}
+    }

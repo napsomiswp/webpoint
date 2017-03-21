@@ -6,7 +6,7 @@
 }
 
 <br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" /> 
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
 <text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Registraton Form </text>
 <br />
 <text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
@@ -14,7 +14,7 @@
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
-        if (fdist.InCallback() )
+        if (fdist.InCallback())
             lastprovince = fprovince.GetValue().toString();
         else
             fdist.PerformCallback(fprovince.GetValue().toString());
@@ -26,10 +26,10 @@
             lastprovince = null;
         }
     }
-     
+
     function OnBeginCallback(s, e) {
         e.customArgs["Province"] = fprovince.GetValue();
-        
+
     }
 
     function OnEmpSelectedIndexChanged(s, e) {
@@ -42,7 +42,7 @@
         //ftel_no.SetText(employervalue[3]);
     }
 
-    function OnNationKeyDown(s,e){
+    function OnNationKeyDown(s, e) {
         if (ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13) {
             fb_country.Focus()
         };
@@ -52,22 +52,42 @@
         }
     }
 
+
+    function OnPrevButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(-1);
+    }
+    function OnNextButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(1);
+    }
+
+    function SetActiveTabByIndexIncrement(tabIndexIncrement) {
+        var activeTabIndex = CaptureTab.GetActiveTab().index;
+        activeTabIndex += tabIndexIncrement;
+        CaptureTab.SetActiveTab(CaptureTab.GetTab(activeTabIndex));
+    }
+
 </script>
 
 
 @using (Html.BeginForm("StartCaptureRegistrationForms", "CaptureRegistrationForms", FormMethod.Post))
-{
+    {
 
-@Html.AntiForgeryToken()
-@Html.DevExpress().FormLayout(s =>
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
 {
 
     s.Name = "StartCaptureRegistrationForms";
     s.ColCount = 3;
 
-    s.Items.Add(b => b.fref_no).NestedExtension().TextBox (p => {
+    s.Items.Add(b => b.fref_no).NestedExtension().TextBox(p =>
+    {
         p.Name = "fref_no_2";
         p.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdloadref.DoClick();}";
+
+        p.Properties.HelpText = "Enter the Reference No here";
+        p.Properties.HelpTextSettings.EnablePopupAnimation = true;
+        p.Properties.HelpTextSettings.Position = HelpTextPosition.Top;
+        p.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
     });
 
     s.Items.Add(btn =>
@@ -87,13 +107,13 @@
 
 }).GetHtml()
 
-}
+    }
 
 @using (Html.BeginForm("CaptureRegistrationForms", "CaptureRegistrationForms", FormMethod.Post))
-{
+    {
 
-@Html.AntiForgeryToken()
-@Html.DevExpress().FormLayout(s =>
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
 {
 
     s.Name = "CaptureRegistrationForms";
@@ -102,6 +122,7 @@
     s.Items.AddTabbedGroupItem(group =>
     {
         group.ColSpan = 3;
+        group.Name = "CaptureTab";
 
         group.Items.AddGroupItem(sb =>
         {
@@ -130,12 +151,27 @@
 
             sb.Items.AddGroupItem(g =>
             {
+                g.Caption = "Previous Name";
+                g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                g.ColSpan = 3;
+                g.ColCount = 3;
+
+
+                g.Items.Add(m => m.fpsurname).NestedExtension().TextBox(b => { b.Name = "fpsurname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fpfirstname).NestedExtension().TextBox(b => { b.Name = "fpfirstname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fpothname).NestedExtension().TextBox(b => { b.Name = "fpothname"; b.ReadOnly = false; });
+
+            });
+
+            sb.Items.AddGroupItem(g =>
+            {
                 g.Caption = "Details";
                 g.GroupBoxDecoration = GroupBoxDecoration.Box;
                 g.ColSpan = 3;
                 g.ColCount = 3;
 
-                g.Items.Add(m => m.fper_addr).NestedExtension().Memo(b => {
+                g.Items.Add(m => m.fper_addr).NestedExtension().Memo(b =>
+                {
                     b.Name = "fper_addr";
                     b.Height = 70;
                     b.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
@@ -143,15 +179,27 @@
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fcur_addr.Focus();}";
                     b.Properties.ClientSideEvents.TextChanged = "function(s,e){fcur_addr.SetText(fper_addr.GetText());}";
 
+                    b.Properties.HelpText = "Enter the Permanent Address of the Member here";
+                    b.Properties.HelpTextSettings.EnablePopupAnimation = true;
+                    b.Properties.HelpTextSettings.Position = HelpTextPosition.Top;
+                    b.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
                 });
 
-                g.Items.Add(m => m.fcur_addr).NestedExtension().Memo(b => {
+                g.Items.Add(m => m.fcur_addr).NestedExtension().Memo(b =>
+                {
                     b.Name = "fcur_addr";
                     b.Height = 70;
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fm_stat.Focus();}";
+
+                    b.Properties.HelpText = "Enter the Current Address of the Member here";
+                    b.Properties.HelpTextSettings.EnablePopupAnimation = true;
+                    b.Properties.HelpTextSettings.Position = HelpTextPosition.Top;
+                    b.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
+
                 });
 
-                g.Items.Add(m => m.fm_stat).NestedExtension().ComboBox(b => {
+                g.Items.Add(m => m.fm_stat).NestedExtension().ComboBox(b =>
+                {
                     b.Name = "fm_stat";
                     b.Properties.Items.Add("Married", "M");
                     b.Properties.Items.Add("Single", "S");
@@ -160,26 +208,26 @@
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnation.Focus();}";
                 });
 
-                g.Items.Add(m => m.fnation).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.fnation).NestedExtension().TextBox(b =>
+                {
                     b.Name = "fnation";
                     //b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(e.htmlEvent.keycode == ASPxKey.Enter)fb_country.Focus();}";
                     b.Properties.ClientSideEvents.KeyDown = "OnNationKeyDown";
                 });
 
-                g.Items.Add(m => m.fb_country).NestedExtension ().TextBox(b => {
+                g.Items.Add(m => m.fb_country).NestedExtension().TextBox(b =>
+                {
                     b.Name = "fb_country";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fsex.Focus();}";
                 });
 
 
-                g.Items.Add(m => m.fsex).NestedExtension().ComboBox(b => {
+                g.Items.Add(m => m.fsex).NestedExtension().RadioButtonList(b =>
+                {
                     b.Name = "fsex";
                     b.Properties.Items.Add("Male", "M");
                     b.Properties.Items.Add("Female", "F");
-                    b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fprovince.Focus();}";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
-                   
                 });
 
             });
@@ -249,7 +297,8 @@
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftown.Focus();}";
                 });
 
-                g.Items.Add(m => m.ftown).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.ftown).NestedExtension().TextBox(b =>
+                {
                     b.Name = "ftown";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fgen_date.Focus();}";
                 });
@@ -257,31 +306,34 @@
             });
 
 
-            sb.Items.Add(m => m.fjoindate).NestedExtension().DateEdit(b => {
+            sb.Items.Add(m => m.fjoindate).NestedExtension().DateEdit(b =>
+            {
                 b.Name = "fjoindate";
                 b.ReadOnly = true;
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnat_income.Focus();}";
 
             });
 
-            sb.Items.Add(m => m.fnat_income).NestedExtension().ComboBox(m => {
+            sb.Items.Add(m => m.fnat_income).NestedExtension().RadioButtonList(m =>
+            {
                 m.Name = "fnat_income";
                 m.SelectedIndex = 1;
                 m.Properties.Items.Add("Daily", "1");
                 m.Properties.Items.Add("Monthly", "2");
                 m.Properties.Items.Add("Yearly", "3");
 
-                m.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fincome.Focus();}";
             });
 
-            sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m => {
+            sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m =>
+            {
                 m.Name = "fincome";
                 m.Properties.DisplayFormatString = "C2";
 
                 m.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)foccupation.Focus();}";
             });
 
-            sb.Items.Add(m => m.foccupation).NestedExtension().ComboBox(b => {
+            sb.Items.Add(m => m.foccupation).NestedExtension().ComboBox(b =>
+            {
 
                 b.Name = "foccupation";
 
@@ -294,7 +346,7 @@
                 b.Properties.TextField = "Name";
                 b.Properties.ValueField = "Code";
 
-                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.None;
+                //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.None;
 
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ffsurname.Focus();}";
             });
@@ -307,7 +359,8 @@
                 g.ColCount = 3;
                 g.GroupBoxDecoration = GroupBoxDecoration.Box;
 
-                g.Items.Add(m => m.ffsurname).NestedExtension().TextBox(b => {
+                g.Items.Add(m => m.ffsurname).NestedExtension().TextBox(b =>
+                {
                     b.Name = "ffsurname";
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ffirstname.Focus();}";
                 });
@@ -368,88 +421,95 @@
             sb.ColCount = 3;
             sb.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
 
-            sb.Items.Add(m => m.ferno).NestedExtension().TextBox(b => {
+            sb.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+            {
                 b.Name = "ferno";
                 //b.Properties.ClientSideEvents.TextChanged = "function(s,e){alert(femp_name.SetValue(ferno.GetText());}";
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_name.Focus();}";
                 b.Properties.ClientSideEvents.TextChanged = "function(s,e){combobox.SetValue(ferno.GetText());}";
             });
 
-        sb.Items.Add(m => m.femp_name).NestedExtension().ComboBox(b =>
-        {
-            b.Name = "femp_name";
-
-            List<EmployerTemplate> myemployers = (List<EmployerTemplate>)TempData.Peek("MyEmployers");
-
-            b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
-            b.Properties.Columns.Add("Name", "Name", Unit.Pixel(350));
-            b.Properties.Columns.Add("Address", "Address", Unit.Pixel(350));
-            b.Properties.Columns.Add("TelNo", "Tel No", Unit.Pixel(100));
-
-            b.Properties.DataSource = myemployers;
-            b.Properties.TextField = "Name";
-            b.Properties.ValueField = "Name";
-            b.Properties.ShowShadow = true;
-            b.Properties.AnimationType = AnimationType.Slide;
-
-            b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-            b.Properties.ClientSideEvents.SelectedIndexChanged = "OnEmpSelectedIndexChanged";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_addr.Focus();}";
-
-        });
-
-        sb.Items.Add(m => m.femp_addr).NestedExtension().TextBox(b =>
-        {
-            b.Name = "femp_addr";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftel_no.Focus();}";
-        });
-
-        sb.Items.Add(m => m.ftel_no).NestedExtension().TextBox(b =>
-        {
-            b.Name = "ftel_no";
-            b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
-        });
-
-
-
-    });
-
-    group.Items.AddGroupItem(sb =>
-    {
-        sb.Caption = "Member's Dependants";
-        sb.Name = "thirdtab";
-        sb.ColSpan = 3;
-        sb.ColCount = 3;
-
-        sb.Items.Add(i =>
-        {
-            i.Caption = " ";
-            i.NestedExtension().Button(b =>
+            sb.Items.Add(m => m.femp_name).NestedExtension().ComboBox(b =>
             {
-                b.Name = "cmdappend";
-                b.Text = "Add Member Dependants";
-                b.UseSubmitBehavior = true;
-                b.Width = Unit.Pixel(100);
+                b.Name = "femp_name";
+
+                List<EmployerTemplate> myemployers = (List<EmployerTemplate>)TempData.Peek("MyEmployers");
+
+                b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
+                b.Properties.Columns.Add("Name", "Name", Unit.Pixel(350));
+                b.Properties.Columns.Add("Address", "Address", Unit.Pixel(350));
+                b.Properties.Columns.Add("TelNo", "Tel No", Unit.Pixel(100));
+
+                b.Properties.DataSource = myemployers;
+                b.Properties.TextField = "Name";
+                b.Properties.ValueField = "Name";
+                b.Properties.ShowShadow = true;
+                b.Properties.AnimationType = AnimationType.Slide;
+
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                b.Properties.ClientSideEvents.SelectedIndexChanged = "OnEmpSelectedIndexChanged";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)femp_addr.Focus();}";
 
             });
+
+            sb.Items.Add(m => m.femp_addr).NestedExtension().TextBox(b =>
+            {
+                b.Name = "femp_addr";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftel_no.Focus();}";
+            });
+
+            sb.Items.Add(m => m.ftel_no).NestedExtension().TextBox(b =>
+            {
+                b.Name = "ftel_no";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
+            });
+
+
+
         });
 
-        sb.Items.AddEmptyItem();
-        sb.Items.AddEmptyItem();
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Member's Dependants";
+            sb.Name = "thirdtab";
+            sb.ColSpan = 3;
+            sb.ColCount = 3;
+
+            sb.Items.Add(i =>
+            {
+                i.Caption = " ";
+                i.NestedExtension().Button(b =>
+                {
+                    b.Name = "cmdappend";
+                    b.Text = "Add Member Dependants";
+                    b.UseSubmitBehavior = true;
+                    b.Width = Unit.Pixel(100);
+
+                });
+            });
+
+            sb.Items.AddEmptyItem();
+            sb.Items.AddEmptyItem();
+
+        });
 
     });
 
-});
+    s.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 3;
+        sb.ColCount = 3;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.None;
 
-    s.Items.AddGroupItem(g => {
-        g.ColSpan = 3;
-        g.ColCount = 3;
-        g.Caption = "";
-        g.GroupBoxDecoration = GroupBoxDecoration.None;
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
 
-
-        g.Name = "cleargroup";
-        g.Items.Add(i =>
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
         {
             i.Caption = " ";
             i.NestedExtension().Button(b =>
@@ -458,11 +518,48 @@
                 b.Text = "Start New Entry";
                 b.UseSubmitBehavior = false;
                 b.Width = Unit.Pixel(100);
-                b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "Form", ParamValue = "" };
             });
         });
+
+
+        sb.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdnextgroup";
+                b.Text = "<< Previous";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(100);
+                //b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.ClientSideEvents.Click = "OnPrevButtonClick";
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.ShowCaption = DefaultBoolean.False;
+
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdnexttab";
+                b.Text = ">> Next";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(100);
+                //b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.ClientSideEvents.Click = "OnNextButtonClick";
+            });
+        });
+
+
+
     });
 
-    }).GetHtml()
 
-}
+}).GetHtml()
+
+    }

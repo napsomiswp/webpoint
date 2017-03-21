@@ -1,0 +1,11 @@
+﻿@model DevExpress.XtraReports.UI.XtraReport
+
+@{
+    ViewBag.Tag = "PRINT";
+}
+ 
+@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WebDocumentViewer";
+    settings.EnableTheming = true;
+}).Bind(Model).GetHtml()

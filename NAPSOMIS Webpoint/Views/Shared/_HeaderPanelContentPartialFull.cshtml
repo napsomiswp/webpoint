@@ -74,7 +74,7 @@
                        subItem.Text = "Member Registration";
 
                        subItem.Items.Add("Receive Forms", "receiveform", "", "/ReceiveForms/ReceiveForms");
-                       subItem.Items.Add("Capture Registration Forms", "captureregisform", "", "/CaptureRegistrationForms/CaptureRegistrationForms");
+                       subItem.Items.Add("Capture Registration Forms", "captureregisform", "", "/CaptureRegistrationForms/Form");
 
                        subItem.Items.Add("Capture Government Employees", "captureGE", "", "/CaptureGovernmentEmployees/Form");
                        subItem.Items.Add("Edit Government Employees", "", "", "/CaptureGovernmentEmployees/EditForm");
@@ -84,10 +84,10 @@
                        subItem.Items.Add("Search Members", "searchchecklist", "", "/CheckList/ListMembersCheckList");
 
                        subItem.Items.Add("Edit Captured Records", "", "", "/CaptureRegistrationForms/EditForm");
-                       subItem.Items.Add("Delete Records", "", "", "/");
+                       subItem.Items.Add("Delete Records", "", "", "/DeleteRecords/Index");
 
                        subItem.Items.Add("List of Forms Received", "", "", "/ListofForms/SearchList");
-                       subItem.Items.Add("List Generated Numbers for an Establishment", "", "", "/");
+                       subItem.Items.Add("List Generated Numbers for an Establishment", "", "", "/ListNosforEstablishment/Index");
 
 
                    });
@@ -110,7 +110,25 @@
 
                        subItem.Text = "Data Control";
 
-                       subItem.Items.Add("Establishment Registration", "", "", "/");
+                       subItem.Items.Add(subsubitem => {
+                           subsubitem.Text = "Establishment Registration";
+
+                           subsubitem.Items.Add("Register New Establishment", "", "", "/Establishment/RegisterNew");
+                           subsubitem.Items.Add("Add Existing Establishment", "", "", "/Establishment/AddExisting");
+                           subsubitem.Items.Add("Re-Print Acknowedgement Letter", "", "", "/Establishment/RePrint");
+                           subsubitem.Items.Add("Update Establishment Record", "", "", "/Establishment/UpdateEstablishment");
+                           subsubitem.Items.Add("Update Director Information", "", "", "/Establishment/UpdateDirector");
+                           subsubitem.Items.Add("Update Employer Categories", "", "", "/Establishment/UpdateEmployer");
+
+                           subsubitem.Items.Add("Transfer Establishment to Head Office", "", "", "/Establishment/Transfer");
+
+                           subsubitem.Items.Add("Deactivate Establishment", "", "", "/Establishment/Deactivate");
+                           subsubitem.Items.Add("Reactivate Establishment", "", "", "/Establishment/Reactivate");
+
+                       });
+
+
+
                        subItem.Items.Add("Generate Reference No", "generaterefno", "", "/ReferenceNos/ReferenceNos");
                        subItem.Items.Add("Add Member to Credit Purchase List", "", "", "/");
 

@@ -1,0 +1,180 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ListGeneratedEmployerViewModel
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "List Generated Nos. for Establishment";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:larger;"> List Generated Nos. for Establishment </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please search for generated numbers from below</text>
+
+@using (Html.BeginForm("Search", "ListNosforEstablishment", FormMethod.Post))
+    {
+    @Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "searchlayout";
+    settings.ColCount = 3;
+    //settings.RequiredMarkDisplayMode = RequiredMarkMode.RequiredOnly;
+    //settings.RequiredMark = "(*)";
+    settings.ShowItemCaptionColon = true;
+
+    settings.Items.AddGroupItem(g =>
+    {
+
+        g.Name = "loadgroup";
+        g.Caption = "Search";
+        g.ColSpan = 3;
+
+        g.Items.Add(b => b.ferno).NestedExtension().TextBox(t =>
+        {
+            t.Name = "ferno";
+
+            t.Properties.HelpText = "Enter the Employer ERNo here";
+            t.Properties.HelpTextSettings.EnablePopupAnimation = true;
+            t.Properties.HelpTextSettings.Position = HelpTextPosition.Top;
+            t.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
+
+        });
+         
+    });
+
+
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Name = "datesearchgroup";
+        g.Caption = "Date Search";
+        g.ColSpan = 3;
+
+        g.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d => { d.Name = "StartDate"; d.ReadOnly = false; });
+        g.Items.Add(b => b.EndDate).NestedExtension().DateEdit(d => { d.Name = "EndDate"; d.ReadOnly = false; });
+
+        g.Items.Add(bt =>
+        {
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdstartsearch";
+                b.Text = "Search";
+                b.Width = Unit.Pixel(100);
+                b.UseSubmitBehavior = true;
+                b.RouteValues = new { Controller = "ListNosforEstablishment", Action = "Search" };
+
+            });
+
+        });
+
+    });
+
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Name = "displaygroup";
+        g.Caption = "Employer Name";
+        g.ColSpan = 3;
+        g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        g.Items.Add(b => b.femp_name).NestedExtension().TextBox(d => { d.Name = "femp_name"; d.ReadOnly = true; });
+
+    });
+
+    settings.Items.AddEmptyItem();
+
+
+    settings.Items.Add(bt =>
+    {
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+            b.Name = "cmdprintpreview";
+            b.Text = "Print Preview";
+            b.Width = Unit.Pixel(100);
+            b.UseSubmitBehavior = true;
+            b.RouteValues = new { Controller = "ListNosforEstablishment", Action = "PrintPreview" };
+
+        });
+
+    });
+
+}).GetHtml()
+
+    }
+
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "panellistmembers";
+    settings.HeaderText = "Search Result (List of Members)";
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.EnableAnimation = true;
+    settings.ShowCollapseButton = true;
+
+    settings.SetContent(() =>
+    {
+        try
+            {
+
+            NAPSOMISModel db = new NAPSOMISModel();
+
+            List<MemberTransaction> fmd = new List<MemberTransaction>();
+
+            if (Model.ferno != "")
+                {
+
+                var dmember = from s in db.MemberTransactions where s.ferno == Model.ferno select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
+
+                var fullmember = dmember.ToList();
+ 
+                foreach (var record in fullmember)
+                    {
+                    MemberTransaction cm = new MemberTransaction();
+
+                    cm.fref_no = record.fref_no;
+                    cm.fssno = record.fssno;
+                    cm.fsurname = record.fsurname;
+                    cm.firstname = record.firstname;
+                    cm.fothname = record.fothname;
+                    cm.fper_addr = record.fper_addr;
+                    cm.fcur_addr = record.fcur_addr;
+                    cm.fm_stat = record.fm_stat;
+                    cm.fnation = record.fnation;
+                    cm.fb_country = record.fb_country;
+                    cm.fsex = record.fsex;
+
+                    cm.ftown = record.ftown;
+                    cm.fb_date = record.fb_date;
+
+                    cm.ID_SBTS = record.ID_SBTS;
+
+                    fmd.Add(cm);
+                    }
+
+                if (fmd.Count > 0)
+                    {
+
+                    IEnumerable<MemberTransaction> memberslist = (IEnumerable<MemberTransaction>)fmd;
+
+                    if (memberslist.Count() > 0)
+                        {
+                        Html.RenderPartial("MembersTableView", memberslist);
+                        }
+
+                    }
+
+                }
+
+            }
+
+        catch (Exception)
+            {
+
+            }
+
+    });
+}).GetHtml()
+
+
+

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.MemberTransaction>
+
+@{
+    ViewBag.Title = "Members";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ID_SBTS)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fref_no)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fsurname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fothname)
+            </th> 
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fsex)
+            </th> 
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fper_addr)
+            </th>
+            @*<th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcur_addr)
+            </th>*@
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fb_date)
+            </th>
+            <th class=whitesmokeheader></th>
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Preview", "Preview", new { Controller = "CheckList", Action = "Preview", id = item.ID_SBTS }) |
+                            @Html.ActionLink("Edit", "Edit", new { Controller = "CheckList", Action = "Edit", id = item.ID_SBTS }) |
+                            @Html.ActionLink("Delete", "Delete", new { Controller = "CheckList", Action = "Delete", id = item.ID_SBTS }) |
+                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID_SBTS)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fref_no)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fsurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fothname)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fsex)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fper_addr)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.fcur_addr)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fb_date)
+                        </td>
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>

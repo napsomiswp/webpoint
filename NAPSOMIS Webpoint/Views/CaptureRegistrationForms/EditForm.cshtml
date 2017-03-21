@@ -7,7 +7,7 @@
 
 <br />
 <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Edit Government Employees Form </text>
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Edit Member Registration Form </text>
 <br />
 <text style="font-size:small; padding-left:10px;">Please fill the information below using the government member form</text>
  
@@ -50,6 +50,19 @@
             fnation.SetText('SIERRA LEONEAN');
             fb_country.SetText('SIERRA LEONE')
         }
+    }
+
+    function OnPrevButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(-1);
+    }
+    function OnNextButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(1);
+    }
+
+    function SetActiveTabByIndexIncrement(tabIndexIncrement) {
+        var activeTabIndex = CaptureTab.GetActiveTab().index;
+        activeTabIndex += tabIndexIncrement;
+        CaptureTab.SetActiveTab(CaptureTab.GetTab(activeTabIndex));
     }
 
 </script>
@@ -103,6 +116,7 @@
     s.Items.AddTabbedGroupItem(group =>
     {
         group.ColSpan = 3;
+        group.Name = "CaptureTab";
 
         group.Items.AddGroupItem(sb =>
         {
@@ -119,11 +133,25 @@
                 g.ColCount = 3;
 
 
-                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.ReadOnly = false; });
-                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.ReadOnly = false; });
-                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.ReadOnly = false; });
-                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.ReadOnly = false; });
-                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.ReadOnly = false; });
+                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.Name = "fref_no"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.Name = "fsurname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.Name = "firstname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.Name = "fothname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.Name = "fb_date"; b.ReadOnly = false; });
+
+            });
+
+            sb.Items.AddGroupItem(g =>
+            {
+                g.Caption = "Previous Name";
+                g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                g.ColSpan = 3;
+                g.ColCount = 3;
+
+
+                g.Items.Add(m => m.fpsurname).NestedExtension().TextBox(b => { b.Name = "fpsurname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fpfirstname).NestedExtension().TextBox(b => { b.Name = "fpfirstname"; b.ReadOnly = false; });
+                g.Items.Add(m => m.fpothname).NestedExtension().TextBox(b => { b.Name = "fpothname"; b.ReadOnly = false; });
 
             });
 
@@ -176,15 +204,12 @@
                 });
 
 
-                g.Items.Add(m => m.fsex).NestedExtension().ComboBox(b =>
+                g.Items.Add(m => m.fsex).NestedExtension().RadioButtonList(b =>
                 {
                     b.Name = "fsex";
                     b.Properties.Items.Add("Male", "M");
                     b.Properties.Items.Add("Female", "F");
-                    b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fprovince.Focus();}";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
-                   
                 });
 
             });
@@ -211,7 +236,7 @@
                     b.Properties.TextField = "Name";
                     b.Properties.ValueField = "Code";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                    //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
 
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fdist.Focus();}";
                     //b.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){fdist.PerformCallback(fprovince.GetValue())}";
@@ -231,7 +256,7 @@
                     b.Properties.TextField = "Name";
                     b.Properties.ValueField = "Code";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
 
                     //b.CallbackRouteValues = new { Controller = "CaptureGovernmetEmployees", Action = "FilterDistrict" };
                     //b.Properties.CallbackPageSize = 30;
@@ -255,7 +280,7 @@
                     b.Properties.DataSource = mychiefdom;
                     b.Properties.TextField = "Name";
                     b.Properties.ValueField = "Code";
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
 
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ftown.Focus();}";
                 });
@@ -272,12 +297,12 @@
             sb.Items.Add(m => m.fjoindate).NestedExtension().DateEdit(b =>
             {
                 b.Name = "fjoindate";
-                b.ReadOnly = true;
+                b.ReadOnly = false;
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnat_income.Focus();}";
 
             });
 
-            sb.Items.Add(m => m.fnat_income).NestedExtension().ComboBox(m =>
+            sb.Items.Add(m => m.fnat_income).NestedExtension().RadioButtonList(m =>
             {
                 m.Name = "fnat_income";
                 m.SelectedIndex = 1;
@@ -285,7 +310,6 @@
                 m.Properties.Items.Add("Monthly", "2");
                 m.Properties.Items.Add("Yearly", "3");
 
-                m.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fincome.Focus();}";
             });
 
             sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m =>
@@ -312,7 +336,7 @@
                 b.Properties.TextField = "Name";
                 b.Properties.ValueField = "Code";
 
-                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.None;
+                //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.None;
 
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)ffsurname.Focus();}";
             });
@@ -431,7 +455,7 @@
                 b.Name = "ftel_no";
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)cmdappend.DoClick();}";
             });
- 
+
         });
 
         group.Items.AddGroupItem(sb =>
@@ -468,6 +492,11 @@
         g.Caption = "";
         g.GroupBoxDecoration = GroupBoxDecoration.None;
 
+        g.ShowCaption = DefaultBoolean.False;
+        g.Paddings.PaddingBottom = 6;
+        g.Paddings.PaddingLeft = 0;
+        g.Paddings.PaddingTop = 5;
+        g.UseDefaultPaddings = false;
 
         g.Name = "cleargroup";
         g.Items.Add(i =>
@@ -478,11 +507,43 @@
                 b.Name = "clear";
                 b.Text = "Start New Entry";
                 b.UseSubmitBehavior = false;
-                b.Width = Unit.Pixel(100);
-                b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "Form", ParamValue = "" };
+                b.Width = Unit.Pixel(120);
+                b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "EditForm", ParamValue = "" };
             });
 
         });
+
+
+
+        g.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdnextgroup";
+                b.Text = "<< Previous";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(100);
+                //b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.ClientSideEvents.Click = "OnPrevButtonClick";
+            });
+        });
+
+
+        g.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdnexttab";
+                b.Text = ">> Next";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(100);
+                //b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureRegistrationForms", ParamValue = "" };
+                b.ClientSideEvents.Click = "OnNextButtonClick";
+            });
+        });
+
 
         g.Items.Add(i =>
         {
@@ -493,7 +554,7 @@
                 btn.Text = "Save Changes";
                 btn.UseSubmitBehavior = true;
 
-                btn.Width = Unit.Pixel(100);
+                btn.Width = Unit.Pixel(120);
                 btn.UseSubmitBehavior = true;
                 btn.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "SaveFormEdit", ParamValue = "" };
 
@@ -501,7 +562,9 @@
 
         });
 
+
     });
+
 
 }).GetHtml();
     }

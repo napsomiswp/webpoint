@@ -379,7 +379,7 @@
     <Content Include="Views\Pages\SearchGridViewPartial.cshtml" />
     <Content Include="Views\ReferenceNos\ReferenceNos.cshtml" />
     <Content Include="Views\ReceiveForms\ReceiveForms.cshtml" />
-    <Content Include="Views\CaptureRegistrationForms\CaptureRegistrationForms.cshtml" />
+    <Content Include="Views\CaptureRegistrationForms\Form.cshtml" />
     <Content Include="Views\CaptureRegistrationForms\DependantCapture.cshtml" />
     <Content Include="Views\CaptureRegistrationForms\DependantTableView.cshtml" />
     <Content Include="Views\CheckList\PrintCheckList.cshtml" />
@@ -399,6 +399,14 @@
     <Content Include="Views\ReferenceNos\PrintPreview.cshtml" />
     <Content Include="Views\ListofForms\PrintPreview.cshtml" />
     <Content Include="Views\CheckList\PrintPreview.cshtml" />
+    <Content Include="Views\DeleteRecords\Index.cshtml" />
+    <Content Include="Views\ListNosforEstablishment\Index.cshtml" />
+    <Content Include="Views\ListNosforEstablishment\MembersTableView.cshtml" />
+    <Content Include="Views\ListNosforEstablishment\PrintPreview.cshtml" />
+    <Content Include="Views\Establishment\RegisterNew.cshtml" />
+    <Content Include="Views\Establishment\RePrint.cshtml" />
+    <Content Include="Views\Establishment\PrintPreview.cshtml" />
+    <Content Include="Views\Establishment\UpdateEstablishment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -417,6 +425,9 @@
     <Compile Include="Controllers\CaptureGovernmentEmployeesController.cs" />
     <Compile Include="Controllers\CaptureRegistrationFormsController.cs" />
     <Compile Include="Controllers\CheckListController.cs" />
+    <Compile Include="Controllers\DeleteRecordsController.cs" />
+    <Compile Include="Controllers\EstablishmentController.cs" />
+    <Compile Include="Controllers\ListNosforEstablishmentController.cs" />
     <Compile Include="Controllers\ListofFormsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.BlogPosts.cs" />
@@ -610,6 +621,9 @@
     <Compile Include="Reports\XtraReportDependantsSubReport.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\XtraReportListofEstGeneratedNos.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\XtraReportListofForms.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -619,12 +633,17 @@
     <Compile Include="Reports\XtraReportReferenceNos.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\XtraReportRePrintAckLetter.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CaptureMemRegViewModel.cs" />
     <Compile Include="ViewModels\EmployerTemplate.cs" />
+    <Compile Include="ViewModels\ListGeneratedEmployerViewModel.cs" />
     <Compile Include="ViewModels\MemberCheckListViewModel.cs" />
     <Compile Include="ViewModels\PDCTemplate.cs" />
     <Compile Include="ViewModels\PrintCheckListTemplate.cs" />
+    <Compile Include="ViewModels\ReprintAckLetterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
@@ -637,6 +656,9 @@
     <EmbeddedResource Include="Reports\XtraReportDependantsSubReport.resx">
       <DependentUpon>XtraReportDependantsSubReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportListofEstGeneratedNos.resx">
+      <DependentUpon>XtraReportListofEstGeneratedNos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportListofForms.resx">
       <DependentUpon>XtraReportListofForms.cs</DependentUpon>
     </EmbeddedResource>
@@ -645,6 +667,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportReferenceNos.resx">
       <DependentUpon>XtraReportReferenceNos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportRePrintAckLetter.resx">
+      <DependentUpon>XtraReportRePrintAckLetter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

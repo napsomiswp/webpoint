@@ -79,21 +79,6 @@
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnomsex.Focus();}";
             });
 
-            sb.Items.Add(m => m.fnomsex).NestedExtension().ComboBox(b => {
-                b.Name = "fnomsex";
-                b.Properties.Items.Add("Male", "M");
-                b.Properties.Items.Add("Female", "F");
-                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fbirth_date.Focus();}";
-            });
-
-            sb.Items.Add(m => m.fbirth_date).NestedExtension().DateEdit(b =>
-            {
-                b.Name = "fbirth_date";
-                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)frelation.Focus();}";
-            });
-
-
             sb.Items.Add(m => m.frelation).NestedExtension().ComboBox(b =>
             {
                 b.Name = "frelation";
@@ -111,6 +96,22 @@
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fper_addr.Focus();}";
                 b.Properties.ClientSideEvents.SelectedIndexChanged = "OnRelationSelectedIndexChanged";
             });
+
+            sb.Items.Add(m => m.fnomsex).NestedExtension().ComboBox(b => {
+                b.Name = "fnomsex";
+                b.Properties.Items.Add("Male", "M");
+                b.Properties.Items.Add("Female", "F");
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fbirth_date.Focus();}";
+            });
+
+            sb.Items.Add(m => m.fbirth_date).NestedExtension().DateEdit(b =>
+            {
+                b.Name = "fbirth_date";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)frelation.Focus();}";
+            });
+
+
 
             sb.Items.Add(m => m.fper_addr).NestedExtension().Memo(mem => {
                 mem.Name = "fper_addr";

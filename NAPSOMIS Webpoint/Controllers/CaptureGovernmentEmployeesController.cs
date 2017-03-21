@@ -170,6 +170,8 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                     CaptureMemRegViewModel mvm = new CaptureMemRegViewModel();
 
+                    if (mt.Count == 0) return View("EditForm");
+
                     mvm.fref_no = mt[0].fref_no;
                     mvm.firstname = mt[0].firstname;
                     mvm.fothname = mt[0].fothname;
@@ -222,6 +224,19 @@ namespace NAPSOMIS_Webpoint.Controllers
                     mvm.fmothname = p[0].fmothname;
                     mvm.fmsurname = p[0].fmsurname;
 
+                    List<PreviousName> prev = new List<PreviousName>();
+                    prev = db.PreviousNames.Where(r => r.fref_no == refno).ToList();
+                    PreviousName previous = new PreviousName();
+
+                    if (prev.Count > 0)
+                        {
+
+                        previous = prev[0];
+                        mvm.fpfirstname = previous.fpfirstname;
+                        mvm.fpothname = previous.fpothname;
+                        mvm.fpsurname = previous.fpsurname;
+
+                        }
 
                     if (mt.Count > 0)
                         {
@@ -317,6 +332,53 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             db.MemberTransactions.Add(m);
             db.SaveChanges();
+
+
+            List<PreviousName> prev = new List<PreviousName>();
+            prev = db.PreviousNames.Where(r => r.fref_no == m.fref_no).ToList();
+            PreviousName previous = new PreviousName();
+
+            if (prev.Count > 0)
+                {
+
+                previous = prev[0];
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Attach(previous);
+                var pentry = db.Entry(previous);
+                pentry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                }
+            else
+                {
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Add(previous);
+                db.SaveChanges();
+                }
 
             }
 
@@ -417,7 +479,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             }
 
-         
+
         public ActionResult PrepareAddNewDependant()
             {
             try
@@ -595,6 +657,53 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             db.SaveChanges();
 
+
+
+            List<PreviousName> prev = new List<PreviousName>();
+            prev = db.PreviousNames.Where(r => r.fref_no == m.fref_no).ToList();
+            PreviousName previous = new PreviousName();
+
+            if (prev.Count > 0)
+                {
+
+                previous = prev[0];
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Attach(previous);
+                var pentry = db.Entry(previous);
+                pentry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                }
+            else
+                {
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Add(previous);
+                db.SaveChanges();
+                }
 
             if (m.fref_no != c.fref_no || m.fssno != c.fssno)
                 {
@@ -869,6 +978,52 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             db.MemberTransactions.Add(m);
             db.SaveChanges();
+
+            List<PreviousName> prev = new List<PreviousName>();
+            prev = db.PreviousNames.Where(r => r.fref_no == m.fref_no).ToList();
+            PreviousName previous = new PreviousName();
+
+            if (prev.Count > 0)
+                {
+
+                previous = prev[0];
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Attach(previous);
+                var pentry = db.Entry(previous);
+                pentry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                }
+            else
+                {
+
+                previous.fref_no = c.fref_no;
+                previous.fssno = c.fssno;
+
+                //THE DATABASE IS SET TO VARCHAR(6) But This need more than varchar(6)
+                //previous.fuser_code = "DEFAULT";
+
+                previous.CreatedBy = "DEFAULT";
+                previous.CreatedOn = DateTime.Today;
+                previous.fpfirstname = c.fpfirstname;
+                previous.fpothname = c.fpothname;
+                previous.fpsurname = c.fpsurname;
+
+                db.PreviousNames.Add(previous);
+                db.SaveChanges();
+                }
 
             return RedirectToAction("Form");
 

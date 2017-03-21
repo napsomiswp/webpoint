@@ -1,0 +1,493 @@
+﻿@model NAPSOMIS_Webpoint.Models.EmployMastersheet
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "Update Establishment";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Establishment </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please edit the form using reliable and approprivate information</text>
+
+<script type="text/javascript">
+    var lastprovince = null;
+    function OnProvinceChanged(fprovince) {
+        if (fdist.InCallback())
+            lastprovince = fprovince.GetValue().toString();
+        else
+            fdist.PerformCallback(fprovince.GetValue().toString());
+    }
+
+    function OnEndCallback(s, e) {
+        if (lastprovince) {
+            fdist.PerformCallback(lastprovince);
+            lastprovince = null;
+        }
+    }
+
+    function OnBeginCallback(s, e) {
+        e.customArgs["Province"] = fprovince.GetValue();
+
+    }
+
+    function OnEmpSelectedIndexChanged(s, e) {
+        var employervalue = femp_name.GetText().split(";");
+        //alert(employervalue[1]);
+        //alert(femp_name.GetText());
+
+        ferno.SetText(employervalue[0])
+        femp_addr.SetText(employervalue[2]);
+        //ftel_no.SetText(employervalue[3]);
+    }
+
+    function OnNationKeyDown(s, e) {
+        if (ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13) {
+            fb_country.Focus()
+        };
+        if (fnation.GetText() == 'S') {
+            fnation.SetText('SIERRA LEONEAN');
+            fb_country.SetText('SIERRA LEONE')
+        }
+    }
+
+
+    function OnPrevButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(-1);
+    }
+    function OnNextButtonClick(s, e) {
+        SetActiveTabByIndexIncrement(1);
+    }
+
+    function SetActiveTabByIndexIncrement(tabIndexIncrement) {
+        var activeTabIndex = CaptureTab.GetActiveTab().index;
+        activeTabIndex += tabIndexIncrement;
+        CaptureTab.SetActiveTab(CaptureTab.GetTab(activeTabIndex));
+    }
+
+</script>
+
+
+@using (Html.BeginForm("UpdateEstablishment_Search", "Establishment", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+
+    @Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "EstablishmentUpdateLayout";
+    settings.ColCount = 4;
+
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+        {
+            b.Name = "ferno_search";
+
+        });
+
+        g.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "search";
+                b.Text = "Load Data";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment_Search", ParamValue = "" };
+            });
+        });
+
+    });
+}).GetHtml()
+    }
+
+@using (Html.BeginForm("RegisterNew", "Establishment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+
+    s.Name = "EstablishmentFormLayout";
+    s.ColCount = 4;
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 4;
+        group.Name = "CaptureTab";
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Establishment Details";
+            sb.Name = "firsttab";
+            sb.ColSpan = 4;
+            sb.ColCount = 4;
+
+            sb.Items.AddGroupItem(g =>
+            {
+                g.Caption = "Name";
+                g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                g.ColSpan = 4;
+                g.ColCount = 4;
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "detailsgroup";
+                    dg.Caption = "Establishment Details";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                    dg.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "ferno";
+                        b.ReadOnly = true;
+                    });
+
+                    dg.Items.Add(m => m.femp_name).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "femp_name";
+                        b.ReadOnly = false;
+
+                    });
+
+                    dg.Items.Add(m => m.fnature).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fnature";
+
+                    });
+
+                    dg.Items.Add(m => m.floc).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "floc";
+                        b.ReadOnly = false;
+
+                    });
+                });
+
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "locationgroup";
+                    dg.Caption = "Location";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    dg.Items.Add(m => m.faddress1).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "faddress1";
+
+                    });
+
+                    dg.Items.Add(m => m.faddress2).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "faddress2";
+
+                    });
+
+                    dg.Items.Add(m => m.ftown).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "ftown";
+
+                    });
+                });
+
+
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "contactgroup";
+                    dg.Caption = "Contact";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    dg.Items.Add(m => m.ftelno).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "ftelno";
+
+                    });
+
+                    dg.Items.Add(m => m.fcontact).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fcontact";
+
+                    });
+
+                    dg.Items.Add(m => m.fsite).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fsite";
+
+                    });
+                });
+
+            });
+
+
+            sb.Items.AddGroupItem(g =>
+            {
+                g.Caption = "Others";
+                g.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                g.ColSpan = 3;
+                g.ColCount = 3;
+
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "othersgroup";
+                    dg.Caption = "Business Details";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                    dg.Items.Add(m => m.fiecon_act).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fiecon_act";
+
+                    });
+
+                    dg.Items.Add(m => m.fecon_act).NestedExtension().ComboBox(b =>
+                    {
+                        b.Name = "fecon_act";
+
+                        List<PDCTemplate> myeconactivities = (List<PDCTemplate>)TempData.Peek("MyEconActivities");
+
+                        b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                        b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+                        b.Properties.DataSource = myeconactivities;
+                        b.Properties.TextField = "Name";
+                        b.Properties.ValueField = "Code";
+
+                        //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+
+                    });
+
+                });
+
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "ownergroup";
+                    dg.Caption = "Owner";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    dg.Items.Add(m => m.fowner).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fowner";
+
+                    });
+
+
+                    dg.Items.Add(m => m.fcert_no).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fcert_no";
+
+                    });
+
+
+                    dg.Items.Add(m => m.fcert_date).NestedExtension().DateEdit(b =>
+                    {
+                        b.Name = "fcert_date";
+
+                    });
+
+
+                    dg.Items.Add(m => m.fcomm_cno).NestedExtension().TextBox(b =>
+                    {
+                        b.Name = "fcomm_cno";
+
+                    });
+
+                    dg.Items.Add(m => m.fcomm_date).NestedExtension().DateEdit(b =>
+                    {
+                        b.Name = "fcomm_date";
+
+                    });
+
+
+                    dg.Items.Add(m => m.fcov_date).NestedExtension().DateEdit(b =>
+                    {
+                        b.Name = "fcov_date";
+
+                    });
+
+                });
+
+
+
+                g.Items.AddGroupItem(dg =>
+                {
+                    dg.Name = "businesstypegroup";
+                    dg.Caption = "Business Type";
+                    dg.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    dg.Items.Add(m => m.fbusn_type).NestedExtension().ComboBox(b =>
+                    {
+                        b.Name = "fbusn_type";
+                        b.Properties.Items.Add("1 |GOVERNMENT ESTABLISHMENT", "1");
+                        b.Properties.Items.Add("2 |PARASTATALS", "2");
+                        b.Properties.Items.Add("3 |NGOs", "3");
+                        b.Properties.Items.Add("4 |PRIVATE CO.", "4");
+                        b.Properties.Items.Add("5 |OTHERS", "5");
+                    });
+
+
+                    dg.Items.Add(m => m.fest_type).NestedExtension().ComboBox(b =>
+                    {
+                        b.Name = "fest_type";
+                        b.Properties.Items.Add("NORMAL", "N");
+                    });
+
+                    dg.Items.Add(m => m.finsp_date).NestedExtension().DateEdit(b =>
+                    {
+                        b.Name = "finsp_date";
+
+                    });
+
+                    dg.Items.Add(m => m.freg_date).NestedExtension().DateEdit(b =>
+                    {
+                        b.Name = "freg_date";
+
+                    });
+
+
+                    dg.Items.Add(m => m.fsalpatt).NestedExtension().RadioButtonList(b =>
+                    {
+                        b.Name = "fsalpatt";
+                        b.Properties.Items.Add("Monthly", "M");
+                        b.Properties.Items.Add("Fortnighly", "F");
+
+                        //b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnation.Focus();}";
+                    });
+
+
+                    dg.Items.Add(m => m.fprint).NestedExtension().RadioButtonList(b =>
+                    {
+                        b.Name = "fprint";
+                        b.Properties.Items.Add("Pre-Printed", "P");
+                        b.Properties.Items.Add("Manual", "M");
+                        b.Properties.Items.Add("Diskette", "D");
+
+                        //b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnation.Focus();}";
+                    });
+
+
+                    dg.Items.Add(m => m.fzone).NestedExtension().ComboBox(b =>
+                    {
+                        b.Name = "fzone";
+
+                        List<PDCTemplate> myzones = (List<PDCTemplate>)TempData.Peek("MyZones");
+
+                        b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                        b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+                        b.Properties.DataSource = myzones;
+                        b.Properties.TextField = "Name";
+                        b.Properties.ValueField = "Code";
+
+                        //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+
+                    });
+
+
+                    dg.Items.Add(be =>
+                    {
+                        be.Name = "confirm_econ_act";
+                        be.Caption = "Confirm Econ. Activity";
+                        be.NestedExtension().ComboBox(b =>
+                        {
+                            List<PDCTemplate> myeconactivities = (List<PDCTemplate>)TempData.Peek("MyEconActivities");
+
+                            b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                            b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+                            b.Properties.DataSource = myeconactivities;
+                            b.Properties.TextField = "Name";
+                            b.Properties.ValueField = "Code";
+
+                            //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                        });
+                    });
+
+                });
+
+            });
+
+        });
+
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Directors";
+            sb.Name = "secondtab";
+            sb.ColSpan = 4;
+            sb.ColCount = 4;
+
+            sb.Items.Add(bt =>
+            {
+                bt.Name = "adddirectorsgroup";
+                bt.ShowCaption = DefaultBoolean.False;
+
+                bt.NestedExtension().Button(b =>
+                {
+                    b.Name = "adddirectors";
+                    b.Text = "Add Directors";
+                    b.UseSubmitBehavior = true;
+                    b.Width = Unit.Pixel(130);
+                    b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment_Directors", ParamValue = "" };
+
+                });
+            });
+
+            //sb.Items.AddGroupItem(g =>
+            //{
+
+            //});
+
+        });
+
+    });
+
+    s.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 3;
+        sb.ColCount = 3;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.None;
+
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
+
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "clear";
+                b.Text = "Start New Entry";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment", ParamValue = "" };
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "save";
+                b.Text = "Update Establishment Form";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment_Update", ParamValue = "" };
+            });
+        });
+
+    });
+
+}).GetHtml()
+
+    }

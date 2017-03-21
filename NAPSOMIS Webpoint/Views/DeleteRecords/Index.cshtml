@@ -1,0 +1,102 @@
+﻿@model NAPSOMIS_Webpoint.Models.MemberTransaction
+
+@{
+    ViewBag.Title = "Delete Record";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:larger;"> Delete Record </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please search for a record below</text>
+ 
+@using (Html.BeginForm("Search", "DeleteREcords", FormMethod.Post))
+    {
+    @Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "deletelayout";
+    settings.ColCount = 3;
+
+    settings.Items.AddGroupItem(g =>
+    {
+
+        g.Name = "loadgroup";
+        g.Caption = "Search";
+        g.ColSpan = 3;
+
+        g.Items.Add(b => b.fref_no).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fref_no";
+
+        });
+
+        g.Items.Add(bt =>
+        {
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdsearch";
+                b.Text = "Search";
+                b.Width = Unit.Pixel(100);
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+    });
+
+
+    settings.Items.AddGroupItem(g =>
+    {
+        g.Name = "displaygroup";
+        g.Caption = "Details";
+        g.ColSpan = 3;
+
+        g.Items.Add(b => b.fsurname).NestedExtension().TextBox(d => { d.Name = "fsurname"; d.ReadOnly = true; });
+        g.Items.Add(b => b.firstname).NestedExtension().TextBox(d => { d.Name = "firstname"; d.ReadOnly = true; });
+        g.Items.Add(b => b.fothname).NestedExtension().TextBox(d => { d.Name = "fothname"; d.ReadOnly = true; });
+        g.Items.Add(b => b.fb_date).NestedExtension().DateEdit(d => { d.Name = "fb_date"; d.ReadOnly = true; });
+    });
+
+    settings.Items.AddEmptyItem();
+   
+    settings.Items.Add(bt =>
+    {
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+            b.Name = "cmddelete";
+            b.Text = "Delete";
+            b.Width = Unit.Pixel(100);
+            b.UseSubmitBehavior = true;
+            b.RouteValues = new { Controller = "DeleteRecords", Action = "Delete" };
+
+        });
+
+    });
+
+    settings.Items.Add(bt =>
+    {
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+            b.Name = "cmdcancel";
+            b.Text = "Cancel";
+            b.Width = Unit.Pixel(100);
+            b.UseSubmitBehavior = false;
+            b.RouteValues = new { Controller = "DeleteRecords", Action = "Index" };
+
+        });
+
+    });
+
+}).GetHtml()
+
+    }
+
+ 

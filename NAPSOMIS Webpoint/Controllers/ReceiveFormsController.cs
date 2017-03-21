@@ -27,7 +27,8 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 m.CreatedOn = DateTime.Now;
                 m.CreatedBy = "DEFAULT";
-                 
+                m.fref_no = m.fref_no.ToString().Trim();
+
                 db.MemberTransactions.Add(m);
                 db.SaveChanges();
 

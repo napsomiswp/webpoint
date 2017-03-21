@@ -192,6 +192,21 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "Other Name")]
         public string fmothname { get; set; }
 
+
+
+        //PREVIOUS NAME
+
+         [StringLength(25)]
+         [Display(Name = "Surname")]
+        public string fpsurname { get; set; }
+
+        [StringLength(20)]
+        [Display(Name = "First Name")]
+        public string fpfirstname { get; set; }
+
+        [StringLength(20)]
+        [Display(Name = "Other Name")]
+        public string fpothname { get; set; }
  
     }
 }

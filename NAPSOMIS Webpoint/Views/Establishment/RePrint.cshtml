@@ -1,0 +1,150 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ReprintAckLetterViewModel
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "Reprint Acknowledgement Letter";
+}
+
+<br />
+<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+<text style="color:midnightblue; padding-left:10px; font-size:large;"> Reprint Acknowledgement Letter </text>
+<br />
+<text style="font-size:small; padding-left:10px;">Please select an establishment from below</text>
+
+<script type="text/javascript">
+    function OnSelectedIndexChanged(s, e) {
+        var employervalue = femp_name.GetValue().split(";");
+
+        ferno.SetText(employervalue[0])
+
+    }
+
+</script>
+
+
+@using (Html.BeginForm("RePrint", "Establishment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+
+    s.Name = "EstablishmentFormLayout";
+    s.ColCount = 4;
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 4;
+        group.Name = "CaptureTab";
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Establishment Details";
+            sb.Name = "firsttab";
+            sb.ColSpan = 4;
+            sb.ColCount = 4;
+
+            sb.Items.AddGroupItem(dg =>
+            {
+                dg.Name = "detailsgroup";
+                dg.Caption = "Establishment Details";
+                dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                dg.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "ferno";
+
+                });
+
+
+                dg.Items.Add(m => m.fsearch).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "fsearch";
+                    
+                });
+
+                dg.Items.Add(i =>
+                {
+                    i.Caption = " ";
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.Name = "search";
+                        b.Text = "Filter";
+                        b.UseSubmitBehavior = true;
+                        b.Width = Unit.Pixel(140);
+                        b.RouteValues = new { Controller = "Establishment", Action = "RePrint_Filter", ParamValue = "" };
+                    });
+                });
+
+                dg.Items.Add(m => m.femp_name).NestedExtension().ListBox(b =>
+                {
+                    b.Name = "femp_name";
+
+                    List<PDCTemplate> myestablishments = (List<PDCTemplate>)TempData.Peek("MyEstablishments");
+
+                    b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
+                    b.Properties.Columns.Add("Name", "Name", Unit.Pixel(380));
+
+                    b.Height = Unit.Pixel(250);
+
+                    b.Properties.DataSource = myestablishments;
+                    b.Properties.TextField = "Name";
+                    b.Properties.ValueField = "Code";
+                    b.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedIndexChanged";
+                });
+
+
+            });
+
+
+        });
+
+
+    });
+
+    s.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 3;
+        sb.ColCount = 3;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.None;
+
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
+
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "clear";
+                b.Text = "Start New Entry";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "RePrint", ParamValue = "" };
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "print";
+                b.Text = "Print";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "RePrint_Print", ParamValue = "" };
+            });
+        });
+
+    });
+
+}).GetHtml()
+
+    }

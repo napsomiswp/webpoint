@@ -18,20 +18,31 @@
 @Html.DevExpress().FormLayout(s =>
 {
     s.Name = "ReceiveForms";
-    s.ColCount = 4;
+    s.ColCount = 3;
 
     s.Items.AddTabbedGroupItem(group =>
     {
-        group.ColSpan = 4;
- 
+        group.ColSpan = 3;
+
         group.Items.AddGroupItem(sb =>
         {
             sb.Caption = "Receive Form";
             sb.Name = "firsttab";
-            sb.ColSpan = 4;
-            sb.ColCount = 4;
+            sb.ColSpan = 3;
+            sb.ColCount = 3;
 
-            sb.Items.Add(b => b.fref_no);
+            sb.Items.Add(b => b.fref_no).NestedExtension().TextBox(t => {
+                t.Name = "fref_no";
+                t.Properties.HelpText = "Enter the Reference No here";
+                t.Properties.HelpTextSettings.EnablePopupAnimation = true;
+                t.Properties.HelpTextSettings.Position = HelpTextPosition.Top;
+                t.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
+
+            });
+
+            sb.Items.AddEmptyItem();
+            sb.Items.AddEmptyItem();
+
             sb.Items.Add(b => b.fsurname);
             sb.Items.Add(b => b.firstname);
             sb.Items.Add(b => b.fothname);
@@ -39,8 +50,7 @@
             sb.Items.Add(b => b.fjoindate);
 
             sb.Items.AddEmptyItem();
-            sb.Items.AddEmptyItem();
-
+            
             sb.Items.Add(i =>
             {
                 i.Caption = " ";
@@ -67,7 +77,7 @@
                 });
             });
 
-            
+
 
 
         });

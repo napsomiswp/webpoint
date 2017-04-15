@@ -1,17 +1,29 @@
-﻿@model NAPSOMIS_Webpoint.Models.NomTemp
+﻿@model NAPSOMIS_Webpoint.Models.nom_tr
 @using NAPSOMIS_Webpoint.ViewModels
 @using NAPSOMIS_Webpoint.Models;
 
 @{
     ViewBag.Title = "Dependant Capture";
 }
+ 
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Dependants for Reference No: @TempData["ReferenceNo"] </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please fill in all required information below</text>
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
 
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Dependants for Reference No: @TempData.Peek("GovernmentReferenceNo").ToString() </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill in all required information below</text>
+
+
+    <br />
+
+</div>
 <script type="text/javascript">
 
     function OnRelationSelectedIndexChanged(s, e) {
@@ -82,22 +94,6 @@
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnomsex.Focus();}";
             });
 
-            sb.Items.Add(m => m.fnomsex).NestedExtension().ComboBox(b =>
-            {
-                b.Name = "fnomsex";
-                b.Properties.Items.Add("Male", "M");
-                b.Properties.Items.Add("Female", "F");
-                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fbirth_date.Focus();}";
-            });
-
-            sb.Items.Add(m => m.fbirth_date).NestedExtension().DateEdit(b =>
-            {
-                b.Name = "fbirth_date";
-                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)frelation.Focus();}";
-            });
-
-
             sb.Items.Add(m => m.frelation).NestedExtension().ComboBox(b =>
             {
                 b.Name = "frelation";
@@ -115,6 +111,24 @@
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fper_addr.Focus();}";
                 b.Properties.ClientSideEvents.SelectedIndexChanged = "OnRelationSelectedIndexChanged";
             });
+
+            sb.Items.Add(m => m.fnomsex).NestedExtension().ComboBox(b =>
+            {
+                b.Name = "fnomsex";
+                b.Properties.Items.Add("Male", "M");
+                b.Properties.Items.Add("Female", "F");
+                b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fbirth_date.Focus();}";
+            });
+
+            sb.Items.Add(m => m.fbirth_date).NestedExtension().DateEdit(b =>
+            {
+                b.Name = "fbirth_date";
+                b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)frelation.Focus();}";
+            });
+
+
+
 
             sb.Items.Add(m => m.fper_addr).NestedExtension().Memo(mem =>
             {
@@ -144,22 +158,7 @@
                     b.Width = Unit.Pixel(100);
                 });
             });
-
-
-            //sb.Items.Add(i =>
-            //{
-            //    i.Caption = " ";
-            //    i.NestedExtension().Button(b =>
-            //    {
-            //        b.Name = "clear";
-            //        b.Text = "Reload page";
-            //        b.UseSubmitBehavior = false;
-            //        b.Width = Unit.Pixel(100);
-            //        b.RouteValues = new { Controller = "CaptureRegistrationForms", Action = "CaptureDependants", ParamValue = "" };
-            //    });
-            //});
-
-
+ 
         });
 
 
@@ -215,12 +214,12 @@
         try
             {
 
-            List<NomTemp> thedependants = (List<NomTemp>)TempData.Peek("Dependants");
+            List<nom_tr> thedependants = (List<nom_tr>)TempData.Peek("Dependants");
 
             if (thedependants.Count > 0)
                 {
 
-                IEnumerable<NomTemp> thenom = (IEnumerable<NomTemp>)TempData.Peek("Dependants");
+                IEnumerable<nom_tr> thenom = (IEnumerable<nom_tr>)TempData.Peek("Dependants");
 
                 if (thenom.Count() > 0)
                     {

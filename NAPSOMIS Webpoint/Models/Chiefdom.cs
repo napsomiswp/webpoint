@@ -6,8 +6,8 @@ namespace NAPSOMIS_Webpoint.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Chiefdom")]
-    public partial class Chiefdom
+    [Table("chiefdom")]
+    public partial class chiefdom
     {
         [StringLength(1)]
         public string fp_code { get; set; }

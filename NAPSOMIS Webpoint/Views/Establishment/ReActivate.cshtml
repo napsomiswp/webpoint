@@ -1,0 +1,210 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.EstablishmentDeactReactViewModel
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "ReActivate Establishment";
+}
+ 
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/bookmark_new_3.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> ReActivate Establishment </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">ReActivate establishment by providing the ERNO below</text>
+
+
+    <br />
+
+</div>
+
+
+<script type="text/javascript">
+    function OnSelectedIndexChanged(s, e) {
+        var employervalue = femp_name.GetValue().split(";");
+
+        ferno.SetText(employervalue[0])
+
+    }
+
+</script>
+
+
+@using (Html.BeginForm("ReActivate", "Establishment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+
+    s.Name = "EstablishmentFormLayout";
+    s.ColCount = 4;
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 4;
+        group.Name = "CaptureTab";
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Establishment Details";
+            sb.Name = "firsttab";
+            sb.ColSpan = 4;
+            sb.ColCount = 4;
+
+            sb.Items.AddGroupItem(dg =>
+            {
+                dg.Name = "thesearchgroup";
+                dg.Caption = "Establishment Details";
+                dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                dg.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "ferno";
+
+                });
+
+                dg.Items.Add(i =>
+                {
+                    i.Caption = " ";
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdload";
+                        b.Text = "Load";
+                        b.UseSubmitBehavior = true;
+                        b.Width = Unit.Pixel(140);
+                        b.RouteValues = new { Controller = "Establishment", Action = "ReActivate_Load", ParamValue = "" };
+                    });
+                });
+
+                dg.Items.Add(m => m.fsearch).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "fsearch";
+
+                });
+
+                dg.Items.Add(i =>
+                {
+                    i.Caption = " ";
+                    i.NestedExtension().Button(b =>
+                    {
+                        b.Name = "search";
+                        b.Text = "Filter";
+                        b.UseSubmitBehavior = true;
+                        b.Width = Unit.Pixel(140);
+                        b.RouteValues = new { Controller = "Establishment", Action = "ReActivate_Filter", ParamValue = "" };
+                    });
+                });
+
+                dg.Items.Add(m => m.femp_name).NestedExtension().ListBox(b =>
+                {
+                    b.Name = "femp_name";
+
+                    List<PDCTemplate> myestablishments = (List<PDCTemplate>)TempData.Peek("MyEstablishments");
+
+                    b.Properties.Columns.Add("Code", "Code", Unit.Pixel(100));
+                    b.Properties.Columns.Add("Name", "Name", Unit.Pixel(380));
+
+                    b.Height = Unit.Pixel(250);
+
+                    b.Properties.DataSource = myestablishments;
+                    b.Properties.TextField = "Name";
+                    b.Properties.ValueField = "Code";
+                    b.Properties.ClientSideEvents.SelectedIndexChanged = "OnSelectedIndexChanged";
+                });
+
+
+            });
+
+
+            sb.Items.AddGroupItem(dg =>
+            {
+                dg.Name = "detailsgroup";
+                dg.Caption = "Establishment Details";
+                dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                dg.Items.Add(m => m.last_period).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "last_period";
+                    b.ReadOnly = true;
+                    b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                dg.Items.Add(m => m.labour_force).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "labour_force";
+                    b.ReadOnly = true;
+                    b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                dg.Items.Add(m => m.contribution).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "contribution";
+                    b.ReadOnly = true;
+                    b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                dg.Items.Add(m => m.begin_period).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "begin_period";
+
+                });
+
+            });
+
+        });
+
+
+    });
+
+    s.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 3;
+        sb.ColCount = 3;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.None;
+
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
+
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "clear";
+                b.Text = "Start New Entry";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "ReActivate", ParamValue = "" };
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "ReActivate";
+                b.Text = "ReActivate";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "ReActivate_OK", ParamValue = "" };
+            });
+        });
+
+    });
+
+}).GetHtml()
+
+    }

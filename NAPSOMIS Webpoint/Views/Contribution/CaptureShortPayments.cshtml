@@ -1,0 +1,320 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.CaptureShortPaymentsViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models;
+
+@{
+    ViewBag.Title = "Capture Short Payments";
+}
+
+
+<script type="text/javascript">
+        function correctlostfocus(s, e) {
+            var correceamount = fcorrectcramount.GetText();
+            var cronfileamount = fcronfile.GetText();
+
+            var ddifference = correceamount - cronfileamount;
+
+            fdifference.SetText(ddifference);
+        }
+</script>
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Short Payments </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please process the short payment using the form below</text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">by providing the relevant establishment and member details</text>
+
+    <br />
+ 
+    @using (Html.BeginForm("CaptureShortPayments_Receive", "Contribution", FormMethod.Post))
+        {
+
+        @Html.AntiForgeryToken()
+        @Html.DevExpress().FormLayout(setting =>
+   {
+       setting.Name = "receivecrlayout";
+       setting.ColCount = 3;
+
+       setting.Items.AddGroupItem(group =>
+       {
+           group.Name = "firstgroup";
+           group.Caption = "Search";
+           group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+           group.ColSpan = 3;
+           group.ColCount = 3;
+
+           group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+           {
+               c.Name = "ferno";
+
+           });
+
+           group.Items.Add(bt =>
+           {
+               bt.Name = "btgroup0";
+               bt.ShowCaption = DefaultBoolean.True;
+               bt.Caption = "";
+
+               bt.NestedExtension().Button(b =>
+               {
+                   b.Name = "cmdloaderno";
+                   b.Width = Unit.Pixel(100);
+                   b.Text = "Load";
+                   b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments_LoadERNo" };
+                   b.UseSubmitBehavior = true;
+
+               });
+
+           });
+
+           group.Items.Add(b => b.femp_name).NestedExtension().TextBox(c =>
+           {
+               c.Name = "femp_name";
+               c.ReadOnly = true;
+               c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+           });
+
+
+           group.Items.Add(b => b.fcat).NestedExtension().ComboBox(b =>
+           {
+
+               b.Name = "fcat";
+
+               List<PDCTemplate> myprovinces = (List<PDCTemplate>)TempData.Peek("MyEmployerCategories");
+
+               b.Properties.Columns.Add("Code", "Code", Unit.Pixel(70));
+               b.Properties.Columns.Add("Name", "Name", Unit.Pixel(250));
+
+               b.Properties.DataSource = myprovinces;
+               b.Properties.TextField = "Name";
+               b.Properties.ValueField = "Code";
+
+           });
+
+           group.Items.Add(b => b.fperiod).NestedExtension().TextBox(c =>
+           {
+               c.Name = "fperiod";
+
+           });
+
+           group.Items.Add(b => b.ftype).NestedExtension().ComboBox(t =>
+           {
+               t.Name = "ftype";
+               t.Properties.Items.Add("Regular", "R");
+               t.Properties.Items.Add("Backpay", "B");
+
+               t.SelectedIndex = 0;
+
+           });
+
+           group.Items.Add(bt =>
+           {
+               bt.Name = "btgroup";
+               bt.ShowCaption = DefaultBoolean.True;
+               bt.Caption = "";
+
+               bt.NestedExtension().Button(b =>
+               {
+                   b.Name = "cmdsearch";
+                   b.Width = Unit.Pixel(100);
+                   b.Text = "OK";
+                   b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments_OK" };
+                   b.UseSubmitBehavior = true;
+
+               });
+
+           });
+
+
+
+       });
+
+       if (Model.ffoundstatus == true)
+           {
+           setting.Items.AddGroupItem(group =>
+           {
+               group.Name = "secondgroup";
+               group.Caption = "Member's Details";
+               group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+               group.ColSpan = 3;
+               group.ColCount = 3;
+
+               group.Items.Add(b => b.fssno).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "fssno";
+
+               });
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup01";
+                   bt.ShowCaption = DefaultBoolean.True;
+                   bt.Caption = "";
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdloadssnodetails";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Load";
+                       b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments_LoadSSNo" };
+                       b.UseSubmitBehavior = true;
+
+                   });
+
+               });
+
+               group.Items.AddEmptyItem();
+
+               group.Items.Add(b => b.fsurname).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "fsurname";
+
+               });
+
+               group.Items.Add(b => b.ffirstname).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "ffirstname";
+
+               });
+
+               group.Items.Add(b => b.fothername).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "fothername";
+
+               });
+
+               group.Items.Add(b => b.fstaffno).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "fstaffno";
+
+               });
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup2";
+                   bt.ShowCaption = DefaultBoolean.True;
+                   bt.Caption = "";
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdsearch2";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Fetch";
+                       b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments_Fetch" };
+                       b.UseSubmitBehavior = true;
+
+                   });
+
+               });
+
+           });
+           }
+
+
+       setting.Items.AddGroupItem(group =>
+       {
+           group.Name = "secondgroup";
+           group.Caption = "Contribution";
+           group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+           group.ColSpan = 3;
+           group.ColCount = 2;
+
+           group.Items.Add(b => b.fcronfile).NestedExtension().TextBox(c =>
+           {
+               c.Name = "fcronfile";
+               c.ReadOnly = true;
+               c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+           });
+
+           group.Items.Add(b => b.fstatus).NestedExtension().TextBox(c =>
+           {
+               c.Name = "fstatus";
+               c.ReadOnly = true;
+               c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+           });
+
+           group.Items.Add(b => b.fcorrectcramount).NestedExtension().TextBox(c =>
+           {
+               c.Name = "fcorrectcramount";
+               c.Properties.ClientSideEvents.LostFocus = "correctlostfocus";
+           });
+
+           group.Items.Add(b => b.fdifference).NestedExtension().TextBox(c =>
+           {
+               c.Name = "fdifference";
+               c.ReadOnly = true;
+               c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+           });
+
+           group.Items.Add(bt =>
+           {
+               bt.Name = "btgroup3";
+               bt.ShowCaption = DefaultBoolean.True;
+               bt.Caption = "";
+
+               bt.NestedExtension().Button(b =>
+               {
+                   b.Name = "cmdprocess";
+                   b.Width = Unit.Pixel(100);
+                   b.Text = "Process";
+                   b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments_Process" };
+                   b.UseSubmitBehavior = true;
+
+               });
+
+           });
+
+       });
+
+
+       setting.Items.AddGroupItem(group =>
+       {
+
+           group.Name = "buttongroup";
+           group.Caption = "Actions";
+           group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+           group.ColSpan = 3;
+           group.ColCount = 3;
+
+
+           group.Items.Add(bt =>
+           {
+               bt.Name = "btgroup";
+               bt.ShowCaption = DefaultBoolean.False;
+
+               bt.NestedExtension().Button(b =>
+               {
+                   b.Name = "cmdreset";
+                   b.Width = Unit.Pixel(100);
+                   b.Text = "Clear";
+                   b.RouteValues = new { Controller = "Contribution", Action = "CaptureShortPayments" };
+                   b.UseSubmitBehavior = false;
+
+               });
+
+           });
+
+
+       });
+
+
+   }).GetHtml()
+
+
+        }
+
+
+</div>

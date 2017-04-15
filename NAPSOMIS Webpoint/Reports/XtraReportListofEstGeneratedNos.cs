@@ -376,7 +376,7 @@ public class XtraReportListofEstGeneratedNos : DevExpress.XtraReports.UI.XtraRep
             // 
             // MembersDataSource
             // 
-            this.MembersDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.MemberTransaction);
+            this.MembersDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.mem_tr);
             this.MembersDataSource.Name = "MembersDataSource";
             // 
             // PageHeader

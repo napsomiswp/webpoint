@@ -72,13 +72,13 @@ namespace NAPSOMIS_Webpoint.Models
         [StringLength(1)]
         public string fprint { get; set; }
 
-        [StringLength(50)]
+        [StringLength(40)]
         public string fnature { get; set; }
 
         [StringLength(1)]
         public string fsalpatt { get; set; }
 
-        [StringLength(3)]
+        [StringLength(2)]
         public string fzone { get; set; }
 
         [StringLength(2)]

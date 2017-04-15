@@ -353,7 +353,7 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             // 
             // EmployerMasterDataSource
             // 
-            this.EmployerMasterDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.EmployMastersheet);
+            this.EmployerMasterDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.emp_mst);
             this.EmployerMasterDataSource.Name = "EmployerMasterDataSource";
             // 
             // XtraReportRePrintAckLetter

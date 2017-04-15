@@ -5,12 +5,23 @@
     ViewBag.Title = "Reprint Acknowledgement Letter";
 }
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Reprint Acknowledgement Letter </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please select an establishment from below</text>
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
 
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Reprint Acknowledgement Letter </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please select an establishment from below</text>
+
+
+    <br />
+
+</div>
 <script type="text/javascript">
     function OnSelectedIndexChanged(s, e) {
         var employervalue = femp_name.GetValue().split(";");

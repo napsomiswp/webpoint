@@ -6,31 +6,32 @@ namespace NAPSOMIS_Webpoint.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Parental")]
-    public partial class Parental
+    [Table("parental")]
+    public partial class parental
     {
+        [Key]
         [StringLength(12)]
         public string fref_no { get; set; }
 
         [StringLength(17)]
         public string fssno { get; set; }
 
-        [StringLength(25)]
+        [StringLength(50)]
         public string ffsurname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string ffirstname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string ffothname { get; set; }
 
-        [StringLength(25)]
+        [StringLength(50)]
         public string fmsurname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string fmfirstname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string fmothname { get; set; }
 
         [StringLength(25)]
@@ -44,8 +45,5 @@ namespace NAPSOMIS_Webpoint.Models
         public DateTime? ModifiedOn { get; set; }
 
         public bool? DeleteFlag { get; set; }
-
-        [Key]
-        public int ID_SBTS { get; set; }
     }
 }

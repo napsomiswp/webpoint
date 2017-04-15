@@ -1,0 +1,83 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.HistoryTransaction>
+
+
+@{
+    ViewBag.Title = "Contribution Members";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th>
+            <th class=whitesmokeheader>
+               <text>Full Name</text>
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fstaffno)
+            </th>
+            <th class=whitesmokeheader>
+                <text>Period</text>
+            </th>>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcur_cr)
+            </th>>
+
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fpcentre)
+            </th>>
+
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td> 
+                            @Html.ActionLink("Delete", "HardCopy_DeleteMember", new { Controller = "Contribution", id = item.ID_SBTS })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        <td>
+  
+                                @Html.DisplayFor(modelItem => item.fsurname).ToHtmlString(),
+                                @Html.DisplayFor(modelItem => item.firstname).ToHtmlString()
+                                @Html.DisplayFor(modelItem => item.fothername).ToHtmlString()
+                             
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fstaffno)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcurcr_perd)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcur_cr)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fpcentre)
+                        </td>
+
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

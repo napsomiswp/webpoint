@@ -1,0 +1,67 @@
+﻿@model IEnumerable < NAPSOMIS_Webpoint.Models.InvalidContributionReport>
+@{
+    ViewBag.Title = "To Be Posted";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fsurname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fothername)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.famount)
+            </th>
+
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fsurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fothername)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.famount)
+                        </td>
+
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+
+

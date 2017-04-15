@@ -1,0 +1,152 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ReceiveReportViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models;
+
+@{
+    ViewBag.Title = "Receive Report for Establishment";
+}
+
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/folder_user.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Receive Report for Establishment </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please enter the Establishment Registration No below</text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">and specify the begin and end date to search for</text>
+
+
+    <br />
+
+
+
+    @using (Html.BeginForm("ReceiveCRDataControl_Receive", "Contribution", FormMethod.Post))
+        {
+
+        @Html.AntiForgeryToken()
+        @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 3;
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 3;
+        group.ColCount = 3;
+
+        group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ferno";
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.fbegindate).NestedExtension().DateEdit(c =>
+        {
+            c.Name = "fbegindate";
+
+        });
+
+
+        group.Items.Add(b => b.fenddate).NestedExtension().DateEdit(c =>
+        {
+            c.Name = "fenddate";
+
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdsearch";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Search";
+                b.RouteValues = new { Controller = "Contribution", Action = "ReceiveReport_Search" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+
+
+    });
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 3;
+        group.ColCount = 3;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Start New Entry";
+                b.RouteValues = new { Controller = "Contribution", Action = "ReceiveReport" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+
+        }
+
+    @Html.DevExpress().RoundPanel(setting =>
+{
+    setting.Name = "breakdownpanel";
+    setting.HeaderText = "Contribution Periods";
+    setting.ShowCollapseButton = true;
+
+    setting.SetContent(() =>
+    {
+
+        if (Model.ferno != "")
+            {
+
+            NAPSOMIS_Webpoint.Models.NAPSOMISModel db = new NAPSOMIS_Webpoint.Models.NAPSOMISModel();
+            List<CRSReg> c = new List<CRSReg>();
+
+            c = db.CRSRegs.Where(b => b.ferno == Model.ferno).Where(b => b.fdate_rec >= Model.fbegindate).Where(b => b.fdate_rec <= Model.fenddate).ToList();
+
+            IEnumerable<CRSReg> penum = (IEnumerable<CRSReg>)c;
+
+            @Html.RenderPartial("ReceiveReportSearchView", penum);
+
+            }
+
+    });
+
+}).GetHtml()
+
+
+
+</div>

@@ -522,7 +522,7 @@ public class XtraReportListofForms : DevExpress.XtraReports.UI.XtraReport
             // 
             // MemberListDataSource
             // 
-            this.MemberListDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.MemberTransaction);
+            this.MemberListDataSource.DataSource = typeof(NAPSOMIS_Webpoint.Models.mem_tr);
             this.MemberListDataSource.Name = "MemberListDataSource";
             // 
             // XtraReportListofForms

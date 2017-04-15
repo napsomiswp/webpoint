@@ -5,11 +5,23 @@
     ViewBag.Title = "List Generated Nos. for Establishment";
 }
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:larger;"> List Generated Nos. for Establishment </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please search for generated numbers from below</text>
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> List Generated Nos. for Establishment </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please search for generated numbers from below</text>
+
+
+    <br />
+
+</div>
 
 @using (Html.BeginForm("Search", "ListNosforEstablishment", FormMethod.Post))
     {

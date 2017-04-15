@@ -1,51 +1,160 @@
-@model NAPSOMIS_Webpoint.Models.LoginModel
+@model NAPSOMIS_Webpoint.ViewModels.LoginViewModel
 @{Layout = "~/Views/Shared/_LayoutWithContiner.cshtml";}
 
 <div class="accountHeader">
-    <h2>Log In</h2>
-    <p>
-        Please enter your username and password. @Html.ActionLink("Register", "Register")
-        if you don't have an account.
-    </p>
-    <p style="color:red">@ViewBag.ErrorMessage</p>
+
+    @*<p style="color:red">@ViewBag.ErrorMessage</p>*@
 </div>
-@using(Html.BeginForm()) {
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+     <img src="~/Content/Images/user_group_properties.png"width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">Login </text>
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please enter your username and password. </text>
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if you do not have an account if you don't have an account. </text>
+
+</div>
+
+
+@using (Html.BeginForm())
+    {
     @Html.AntiForgeryToken()
 
-    @Html.DevExpress().TextBoxFor(m => m.UserName, tb => {
-        tb.Properties.Caption = "User Name";
-        tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-        tb.ShowModelErrors = true;
-        tb.Properties.ValidationSettings.Display = Display.Dynamic;
-        tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
-        tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
-    }).GetHtml()
-    
-    @Html.DevExpress().TextBoxFor(m => m.Password, tb => {
-        tb.Properties.Caption = "Password";
-        tb.Properties.Password = true;
-        tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-        tb.ShowModelErrors = true;
-        tb.Properties.ValidationSettings.Display = Display.Dynamic;
-        tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
-        tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
-    }).GetHtml()
-    
-    @Html.DevExpress().CheckBox(cb => {
-        cb.Name = "RememberMe";
-        cb.Text = "Remember me?";
-    }).GetHtml()
-    <br />
-    @Html.DevExpress().Button(b => {
-        b.Name = "Button";
-        b.Text = "Log On";
-        b.UseSubmitBehavior = true;
-    }).GetHtml()
-}
+    @Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "loginlayout";
+    settings.ColCount = 3;
+
+    settings.Items.AddGroupItem(group =>
+    {
+        group.Name = "logingroup";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.Caption = "User Login";
+        group.ColCount = 2;
+        group.ColSpan = 2;
+
+        if (ViewBag.ErrorMessage != null)
+            {
+            group.Items.Add(l =>
+            {
+                l.Caption = "";
+                l.NestedExtension().Label(lb =>
+                {
+                    lb.Text = ViewBag.ErrorMessage;
+                    lb.Name = "ErrorLabel";
+                    lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+                });
+
+            });
+
+            group.Items.AddEmptyItem();
+            }
+        group.Items.Add(m => m.UserName).NestedExtension().TextBox(tb =>
+        {
+          
+            tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            tb.ShowModelErrors = true;
+            tb.Properties.ValidationSettings.Display = Display.Dynamic;
+            tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+            tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(m => m.Password).NestedExtension().TextBox(tb =>
+        {
+
+
+            tb.Properties.Password = true;
+            tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+            tb.ShowModelErrors = true;
+            tb.Properties.ValidationSettings.Display = Display.Dynamic;
+            tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+            tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.True;
+            b.Caption = "";
+
+            b.NestedExtension().Button(bt =>
+            {
+
+                bt.Name = "Button";
+                bt.Text = "Log On";
+                bt.UseSubmitBehavior = true;
+                bt.Width = Unit.Pixel(100);
+
+                bt.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
+
+            });
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(bt =>
+        {
+            bt.NestedExtension().Button(b =>
+            {
+                bt.Caption = "";
+
+                b.Name = "ForgotPassButton";
+                b.Text = "Forgot Password?";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(100);
+
+                b.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
+            });
+
+        });
+
+    });
+
+    settings.Items.AddGroupItem(group =>
+    {
+        group.Name = "calendargroup";
+        group.GroupBoxDecoration = GroupBoxDecoration.None;
+        group.Caption = "";
+        group.ColCount = 1;
+        group.ColSpan = 1;
+
+
+        group.Items.Add(b =>
+        {
+            b.NestedExtension().Calendar(cal =>
+            {
+                b.Caption = "";
+                b.ShowCaption = DefaultBoolean.False;
+                cal.Name = "LoginCalendar";
+                cal.SelectedDate = DateTime.Today;
+                cal.Properties.Caption = "";
+                cal.Properties.ShowShadow = true;
+
+            });
+
+        });
+    });
+
+
+}).GetHtml();
+
+
+    }
+
+<br />
+
  
-@* Enable this once you have account confirmation enabled for password reset functionality
-<br />
-@Html.ActionLink("Forgot your password?", "ForgotPassword")
-*@
-<br />
-@Html.Partial("_ExternalLoginsListPartial", new NAPSOMIS_Webpoint.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })

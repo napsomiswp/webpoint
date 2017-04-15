@@ -1,0 +1,99 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.MemberCreditProcessingViewMode
+@using NAPSOMIS_Webpoint.ViewModels
+
+
+@{
+    ViewBag.Title = "Member Credit Processing";
+}
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Member Credit Processing </text>
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Below is a list of credit to be processed. </text>
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please Consult your system administrator if in case you need further assistance. </text>
+
+    <br />
+    <br />
+    <br />
+
+</div>
+
+
+@{
+    if (TempData.Peek("MemberCreditList") != null)
+        {
+        @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "breakdownpanel";
+       setting.HeaderText = "List of Member Record to be processed";
+        
+       setting.SetContent(() =>
+       {
+ 
+               List<MCreditProListViewModel> mlist = (List<MCreditProListViewModel>)TempData.Peek("MemberCreditList");
+
+               IEnumerable<MCreditProListViewModel> penum = (IEnumerable<MCreditProListViewModel>)mlist;
+
+               @Html.RenderPartial("MemberCreditProcessBreakdown", penum);
+            
+       });
+
+   }).GetHtml()
+        }
+}
+
+
+@using (Html.BeginForm("ViewMembers_Receive", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    setting.Items.Add(b => b.ProcessAll).NestedExtension().CheckBox(t =>
+    {
+        t.Name = "ProcessAll";
+
+    });
+
+
+    setting.Items.Add(b => b.TotalRecords).NestedExtension().Label(t =>
+    {
+        t.Name = "TotalRecords";
+
+    });
+
+
+    setting.Items.Add(bt =>
+    {
+        bt.Name = "btstart";
+        bt.ShowCaption = DefaultBoolean.False;
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+            b.Name = "cmdstart";
+            b.Width = Unit.Pixel(100);
+            b.Text = "Start";
+            b.RouteValues = new { Controller = "Contribution", Action = "MemberCreditProcessing_Start" };
+            b.UseSubmitBehavior = true;
+
+        });
+
+    });
+
+
+}).GetHtml()
+
+    }

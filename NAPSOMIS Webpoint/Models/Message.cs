@@ -10,36 +10,28 @@ namespace NAPSOMIS_Webpoint.Models
     public partial class Message
     {
         public int MessageID { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string SenderID { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string ReceipientID { get; set; }
 
-        [Column(TypeName = "text")]
-        [Required]
+        [Column(TypeName = "text")] 
         public string MessageBody { get; set; }
-
-        [Required]
+ 
         [StringLength(20)]
         public string MessageStatus { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string Urgency { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string MessageSubject { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string SenderName { get; set; }
-
-        [Required]
+ 
         [StringLength(50)]
         public string ReceipientName { get; set; }
 

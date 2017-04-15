@@ -1,0 +1,232 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ViewMembersViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Members Under Establishment";
+}
+<br />
+<br />
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Members Under Establishment </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Search for Members here by providing the Establishment Registration No</text>
+    <text style="font-size:small; padding-left:10px;">and the Staff Category</text>
+</div>
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ftype.GetText();
+
+        if (thetype == "Regular") {
+            fbaktype.SetVisible(false);
+            fmode.SetVisible(true);
+        } else {
+            fbaktype.SetVisible(true);
+            fmode.SetVisible(false);
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("ViewMembers_Receive", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(b => b.ERNo).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ERNo";
+
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btload";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloaddata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "ViewMembers_Load" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+        group.Items.Add(b => b.Emp_Name).NestedExtension().TextBox(t =>
+        {
+            t.Name = "Emp_Name";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+        group.Items.Add(b => b.Category).NestedExtension().ComboBox(b =>
+        {
+
+            b.Name = "Category";
+
+            List<PDCTemplate> myprovinces = (List<PDCTemplate>)TempData.Peek("MyEmployerCategories");
+
+            b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+            b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+            b.Properties.DataSource = myprovinces;
+            b.Properties.TextField = "Name";
+            b.Properties.ValueField = "Code";
+
+        });
+
+
+        group.Items.AddGroupItem(ggroup =>
+        {
+
+            ggroup.Name = "totalgroup";
+            ggroup.Caption = "Totals";
+            ggroup.GroupBoxDecoration = GroupBoxDecoration.Box;
+            ggroup.ColSpan = 2;
+            ggroup.ColCount = 2;
+
+            ggroup.Items.Add(b => b.TotalContribution).NestedExtension().TextBox(t =>
+            {
+                t.Name = "TotalContribution";
+                t.ReadOnly = true;
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            ggroup.Items.AddEmptyItem();
+
+            ggroup.Items.Add(b => b.TotalNoofWorkers).NestedExtension().TextBox(t =>
+            {
+                t.Name = "TotalNoofWorkers";
+                t.ReadOnly = true;
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+        });
+
+
+
+    });
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Start New Entry";
+                b.RouteValues = new { Controller = "Contribution", Action = "ViewMembers" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdcomplete";
+                b.Width = Unit.Pixel(100);
+                b.Text = "OK";
+                b.RouteValues = new { Controller = "Contribution", Action = "ViewMembers_OK" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+
+    }
+
+@{
+    if (TempData.Peek("MemberList") != null)
+        {
+        @Html.DevExpress().PopupControl(setting =>
+   {
+       setting.Name = "breakdownpanel";
+       setting.HeaderText = "List of Members Under Establishment";
+       setting.ShowFooter = true;
+       setting.FooterText = "Above are members under the establishment with respect to the selected category";
+       setting.ShowOnPageLoad = true;
+       setting.CloseOnEscape = true;
+       setting.CloseAction = CloseAction.CloseButton;
+       setting.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+       setting.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+       setting.PopupAlignCorrection = PopupAlignCorrection.Auto;
+
+       setting.PopupAnimationType = AnimationType.Fade;
+        
+       setting.SetContent(() =>
+       {
+
+           if (TempData.Peek("MemberList") != null)
+               {
+
+               List<HistoryMaster> mlist = (List<HistoryMaster>)TempData["MemberList"];
+
+               IEnumerable<HistoryMaster> penum = (IEnumerable<HistoryMaster>)mlist;
+
+               @Html.RenderPartial("EstablishmentMemberList", penum);
+
+               }
+
+       });
+
+   }).GetHtml()
+        }
+}

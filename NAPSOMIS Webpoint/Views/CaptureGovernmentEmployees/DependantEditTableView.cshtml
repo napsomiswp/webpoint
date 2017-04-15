@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.NomTemp>
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.nom_tr>
 
 @{
     ViewBag.Title = "Dependants";
@@ -41,7 +41,7 @@
                     {
                     <tr>
                         <td>
-                            @Html.ActionLink("Edit", "StartEditDependants", new { id = item.ID_SBTS }) |
+                            @Html.ActionLink("Edit", "StartEditDependants", new { id = item.nomid }) |
                             @Html.ActionLink("Delete", "DeleteDependant", new { Controller = "CaptureGovernmentEmployees", id = item.ID_SBTS })
 
                         </td>

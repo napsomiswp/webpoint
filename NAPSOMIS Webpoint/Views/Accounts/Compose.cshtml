@@ -1,0 +1,97 @@
+﻿@model NAPSOMIS_Webpoint.Models.Message
+@using NAPSOMIS_Webpoint.ViewModels
+
+
+@using (Html.BeginForm("ComposeNew", "Accounts", FormMethod.Post))
+    {
+
+    @Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "composelayout";
+    settings.ColCount = 1;
+
+    settings.Items.Add(b => b.ReceipientID).NestedExtension().ComboBox(t =>
+    {
+        t.Name = "ReceipientID";
+
+        List<PDCTemplate> myaccounts = (List<PDCTemplate>)TempData.Peek("Accounts");
+
+        t.Properties.Columns.Add("Code", "Code", Unit.Pixel(70));
+        t.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+        t.Properties.DataSource = myaccounts;
+        t.Properties.TextField = "Name";
+        t.Properties.ValueField = "Code";
+        t.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+
+    });
+
+    settings.Items.Add(b => b.MessageSubject).NestedExtension().TextBox(t =>
+    {
+        t.Name = "MessageSubject";
+
+    });
+
+    settings.Items.Add(b => b.AttachmentName).NestedExtension().TextBox(t =>
+    {
+        t.Name = "AttachmentName";
+
+    });
+
+    settings.Items.Add(b => b.Urgency).NestedExtension().TextBox(t =>
+    {
+        t.Name = "Urgency";
+
+    });
+
+
+    settings.Items.Add(b => b.MessageBody).NestedExtension().Memo(t =>
+    {
+        t.Name = "MessageBody";
+        t.Height = Unit.Pixel(200);
+        t.Width = Unit.Pixel(350);
+    });
+
+    if (Model.MessageID == 0)
+        {
+        settings.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.True;
+            b.Caption = "";
+
+            b.NestedExtension().Button(bt =>
+            {
+
+                bt.Name = "cmdSend";
+                bt.Text = "Send";
+                bt.UseSubmitBehavior = true;
+                bt.Width = Unit.Pixel(100);
+
+                bt.RouteValues = new { Controller = "Accounts", Action = "Messenger_ComposeSend" };
+
+            });
+        });
+        }
+
+
+    settings.Items.Add(b =>
+    {
+        b.ShowCaption = DefaultBoolean.True;
+        b.Caption = "";
+
+        b.NestedExtension().Button(bt =>
+        {
+
+            bt.Name = "cmdCancel";
+            bt.Text = "Cancel";
+            bt.UseSubmitBehavior = true;
+            bt.Width = Unit.Pixel(100);
+
+            bt.RouteValues = new { Controller = "Accounts", Action = "Messenger" };
+
+        });
+    });
+
+}).GetHtml()
+    }

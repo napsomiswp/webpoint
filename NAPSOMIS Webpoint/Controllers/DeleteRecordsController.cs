@@ -17,12 +17,12 @@ namespace NAPSOMIS_Webpoint.Controllers
             return View();
             }
 
-        public ActionResult Delete(MemberTransaction m)
+        public ActionResult Delete(mem_tr m)
             {
             try
                 {
-                List<MemberTransaction> mem = new List<MemberTransaction>();
-                mem = db.MemberTransactions.Where(b => b.fref_no == m.fref_no).ToList();
+                List<mem_tr> mem = new List<mem_tr>();
+                mem = db.mem_tr.Where(b => b.fref_no == m.fref_no).ToList();
 
                 if (mem.Count > 0)
                     {
@@ -32,8 +32,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                     db.SaveChanges();
 
 
-                    List<ParentalTemp> p = new List<ParentalTemp>();
-                    p = db.ParentalTemps.Where(b => b.fref_no == m.fref_no).ToList();
+                    List<parental> p = new List<parental>();
+                    p = db.parentals.Where(b => b.fref_no == m.fref_no).ToList();
 
                     if (p.Count > 0)
                         {
@@ -44,8 +44,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                         }
 
 
-                    List<NomTemp> n = new List<NomTemp>();
-                    n = db.NomTemps.Where(b => b.fref_no == m.fref_no).ToList();
+                    List<nom_tr> n = new List<nom_tr>();
+                    n = db.nom_tr.Where(b => b.fref_no == m.fref_no).ToList();
 
                     if (n.Count > 0)
                         {
@@ -61,7 +61,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                     }
                 }
 
-            catch (Exception ex)
+            catch (Exception)
                 {
                 throw;
                 }
@@ -70,12 +70,12 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             }
 
-        public ActionResult Search(MemberTransaction m)
+        public ActionResult Search(mem_tr m)
             {
             try
                 {
-                List<MemberTransaction> mem = new List<MemberTransaction>();
-                mem = db.MemberTransactions.Where(b => b.fref_no == m.fref_no).ToList();
+                List<mem_tr> mem = new List<mem_tr>();
+                mem = db.mem_tr.Where(b => b.fref_no == m.fref_no).ToList();
 
                 if (mem.Count > 0)
                     {

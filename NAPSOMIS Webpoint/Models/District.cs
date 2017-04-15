@@ -6,8 +6,8 @@ namespace NAPSOMIS_Webpoint.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("District")]
-    public partial class District
+    [Table("district")]
+    public partial class district
     {
         [StringLength(1)]
         public string p_code { get; set; }

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.Message>
+
+@{
+    ViewBag.Title = "Data Capturing Search View";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; background-color:whitesmoke; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.MessageID)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.SenderName)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.MessageSubject)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Urgency)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.InputDate)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.AttachmentName)
+            </th>
+
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+
+                        <td>
+                            @Html.ActionLink("View", "Messenger_View", new { Controller = "Accounts", id = item.MessageID }) |
+                            @Html.ActionLink("Delete", "Messenger_Delete", new { Controller = "Accounts", id = item.MessageID }) |
+ 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MessageID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SenderName)
+                        </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MessageSubject)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Urgency)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InputDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AttachmentName)
+                        </td>
+
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>

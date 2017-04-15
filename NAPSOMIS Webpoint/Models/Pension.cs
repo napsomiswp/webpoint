@@ -6,7 +6,7 @@ namespace NAPSOMIS_Webpoint.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Pension
+    public partial class pension
     {
         [StringLength(24)]
         public string pension_id { get; set; }

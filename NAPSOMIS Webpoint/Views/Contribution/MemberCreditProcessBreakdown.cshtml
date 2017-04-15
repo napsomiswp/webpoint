@@ -1,0 +1,72 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.MCreditProListViewModel>
+ 
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Period)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Establishment)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Contribution)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ContributionOnFile)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.AmountPaid)
+            </th>
+            
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                           @Html.ActionLink("Accept", "AcceptMemberCredit", new { Controller = "Contribution", id = item.ID }) |
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Period)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Establishment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contribution)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContributionOnFile)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AmountPaid)
+                        </td>
+                       
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

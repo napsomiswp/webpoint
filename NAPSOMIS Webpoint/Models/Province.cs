@@ -6,8 +6,8 @@ namespace NAPSOMIS_Webpoint.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Province")]
-    public partial class Province
+    [Table("province")]
+    public partial class province
     {
         [StringLength(1)]
         public string fcode { get; set; }

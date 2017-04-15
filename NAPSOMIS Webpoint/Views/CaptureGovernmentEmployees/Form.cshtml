@@ -4,12 +4,23 @@
 @{
     ViewBag.Title = "Capture Government Employees Form";
 }
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:larger;"> Capture Government Employees Form </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Government Employees Form </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+
+
+    <br />
+
+</div>
 
 <script type="text/javascript">
     var lastprovince = null;
@@ -133,6 +144,27 @@
     s.Name = "CaptureGovernmentForms";
     s.ColCount = 3;
 
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
+
     s.Items.AddTabbedGroupItem(group =>
     {
         group.ColSpan = 3;
@@ -153,11 +185,11 @@
                 g.ColCount = 3;
 
 
-                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.ReadOnly = true; });
+                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
 
             });
 
@@ -247,7 +279,7 @@
                     b.Name = "fsex";
                     b.Properties.Items.Add("Male", "M");
                     b.Properties.Items.Add("Female", "F");
-                    
+
                 });
 
             });
@@ -331,7 +363,7 @@
                 b.Name = "fjoindate";
                 b.ReadOnly = true;
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnat_income.Focus();}";
-
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
             });
 
             sb.Items.Add(m => m.fnat_income).NestedExtension().RadioButtonList(m =>
@@ -342,7 +374,7 @@
                 m.Properties.Items.Add("Monthly", "2");
                 m.Properties.Items.Add("Yearly", "3");
 
-             });
+            });
 
             sb.Items.Add(m => m.fincome).NestedExtension().TextBox(m =>
             {
@@ -357,7 +389,7 @@
 
                 b.Name = "foccupation";
 
-                List<PDCTemplate> myoccupations = (List<PDCTemplate>)TempData.Peek("MyOccupations");
+                List<PDCTemplate> myoccupations = (List<PDCTemplate>)TempData.Peek("MyGovOccupations");
 
                 b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
                 b.Properties.Columns.Add("Name", "Name", Unit.Pixel(250));
@@ -535,7 +567,7 @@
         sb.ShowCaption = DefaultBoolean.False;
         sb.Paddings.PaddingBottom = 6;
         sb.Paddings.PaddingLeft = 0;
-        sb.Paddings.PaddingTop = 5; 
+        sb.Paddings.PaddingTop = 5;
         sb.UseDefaultPaddings = false;
 
         sb.Name = "cleargroup";

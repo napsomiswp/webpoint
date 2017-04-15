@@ -55,17 +55,17 @@ namespace NAPSOMIS_Webpoint.Controllers
             {
  
            
-            var dlist = from s in db.MemberTransactions where s.CreatedOn >= c.StartDate && s.CreatedOn <= c.EndDate select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date, s.CreatedBy, s.CreatedOn, s.ModifiedOn, s.ModifiedBy };
+            var dlist = from s in db.mem_tr where s.CreatedOn >= c.StartDate && s.CreatedOn <= c.EndDate select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date, s.CreatedBy, s.CreatedOn, s.ModifiedOn, s.ModifiedBy };
 
             var fulllist = dlist.ToList();
 
-            List<MemberTransaction> flist = new List<MemberTransaction>();
+            List<mem_tr> flist = new List<mem_tr>();
 
-            List<NomTemp> alldependants = new List<NomTemp>();
+            List<nom_tr> alldependants = new List<nom_tr>();
 
             foreach (var record in fulllist)
                 {
-                MemberTransaction cm = new MemberTransaction();
+                mem_tr cm = new mem_tr();
 
                 cm.fref_no = record.fref_no;
                 cm.fssno = record.fssno;
@@ -78,7 +78,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 cm.ModifiedBy = record.ModifiedBy;
                 cm.ModifiedOn = record.ModifiedOn;
 
-                cm.ID_SBTS = record.ID_SBTS;
+                //cm.ID_SBTS = record.ID_SBTS;
                  
                 flist.Add(cm);
  

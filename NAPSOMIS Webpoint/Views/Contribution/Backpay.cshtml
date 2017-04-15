@@ -1,0 +1,835 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.HardCopyViewModel
+@using NAPSOMIS_Webpoint.Models
+@using NAPSOMIS_Webpoint.ViewModels;
+
+@{
+    ViewBag.Title = "Capture Backpay";
+}
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">Capture Backpay </text>
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please fill the form below. </text>
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if in case you need further assistance. </text>
+
+    <br />
+
+</div>
+
+
+<script type="text/javascript">
+
+    function OnRelationSelectedIndexChanged(s, e) {
+        var relationvalue = frelation.GetText().split(";");
+        if (relationvalue[1].toString().trim() == "SON") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "DAUGHTER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "SISTER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "BROTHER") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "MOTHER") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "FATHER") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "NIECE") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "NEPHEW") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "AUNTIE") fnomsex.SetText("Female")
+        if (relationvalue[1].toString().trim() == "UNCLE") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "GRAND SON") fnomsex.SetText("Male")
+        if (relationvalue[1].toString().trim() == "GRAND DAUGHTER") fnomsex.SetText("Female")
+
+    }
+
+    function checkedstatechanged(s, e) {
+        fmasterperiod.SetEnabled(true);
+    }
+
+    function SelectedIndexChanged(s, e) {
+
+        //var thetype = ftype.GetText();
+
+        //if (thetype == "Regular") {
+        //    fbaktype.SetVisible(false);
+        //    fmode.SetVisible(true);
+        //} else {
+        //    fbaktype.SetVisible(true);
+        //    fmode.SetVisible(false);
+        //}
+    }
+
+    function changetext(s, e) {
+
+        var modevalue = fmodesubmission.GetText().split(";");
+        var mode = modevalue[0];
+
+        if (mode == "CONTRIBUTION") {
+            //ftotalcontributionlabel.Caption("Total Contribution on C/R");
+
+        } else {
+            //ftotalcontributionlabel.Caption("Total Salary on C/R");
+
+        }
+    }
+
+
+</script>
+
+@using (Html.BeginForm("", "", FormMethod.Post))
+    {
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "Backpaylayout";
+    setting.ColCount = 3;
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Caption = "Expected/Captured Summary";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.ColCount = 2;
+        group.ColSpan = 3;
+
+        group.Items.Add(b => b.fdisplayerno).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fdisplayerno";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(b => b.fdisplayemp_name).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fdisplayemp_name";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(b => b.fAddworkersexpected).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fAddworkersexpected";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(b => b.fAddworkercaptured).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fAddworkercaptured";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            if (Model.fAddworkercaptured > Model.fAddworkersexpected)
+                {
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                t.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                }
+            else
+                {
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                t.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Black;
+                }
+
+        });
+
+        group.Items.Add(b => b.fAddcontributionexpected).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fAddcontributionexpected";
+            t.ReadOnly = true;
+            t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(b => b.fAddcontributioncaptured).NestedExtension().TextBox(t =>
+        {
+            t.Name = "fAddcontributioncaptured";
+            t.ReadOnly = true;
+
+            if (Model.fAddcontributioncaptured > Model.fAddcontributionexpected)
+                {
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                t.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                }
+            else
+                {
+                t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                t.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Black;
+                }
+
+
+        });
+
+    });
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddTabbedGroupItem(tabs =>
+    {
+
+        tabs.Items.AddGroupItem(tgroup =>
+        {
+            tgroup.Name = "summarytab";
+            tgroup.Caption = "Summary";
+            tgroup.ColSpan = 2;
+            tgroup.ColCount = 2;
+
+            tgroup.Items.AddGroupItem(group =>
+            {
+                group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                group.ColCount = 2;
+                group.ColSpan = 2;
+                group.Name = "gsummary";
+                group.Caption = "Summary";
+
+                group.Items.Add(b => b.ferno).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "ferno";
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btLoadErnoSummarygroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdLoadErnoSummary";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Load";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryLoadErno" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.Add(b => b.femp_name).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "femp_name";
+                    t.ReadOnly = true;
+                    t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                group.Items.Add(b => b.fcat).NestedExtension().ComboBox(b =>
+                {
+
+                    b.Name = "fcat";
+
+                    List<PDCTemplate> myprovinces = (List<PDCTemplate>)TempData.Peek("MyEmployerCategories");
+
+                    b.Properties.Columns.Add("Code", "Code", Unit.Pixel(70));
+                    b.Properties.Columns.Add("Name", "Name", Unit.Pixel(250));
+
+                    b.Properties.DataSource = myprovinces;
+                    b.Properties.TextField = "Name";
+                    b.Properties.ValueField = "Code";
+
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btLoadLastErnoSummarygroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdLoadLastEntrySummary";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Continue";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryLoadLastEntry" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(b => b.fmodesubmission).NestedExtension().ComboBox(t =>
+                {
+                    t.Name = "fmodesubmission";
+                    t.Properties.Items.Add("CONTRIBUTION", "C");
+
+                    t.SelectedIndex = 0;
+                    t.Properties.ClientSideEvents.SelectedIndexChanged = "changetext";
+                });
+
+                group.Items.Add(b => b.fnoofworkers).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fnoofworkers";
+                });
+
+                group.Items.Add(b => b.ftotalsalaryorcontribution).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "ftotalsalaryorcontribution";
+                });
+
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btAcceptSummarygroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdAcceptSummary";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Accept";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryAccept" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btResetEditAllgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdResetEditAll";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Reset Edit All";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryResetEditAll" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btStartAfreshgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdStartAfresh";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Start Afresh";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryStartAfresh" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btshowmembers";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+
+                        b.Name = "cmdshowmembers";
+                        b.Width = Unit.Pixel(150);
+                        b.Text = "Show Captured Members";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_ShowCapturedMembers" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+            });
+
+        });
+
+
+        tabs.Items.AddGroupItem(tgroup =>
+        {
+            tgroup.Name = "addnewmembertab";
+            tgroup.Caption = "Add New Member(s)";
+
+            tgroup.ColSpan = 2;
+            tgroup.ColCount = 2;
+
+            tgroup.Items.AddGroupItem(group =>
+            {
+                group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                group.ColCount = 2;
+                group.ColSpan = 2;
+                group.Name = "gaddnewmember";
+                group.Caption = "Add New Member(s)";
+
+                group.Items.Add(b => b.fAddSSNo).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddSSNo";
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btLoadmemberdetailgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdloadmemberdetails";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Load Details";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_LoadMemberDetails" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+                group.Items.Add(b => b.fAddSurname).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddSurname";
+                });
+
+                group.Items.Add(b => b.fAddFirstName).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddFirstName";
+                });
+
+                group.Items.Add(b => b.fAddOtherName).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddOtherName";
+                });
+
+                group.Items.Add(b => b.fAddResponsibilityCentre).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddResponsibilityCentre";
+                    t.ReadOnly = true;
+                    t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+
+                group.Items.Add(b => b.fAddFirstContributionPeriod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddFirstContributionPeriod";
+                });
+
+                group.Items.Add(b => b.fAddStaffNumber).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddStaffNumber";
+                });
+
+                group.Items.Add(b => b.fAddContributionorSalary).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddContributionorSalary";
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btAcceptAddNewgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdAcceptAddNew";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Accept";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_AddNewAccept" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+
+                group.Items.AddEmptyItem();
+
+
+            });
+        });
+
+        tabs.Items.AddGroupItem(tgroup =>
+        {
+            tgroup.Name = "editamembertab";
+            tgroup.Caption = "Edit A Member";
+
+            tgroup.ColSpan = 2;
+            tgroup.ColCount = 2;
+
+            tgroup.Items.AddGroupItem(group =>
+            {
+                group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                group.ColCount = 2;
+                group.ColSpan = 2;
+                group.Name = "geditawmember";
+                group.Caption = "Edit A Member";
+
+                group.Items.Add(b => b.fEditID).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditID";
+                    t.ReadOnly = true;
+                    t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(b => b.fEditSSNo).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditSSNo";
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btLoadaddeditmembergroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdloadeditamember";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Load";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditLoad" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+                group.Items.Add(b => b.fEditSurname).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditSurname";
+                });
+
+                group.Items.Add(b => b.fEditFirstName).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditFirstName";
+                });
+
+                group.Items.Add(b => b.fEditOtherName).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditOtherName";
+                });
+
+                group.Items.Add(b => b.fEditResponsibilityCentre).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditResponsibilityCentre";
+                });
+
+
+                group.Items.Add(b => b.fEditStaffNumber).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditStaffNumber";
+                });
+
+                group.Items.Add(b => b.fEditContributionorSalary).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditContributionorSalary";
+                });
+
+                group.Items.Add(b => b.fEditName).NestedExtension().CheckBox(t =>
+                {
+                    t.Name = "fEditName";
+                });
+
+                group.Items.Add(b => b.fEditPeriod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditPeriod";
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btRemoveEditgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdremoveedit";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Remove";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditRemove" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btAcceptEditgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdeditaccept";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Accept";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditAccept" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btUndoEditgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdeditundo";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Undo";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditUndo" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+                });
+
+            });
+
+        });
+
+
+        tabs.Items.AddGroupItem(tgroup =>
+        {
+            tgroup.Name = "masterupdatetab";
+            tgroup.Caption = "Master Update";
+
+            tgroup.ColSpan = 2;
+            tgroup.ColCount = 2;
+
+            tgroup.Items.AddGroupItem(group =>
+            {
+                group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                group.ColCount = 2;
+                group.ColSpan = 2;
+                group.Name = "gmasterupdate";
+                group.Caption = "Master Update Actions";
+
+                group.Items.Add(b => b.fMasterUpdateGenerateCR).NestedExtension().CheckBox(t =>
+                {
+                    t.Name = "fMasterUpdateGenerateCR";
+                    t.Properties.ClientSideEvents.CheckedChanged = "checkedstatechanged";
+                });
+
+                group.Items.Add(b => b.fmasterperiod).NestedExtension().ComboBox(t =>
+                {
+
+                    t.Name = "fmasterperiod";
+                    t.Properties.ClientSideEvents.SelectedIndexChanged = "SelectedIndexChanged";
+
+                    List<ContrPeriodTemplate> mypers = (List<ContrPeriodTemplate>)TempData.Peek("MyMasterPeriods");
+
+                    t.Properties.Columns.Add("Period", "Period", Unit.Pixel(70));
+                    t.Properties.Columns.Add("Type", "Type", Unit.Pixel(40));
+                    t.Properties.Columns.Add("Media", "Mode", Unit.Pixel(40));
+
+                    t.Properties.DataSource = mypers;
+                    t.Properties.TextField = "Period";
+                    t.Properties.ValueField = "Period";
+
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btPeriodLoadMastergroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdPeriodLoadMaster";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "OK";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_MasterPeriodLoad" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.AddGroupItem(group2 =>
+                {
+                    group2.Name = "gpmastertextgroup";
+                    group2.Caption = "Details of Capture for Period";
+                    group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    group2.Visible = true;
+
+                    group2.Items.Add(b => b.fmasterperiodtext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodtext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmastercontributiontext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmastercontributiontext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmasterperiodnoofworkers).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodnoofworkers";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btPrintChecklistMasterUpdategroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdPrinChecklistMasterUpdate";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Print Checklist";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_PrintCheckList" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+
+                group.Items.Add(bt =>
+                {
+                    bt.Name = "btPeriodCompleteMastergroup";
+                    bt.ShowCaption = DefaultBoolean.False;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdPeriodCompleteMaster";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Complete";
+                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_MasterUpdateOK" };
+                        b.UseSubmitBehavior = true;
+
+                        if (Model.fAddcontributioncaptured == Model.fAddcontributionexpected && Model.fAddworkercaptured == Model.fAddworkersexpected)
+                            {
+                            b.Enabled = true;
+                            }
+                        else
+                            {
+                            b.Enabled = false;
+                            }
+                    });
+
+                });
+
+            });
+        });
+    });
+
+    setting.Items.AddEmptyItem();
+    setting.Items.AddEmptyItem();
+    setting.Items.AddEmptyItem();
+    setting.Items.AddEmptyItem();
+    setting.Items.AddEmptyItem();
+
+    setting.Items.Add(bt =>
+    {
+        bt.Name = "btreloadpage";
+        bt.ShowCaption = DefaultBoolean.True;
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+
+            b.Name = "cmdreloadpage";
+            b.Width = Unit.Pixel(150);
+            b.Text = "Start New Entry";
+            b.RouteValues = new { Controller = "Contribution", Action = "Backpay" };
+            b.UseSubmitBehavior = false;
+
+        });
+
+    });
+
+}).GetHtml() }
+
+<br />
+<br />
+
+@{
+    if (ViewBag.ShowMembers != null)
+        {
+        @Html.DevExpress().PopupControl(setting =>
+   {
+       setting.Name = "contributionpanel";
+       setting.HeaderText = "Captured Members";
+       setting.ShowOnPageLoad = true;
+       setting.CloseOnEscape = true;
+       setting.CloseAction = CloseAction.CloseButton;
+
+       setting.ShowCollapseButton = true;
+
+       setting.ShowFooter = true;
+
+       setting.PopupAnimationType = AnimationType.Fade;
+       setting.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+       setting.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+
+       setting.FooterText = "Displaying Members that have been captured";
+
+       setting.SetContent(() =>
+       {
+
+           if (Model.ferno != null && Model.fcat != null)
+               {
+
+               NAPSOMISModel db = new NAPSOMISModel();
+
+               List<HistoryTransaction> plist = new List<HistoryTransaction>();
+               plist = db.HistoryTransactions.Where(b => b.ferno == Model.ferno).Where(b => b.fcat == Model.fcat).ToList();
+
+               IEnumerable<HistoryTransaction> penum = (IEnumerable<HistoryTransaction>)plist;
+
+               @Html.RenderPartial("CapturedContributionMembers", penum);
+
+               }
+
+       });
+
+   }).GetHtml()
+
+        }
+}

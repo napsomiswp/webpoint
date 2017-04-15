@@ -4,13 +4,25 @@
 @{
     ViewBag.Title = "Capture Registration Form";
 }
+ 
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Registraton Form </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Capture Registraton Form </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+
+
+    <br />
+
+</div>
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
@@ -119,6 +131,27 @@
     s.Name = "CaptureRegistrationForms";
     s.ColCount = 3;
 
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
+
     s.Items.AddTabbedGroupItem(group =>
     {
         group.ColSpan = 3;
@@ -141,11 +174,11 @@
                 g.ColCount = 3;
 
 
-                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.ReadOnly = true; });
-                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.ReadOnly = true; });
+                g.Items.Add(m => m.fref_no).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fsurname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.firstname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fothname).NestedExtension().TextBox(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+                g.Items.Add(m => m.fb_date).NestedExtension().DateEdit(b => { b.ReadOnly = true; b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
 
             });
 
@@ -252,9 +285,14 @@
                     b.Properties.TextField = "Name";
                     b.Properties.ValueField = "Code";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
+                    //b.CallbackRouteValues = new { Controller = "CaptureRegistrationForms", Action = "Province_LoadDitrict" };
+
+                    b.Properties.EnableClientSideAPI = true;
+                    //b.Properties.LoadDropDownOnDemand = true;
 
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fdist.Focus();}";
+                    //b.Properties.ClientSideEvents.LostFocus = "function(s,e){fprovince.PerformCallback(fprovince.GetValue().toString());}";
+
                     //b.Properties.ClientSideEvents.SelectedIndexChanged = "function(s,e){fdist.PerformCallback(fprovince.GetValue())}";
                 });
 
@@ -270,7 +308,10 @@
                     b.Properties.TextField = "Name";
                     b.Properties.ValueField = "Code";
 
-                    b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    //b.CallbackRouteValues = new { Controller = "CaptureRegistrationForms", Action = "Province_LoadDitrict" };
+
+                    b.Properties.EnableClientSideAPI = true;
+                    //b.Properties.LoadDropDownOnDemand = true;
 
                     //b.CallbackRouteValues = new { Controller = "CaptureRegistrationForms", Action = "FilterDistrict" };
                     //b.Properties.CallbackPageSize = 30;
@@ -310,6 +351,7 @@
             {
                 b.Name = "fjoindate";
                 b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
                 b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fnat_income.Focus();}";
 
             });

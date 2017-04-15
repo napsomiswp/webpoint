@@ -20,13 +20,13 @@ namespace NAPSOMIS_Webpoint.Controllers
         [HttpGet]
         public ActionResult PrintCheckList()
             {
-            return View();
+            return View("PrintCheckList", new PrintCheckListTemplate());
             }
 
         [HttpGet]
         public ActionResult ListMembersCheckList()
             {
-            return View();
+            return View("ListMembersCheckList", new PrintCheckListTemplate());
             }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             {
             try
                 {
-               
+
                 PrintCheckListTemplate pt = new PrintCheckListTemplate();
                 pt.ReferenceNo = "";
                 pt.StartDate = c.StartDate;
@@ -48,7 +48,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 throw;
                 }
-           
+
             }
 
 
@@ -59,25 +59,35 @@ namespace NAPSOMIS_Webpoint.Controllers
             }
 
 
-         [HttpGet]
+        [HttpGet]
         public ActionResult Edit(int id)
             {
             return View("ListMembersCheckList");
             }
 
 
-         [HttpGet]
-        public ActionResult Preview(int id)
+        [HttpGet]
+        public ActionResult Preview(string id)
             {
 
-             
+
             List<ViewModels.MemberCheckListViewModel> fmd = new List<ViewModels.MemberCheckListViewModel>();
 
-            var dmember = from s in db.MemberTransactions join sa in db.ParentalTemps on s.fref_no equals sa.fref_no join p in db.Provinces on s.fprovince equals p.fcode join d in db.Districts on s.fdist equals d.d_code join ch in db.Chiefdoms on s.fchief equals ch.fc_code join occ in db.Occupations on s.foccupation equals occ.fcode join dep in db.NomTemps on s.fref_no equals dep.fref_no join rel in db.RelativesTypesMasters on dep.frelation equals rel.frel_code where s.ID_SBTS == id select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc, ID_SBTS_DEPENDANT = dep.ID_SBTS };
+            //var dmember = from s in db.mem_tr join sa in db.parentals on s.fref_no equals sa.fref_no join p in db.provinces on s.fprovince equals p.fcode join d in db.districts on s.fdist equals d.d_code join ch in db.chiefdoms on s.fchief equals ch.fc_code join occ in db.occupates on s.foccupation equals occ.fcode join dep in db.nom_tr on s.fref_no equals dep.fref_no join rel in db.rel_mst on dep.frelation equals rel.frel_code where s.fref_no == id select new {s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc, ID_SBTS_DEPENDANT = dep.nom_id };
+
+            var dmember = from s in db.mem_tr join sa in db.parentals on s.fref_no equals sa.fref_no join p in db.provinces on s.fprovince equals p.fcode join d in db.districts on s.fdist equals d.d_code join ch in db.chiefdoms on s.fchief equals ch.fc_code join occ in db.occupates on s.foccupation equals occ.fcode where s.fref_no == id select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname };
 
             var fullmember = dmember.ToList();
- 
-            List<NomTemp> alldependants = new List<NomTemp>();
+
+            List<nom_tr> alldependants = new List<nom_tr>();
+
+            List<parental> paren = new List<parental>();
+            paren = db.parentals.Where(b => b.fref_no == id).ToList();
+
+            //DataTable dependants = GetDependants(id);
+
+            List<nom_tr> depen = new List<nom_tr>();
+            depen = db.nom_tr.Where(b => b.fref_no == id).ToList();
 
             foreach (var record in fullmember)
                 {
@@ -111,38 +121,51 @@ namespace NAPSOMIS_Webpoint.Controllers
                 cm.ferno = record.ferno;
                 cm.femp_addr = record.femp_addr;
                 cm.ftel_no = record.ftel_no;
-                cm.ID_SBTS = record.ID_SBTS;
 
-                cm.fnom_ssno = record.fnom_ssno;
-                cm.fnsurname = record.fnsurname;
-                cm.fnfirstname = record.fnfirstname;
-                cm.fnothname = record.fnothname;
-                cm.fnomsex = record.fnomsex;
-                cm.fbirth_date = record.fbirth_date;
-                cm.frelation = record.frelation;
-                cm.fper_addr_dependant = record.fper_addr_dependant;
-                cm.fres_addr_dependant = record.fres_addr_dependant;
-                cm.ID_SBTS_DEPENDANT = record.ID_SBTS_DEPENDANT;
+                //cm.ID_SBTS = record.ID_SBTS_DEPENDANT;
 
+                //cm.fnom_ssno = record.fnom_ssno;
+                //cm.fnsurname = record.fnsurname;
+                //cm.fnfirstname = record.fnfirstname;
+                //cm.fnothname = record.fnothname;
+                //cm.fnomsex = record.fnomsex;
+                //cm.fbirth_date = record.fbirth_date;
+                //cm.frelation = record.frelation;
+                //cm.fper_addr_dependant = record.fper_addr_dependant;
+                //cm.fres_addr_dependant = record.fres_addr_dependant;
+                //cm.ID_SBTS_DEPENDANT = record.ID_SBTS_DEPENDANT;
+
+                if (paren.Count > 0)
+                    {
+                    parental pa = new parental();
+                    pa = paren[0];
+
+                    cm.ffirstname = pa.ffirstname;
+                    cm.ffothname = pa.ffothname;
+                    cm.ffsurname = pa.ffsurname;
+
+                    cm.fmfirstname = pa.fmfirstname;
+                    cm.fmothname = pa.fmothname;
+                    cm.fmsurname = pa.fmsurname;
+
+                    }
 
                 fmd.Add(cm);
 
-                DataTable dependants = GetDependants(record.fref_no);
-
-                if (dependants.Rows.Count > 0)
+                if (depen.Count > 0)
                     {
-                    foreach (DataRow drow in dependants.Rows)
+                    foreach (nom_tr drow in depen)
                         {
-                        NomTemp sd = new NomTemp();
-                        sd.fbirth_date = drow.Field<DateTime>("fbirth_date");
-                        sd.fnfirstname = drow.Field<String>("fnfirstname");
-                        sd.fnothname = drow.Field<String>("fnothname");
-                        sd.fnsurname = drow.Field<String>("fnsurname");
-                        sd.fnom_ssno = drow.Field<String>("fnom_ssno");
-                        sd.fnomsex = drow.Field<String>("fnomsex");
-                        sd.frelation = drow.Field<String>("frelation");
-                        sd.fres_addr = drow.Field<String>("fres_addr");
-                        sd.fper_addr = drow.Field<String>("fper_addr");
+                        nom_tr sd = new nom_tr();
+                        sd.fbirth_date = drow.fbirth_date;
+                        sd.fnfirstname = drow.fnfirstname;
+                        sd.fnothname = drow.fnothname; 
+                        sd.fnsurname = drow.fnsurname; 
+                        sd.fnom_ssno = drow.fnom_ssno;  
+                        sd.fnomsex = drow.fnomsex; 
+                        sd.frelation = drow.frelation;  
+                        sd.fres_addr = drow.fres_addr; 
+                        sd.fper_addr = drow.fper_addr; 
 
                         alldependants.Add(sd);
                         }
@@ -151,28 +174,28 @@ namespace NAPSOMIS_Webpoint.Controllers
                     {
 
                     }
-                 
+
                 }
 
 
             if (fmd.Count > 0)
                 {
 
-                XtraReportPreviewMember  mydocument = new XtraReportPreviewMember ();
+                XtraReportPreviewMember mydocument = new XtraReportPreviewMember();
                 mydocument.MemberDataSource.DataSource = fmd;
- 
+                
                 mydocument.CreateDocument();
 
                 return View("PrintPreview", mydocument);
                 }
             else
                 {
-                return RedirectToAction("PrintPreview");
+                return View("PrintPreview");
                 }
-             
+
             }
 
-         [HttpPost]
+        [HttpPost]
         public ActionResult ListMembersCheckListbyReferenceNo(PrintCheckListTemplate c)
             {
             try
@@ -188,7 +211,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 throw;
                 }
-             
+
             }
 
         private DataTable GetDependants(string ReferenceNo)
@@ -196,7 +219,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             DataTable mytable = new DataTable();
 
             string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
-            string Query = "SELECT * From NomTemp WHERE fref_no = '" + ReferenceNo + "%'";
+            string Query = "SELECT * From nom_tr WHERE fref_no = '" + ReferenceNo + "%'";
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
             dp.Fill(mytable);
 
@@ -215,11 +238,11 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             List<ViewModels.MemberCheckListViewModel> fmd = new List<ViewModels.MemberCheckListViewModel>();
 
-            var dmember = from s in db.MemberTransactions join sa in db.ParentalTemps on s.fref_no equals sa.fref_no join p in db.Provinces on s.fprovince equals p.fcode join d in db.Districts on s.fdist equals d.d_code join ch in db.Chiefdoms on s.fchief equals ch.fc_code join occ in db.Occupations on s.foccupation equals occ.fcode join dep in db.NomTemps on s.fref_no equals dep.fref_no join rel in db.RelativesTypesMasters on dep.frelation equals rel.frel_code where s.CreatedOn >= c.StartDate && s.CreatedOn <= c.EndDate select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc, ID_SBTS_DEPENDANT = dep.ID_SBTS };
+            var dmember = from s in db.mem_tr join sa in db.parentals on s.fref_no equals sa.fref_no join p in db.provinces on s.fprovince equals p.fcode join d in db.districts on s.fdist equals d.d_code join ch in db.chiefdoms on s.fchief equals ch.fc_code join occ in db.occupates on s.foccupation equals occ.fcode join dep in db.nom_tr on s.fref_no equals dep.fref_no join rel in db.rel_mst on dep.frelation equals rel.frel_code where s.CreatedOn >= c.StartDate && s.CreatedOn <= c.EndDate select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc };
 
             var fullmember = dmember.ToList();
- 
-            List<NomTemp> alldependants = new List<NomTemp>();
+
+            List<nom_tr> alldependants = new List<nom_tr>();
 
             foreach (var record in fullmember)
                 {
@@ -253,7 +276,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                 cm.ferno = record.ferno;
                 cm.femp_addr = record.femp_addr;
                 cm.ftel_no = record.ftel_no;
-                cm.ID_SBTS = record.ID_SBTS;
+
+                //cm.ID_SBTS = record.ID_SBTS;
 
                 cm.fnom_ssno = record.fnom_ssno;
                 cm.fnsurname = record.fnsurname;
@@ -264,7 +288,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                 cm.frelation = record.frelation;
                 cm.fper_addr_dependant = record.fper_addr_dependant;
                 cm.fres_addr_dependant = record.fres_addr_dependant;
-                cm.ID_SBTS_DEPENDANT = record.ID_SBTS_DEPENDANT;
+
+                //cm.ID_SBTS_DEPENDANT = record.ID_SBTS_DEPENDANT;
 
 
                 fmd.Add(cm);
@@ -275,7 +300,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                     {
                     foreach (DataRow drow in dependants.Rows)
                         {
-                        NomTemp sd = new NomTemp();
+                        nom_tr sd = new nom_tr();
                         sd.fbirth_date = drow.Field<DateTime>("fbirth_date");
                         sd.fnfirstname = drow.Field<String>("fnfirstname");
                         sd.fnothname = drow.Field<String>("fnothname");
@@ -293,7 +318,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                     {
 
                     }
-                 
+
                 }
 
 
@@ -309,8 +334,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                 mydocument.CheckListDataSource.DataSource = ctemp;
 
                 mydocument.CreateDocument();
- 
-                return View("PrintPreview",mydocument);
+
+                return View("PrintPreview", mydocument);
 
                 }
             else

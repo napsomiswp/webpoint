@@ -25,6 +25,9 @@ namespace NAPSOMIS_Webpoint.Models
         [Column(TypeName = "date")]
         public DateTime TodaysDate { get; set; }
 
+        [StringLength(10)]
+        public string Centre { get; set; }
+
         [Required(ErrorMessage ="The quantity to generatate is required")]
         public int QuantityToGenerate { get; set; }
  

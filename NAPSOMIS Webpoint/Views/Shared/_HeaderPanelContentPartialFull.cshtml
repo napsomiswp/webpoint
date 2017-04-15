@@ -4,13 +4,13 @@
 <head>
 
     @*@Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
-        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
-    )
-    
-    @Html.DevExpress().GetScripts(
-        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
-    )*@
-    
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
+        )
+
+        @Html.DevExpress().GetScripts(
+            new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+        )*@
+
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 
             <div class="row customers" style="width: auto;  ">
                 <div class="col-md-6" style="width:auto;">
-                    @*<img style="vertical-align:middle;width:70px; height:50px;" alt="" src="~/Content/Images/logo-new.png">*@
+                    @*<img style="vertical-align:middle;width:70px; height:65px;" alt="" src="~/Content/Images/logo-new.png">*@
                 </div>
 
                 <div class="col-md-6" style="width:auto;height:30px; padding-top:0px; background-color:whitesmoke; color:darkorange;">
@@ -39,293 +39,393 @@
 
             <ul class="nav navbar-nav" style="padding-left:30px;">
 
-                @Html.DevExpress().Menu(settings =>
-           {
-               settings.Name = "mFeatures";
-               settings.AllowSelectItem = true;
-               settings.EnableHotTrack = true;
-               settings.EnableAnimation = true;
-               settings.AppearAfter = 10;
-               settings.DisappearAfter = 10;
+                @{
+                    if (Session["UserName"] == null)
+                        {
 
-               //settings.MaximumDisplayLevels = 10;
-               settings.ShowPopOutImages = DefaultBoolean.True;
-               //settings.ShowAsToolbar = true;
-               settings.Height = 30;
-
-               settings.Items.Add(item =>
-               {
-                   item.Text = "Getting Started";
-                   item.Items.Add("Home", "home", "", "/Pages/Home");
-                   item.Items.Add("About US", "about", "", "/Pages/About");
-                   item.Items.Add("About NAPSOMIS", "aboutnapsomis", "", "/Pages/About");
-                   item.Items.Add("Contact", "contact", "", "/Pages/Contact");
-                   item.Items.Add("Administration", "administration", "", "/Pages/Administration");
-
-               });
-
-               settings.Items.Add(item =>
-               {
-                   item.Text = "Operations";
-
-                   item.Items.Add(subItem =>
+                        @Html.DevExpress().Menu(settings =>
                    {
+                       settings.Name = "mFeatures";
+                       settings.AllowSelectItem = true;
+                       settings.EnableHotTrack = true;
+                       settings.EnableAnimation = true;
+                       settings.AppearAfter = 10;
+                       settings.DisappearAfter = 10;
 
-                       subItem.Text = "Member Registration";
+                       //settings.MaximumDisplayLevels = 10;
+                       settings.ShowPopOutImages = DefaultBoolean.True;
+                       //settings.ShowAsToolbar = true;
+                       settings.Height = 30;
 
-                       subItem.Items.Add("Receive Forms", "receiveform", "", "/ReceiveForms/ReceiveForms");
-                       subItem.Items.Add("Capture Registration Forms", "captureregisform", "", "/CaptureRegistrationForms/Form");
-
-                       subItem.Items.Add("Capture Government Employees", "captureGE", "", "/CaptureGovernmentEmployees/Form");
-                       subItem.Items.Add("Edit Government Employees", "", "", "/CaptureGovernmentEmployees/EditForm");
-
-                       subItem.Items.Add("Print Checklist", "checklist", "", "/CheckList/PrintCheckList");
-
-                       subItem.Items.Add("Search Members", "searchchecklist", "", "/CheckList/ListMembersCheckList");
-
-                       subItem.Items.Add("Edit Captured Records", "", "", "/CaptureRegistrationForms/EditForm");
-                       subItem.Items.Add("Delete Records", "", "", "/DeleteRecords/Index");
-
-                       subItem.Items.Add("List of Forms Received", "", "", "/ListofForms/SearchList");
-                       subItem.Items.Add("List Generated Numbers for an Establishment", "", "", "/ListNosforEstablishment/Index");
-
-
-                   });
-
-                   item.Items.Add(subItem =>
-                   {
-
-                       subItem.Text = "Inspectorate";
-
-                       subItem.Items.Add("Inspection", "", "", "/");
-                       subItem.Items.Add("Interest Administration", "", "", "/");
-
-                       subItem.Items.Add("Clearance Certificate", "", "", "/");
-                       subItem.Items.Add("Negotiated Arears", "", "", "/");
-
-                   });
-
-                   item.Items.Add(subItem =>
-                   {
-
-                       subItem.Text = "Data Control";
-
-                       subItem.Items.Add(subsubitem => {
-                           subsubitem.Text = "Establishment Registration";
-
-                           subsubitem.Items.Add("Register New Establishment", "", "", "/Establishment/RegisterNew");
-                           subsubitem.Items.Add("Add Existing Establishment", "", "", "/Establishment/AddExisting");
-                           subsubitem.Items.Add("Re-Print Acknowedgement Letter", "", "", "/Establishment/RePrint");
-                           subsubitem.Items.Add("Update Establishment Record", "", "", "/Establishment/UpdateEstablishment");
-                           subsubitem.Items.Add("Update Director Information", "", "", "/Establishment/UpdateDirector");
-                           subsubitem.Items.Add("Update Employer Categories", "", "", "/Establishment/UpdateEmployer");
-
-                           subsubitem.Items.Add("Transfer Establishment to Head Office", "", "", "/Establishment/Transfer");
-
-                           subsubitem.Items.Add("Deactivate Establishment", "", "", "/Establishment/Deactivate");
-                           subsubitem.Items.Add("Reactivate Establishment", "", "", "/Establishment/Reactivate");
+                       settings.Items.Add(item =>
+                       {
+                           item.Text = "Getting Started";
+                           item.Items.Add("Home", "home", "", "/Pages/Home");
+                           item.Items.Add("About US", "about", "", "/Pages/About");
+                           item.Items.Add("About NAPSOMIS", "aboutnapsomis", "", "/Pages/About");
+                           item.Items.Add("Contact", "contact", "", "/Pages/Contact");
+                           item.Items.Add("Administration", "administration", "", "/Pages/Administration");
 
                        });
 
+                       settings.Items.Add(item =>
+                       {
+                           item.Text = "System Access";
 
+                           item.Items.Add("Login", "login", "", "/Accounts/Login");
+                           item.Items.Add("Forgot Password","forgotpassword", "", "/Accounts/ForgotPassword");
 
-                       subItem.Items.Add("Generate Reference No", "generaterefno", "", "/ReferenceNos/ReferenceNos");
-                       subItem.Items.Add("Add Member to Credit Purchase List", "", "", "/");
+                       });
 
-                       subItem.Items.Add("Receive Contribution Report", "", "", "/");
-                       subItem.Items.Add("View Contribution Reports Received from an Establishment for given Periods", "", "", "/");
+                       settings.Items.Add(item =>
+                       {
+                           item.Text = "Member Contribution";
 
-                       subItem.Items.Add("Process Hardcopy Contribution Reports", "", "", "/");
-                       subItem.Items.Add("Capture Old Cr", "", "", "/");
-                       subItem.Items.Add("Capture Backpay", "", "", "/");
-                       subItem.Items.Add("View Short Payment", "", "", "/");
-                       subItem.Items.Add("Capture Short Payments", "", "", "/");
-                       subItem.Items.Add("Process Softcopy Contribution Reports", "", "", "/");
-                       subItem.Items.Add("Change Staff Category", "", "", "/");
+                           item.Items.Add("View Statement", "statement", "", "/ViewMemberContribution/ViewStatement");
+                           item.Items.Add("View Contribution", "contribution", "", "/ViewMemberContribution/ViewContribution");
 
-                       subItem.Items.Add("View Members Unver Establishment", "", "", "/");
-                       subItem.Items.Add("Member Statement", "", "", "/");
-                       subItem.Items.Add("List Invalid Numbers ...", "", "", "/");
-                       subItem.Items.Add("List Invalid Numbers by Category", "", "", "/");
-                       subItem.Items.Add("Member Master File Search", "", "", "/");
-                       subItem.Items.Add("Member Identification", "", "", "/");
-                       subItem.Items.Add("Establishment With Valid Numbers", "", "", "/");
+                       });
+                   }).GetHtml()
 
-                       subItem.Items.Add("Reverse Captured Contribution Reports", "", "", "/");
-                       subItem.Items.Add("Correct Invalid Numbers", "", "", "/");
+                        @*< li class="dropdown">
+                            <a href = "#" class="dropdown-toggle" data-toggle="dropdown" style="height:30px;padding-top:5px;font-size:medium">Main<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Home", "Home", "Pages")</li>
+                                <li>@Html.ActionLink("About Us", "BlogPosts", "Pages")</li>
+                                <li>@Html.ActionLink("About NAPSOMIS", "About", "Pages")</li>
+                                <li>@Html.ActionLink("Contact", "Contacts", "Contact")</li>
+                                <li>@Html.ActionLink("Administration", "Administration", "Pages")</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href = "#" class="dropdown-toggle" data-toggle="dropdown" style="height:30px;padding-top:5px;font-size:medium">User<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Login", "Login", "Accounts")</li>
+                                <li>@Html.ActionLink("Forgot Password", "ForgotPassword", "Accounts")</li>
 
-                       subItem.Items.Add("Member Credit Processing", "", "", "/");
-                   });
+                            </ul>
+                        </li>*@
 
-                   item.Items.Add(subItem =>
+                        }
+                    else
+                        {
+                        @Html.DevExpress().Menu(settings =>
                    {
+                                settings.Name = "mFeatures";
+                                settings.AllowSelectItem = true;
+                                settings.EnableHotTrack = true;
+                                settings.EnableAnimation = true;
+                                settings.AppearAfter = 10;
+                                settings.DisappearAfter = 10;
 
-                       subItem.Text = "Benefits";
+                                //settings.MaximumDisplayLevels = 10;
+                                settings.ShowPopOutImages = DefaultBoolean.True;
+                                //settings.ShowAsToolbar = true;
+                                settings.Height = 30;
 
-                       subItem.Items.Add("Receive Member Application", "", "", "/");
-                       subItem.Items.Add("Capture Member Application", "", "", "/");
-                       subItem.Items.Add("Edit Member Application", "", "", "/");
-                       subItem.Items.Add("Approve Application", "", "", "/");
-                       subItem.Items.Add("Re-approve Application", "", "", "/");
+                                settings.Items.Add(item =>
+                                {
+                                    item.Text = "Getting Started";
+                                    item.Items.Add("Home", "home", "", "/Pages/Home");
+                                    item.Items.Add("About US", "about", "", "/Pages/About");
+                                    item.Items.Add("About NAPSOMIS", "aboutnapsomis", "", "/Pages/About");
+                                    item.Items.Add("Contact", "contact", "", "/Pages/Contact");
+                                    item.Items.Add("Administration", "administration", "", "/Pages/Administration");
 
-                       subItem.Items.Add("Receive Death Report", "", "", "/");
-                       subItem.Items.Add("Edit Death Report", "", "", "/");
-                       subItem.Items.Add("Confirm Death Report", "", "", "/");
+                                });
 
-                       subItem.Items.Add("View Released Dependants", "", "", "/");
-                       subItem.Items.Add("Receive/Edit Dependant Application", "", "", "/");
-                       subItem.Items.Add("Approve Dependant Application", "", "", "/");
+                                settings.Items.Add(item =>
+                                {
+                                    item.Text = "Operations";
 
-                       subItem.Items.Add("List Applications for the Day", "", "", "/");
-                       subItem.Items.Add("Print Checklist", "", "", "/");
-                       subItem.Items.Add("Print Transfer Checklist", "", "", "/");
-                       subItem.Items.Add("Transfer Data", "", "", "/");
+                                    item.Items.Add(subItem =>
+                                    {
 
-                       subItem.Items.Add("Read Benefit Information", "", "", "/");
+                                        subItem.Text = "Member Registration";
 
-                       subItem.Items.Add("Pay Member", "", "", "/");
-                       subItem.Items.Add("Pay Dependant", "", "", "/");
+                                        subItem.Items.Add("Receive Forms", "receiveform", "", "/ReceiveForms/ReceiveForms");
+                                        subItem.Items.Add("Capture Registration Forms", "captureregisform", "", "/CaptureRegistrationForms/Form");
 
-                       subItem.Items.Add("Re-print Acknowledgement", "", "", "/");
-                       subItem.Items.Add("Re-print Dependant Acknowledgement", "", "", "/");
+                                        subItem.Items.Add("Capture Government Employees", "captureGE", "", "/CaptureGovernmentEmployees/Form");
+                                        subItem.Items.Add("Edit Government Employees", "", "", "/CaptureGovernmentEmployees/EditForm");
 
-                       subItem.Items.Add("Reports", "", "", "/");
-                       subItem.Items.Add("Government Pension", "", "", "/");
+                                        subItem.Items.Add("Print Checklist", "checklist", "", "/CheckList/PrintCheckList");
 
-                   });
+                                        subItem.Items.Add("Search Members", "searchchecklist", "", "/CheckList/ListMembersCheckList");
 
-                   item.Items.Add(subItem =>
-                   {
+                                        subItem.Items.Add("Edit Captured Records", "", "", "/CaptureRegistrationForms/EditForm");
+                                        subItem.Items.Add("Delete Records", "", "", "/DeleteRecords/Index");
 
-                       subItem.Text = "Prosecutions";
-
-                       subItem.Items.Add("Add Establishment to List", "", "", "/");
-                       subItem.Items.Add("End Prosecutions", "", "", "/");
-
-                       subItem.Items.Add("View Establishment on Prosecution", "", "", "/");
-                       subItem.Items.Add("View Establishments on Judgement Debt", "", "", "/");
-
-                   });
-
-               });
-
-               settings.Items.Add(subItem =>
-               {
-
-                   subItem.Text = "Accounts";
-
-                   subItem.Items.Add("On-Line Receipt Payment", "", "", "/");
-                   subItem.Items.Add("Purchase Credit", "", "", "/");
-                   subItem.Items.Add("Manual Receipt Capture (Credit Purchase)", "", "", "/");
-                   subItem.Items.Add("Manual Receipt Capture", "", "", "/");
-
-                   subItem.Items.Add("NASSIT Journal Payments", "", "", "/");
-
-                   subItem.Items.Add("Capture Bank Lodgement", "", "", "/");
-                   subItem.Items.Add("Daily Cash Control Entries", "", "", "/");
-                   subItem.Items.Add("Cash Control Report", "", "", "/");
-                   subItem.Items.Add("Cheque Control Report", "", "", "/");
-                   subItem.Items.Add("Bank Lodgement Report", "", "", "/");
-
-                   subItem.Items.Add("Generate Sun Transaction", "", "", "/");
-                   subItem.Items.Add("Transfer Sun Transaction", "", "", "/");
-                   subItem.Items.Add("Move Transaction for Re-transfer", "", "", "/");
-
-                   subItem.Items.Add("Reverse Payments", "", "", "/");
-
-                   subItem.Items.Add("Daily Activity Reports", "", "", "/");
-                   subItem.Items.Add("Print Payment with Codes", "", "", "/");
+                                        subItem.Items.Add("List of Forms Received", "", "", "/ListofForms/SearchList");
+                                        subItem.Items.Add("List Generated Numbers for an Establishment", "", "", "/ListNosforEstablishment/Index");
 
 
-               });
+                                    });
 
-               settings.Items.Add(subItem =>
-               {
+                                    item.Items.Add(subItem =>
+                                    {
 
-                   subItem.Text = "MIS";
-                   subItem.Items.Add("Inspectorate", "", "", "/");
+                                        subItem.Text = "Inspectorate";
 
-                   subItem.Items.Add("Accounts", "", "", "/");
+                                        subItem.Items.Add("Inspection", "", "", "/");
+                                        subItem.Items.Add("Interest Administration", "", "", "/");
 
-                   subItem.Items.Add("Generate Zero Debits", "", "", "/");
-                   subItem.Items.Add("Register New Establishment", "", "", "/");
-                   subItem.Items.Add("Edit Establishment Information", "", "", "/");
-                   subItem.Items.Add("Deactivate Establishment", "", "", "/");
-                   subItem.Items.Add("Create Cash Point", "", "", "/");
-                   subItem.Items.Add("Delete Prosecution Record", "", "", "/");
+                                        subItem.Items.Add("Clearance Certificate", "", "", "/");
+                                        subItem.Items.Add("Negotiated Arears", "", "", "/");
 
-               });
+                                    });
 
-               settings.Items.Add(subItem =>
-               {
+                                    item.Items.Add(subItem =>
+                                    {
 
-                   subItem.Text = "Utilities";
-                   subItem.Items.Add("Validate Number", "", "", "/");
-                   subItem.Items.Add("Setup", "", "", "/");
-                   subItem.Items.Add("File Operations", "", "", "/");
-                   subItem.Items.Add("Data Transfers", "", "", "/");
+                                        subItem.Text = "Data Control";
 
-                   subItem.Items.Add("Update Member Master Tables", "", "", "/");
-               });
+                                        subItem.Items.Add(subsubitem =>
+                                        {
+                                            subsubitem.Text = "Establishment Registration";
 
-               settings.Items.Add(subItem =>
-               {
+                                            subsubitem.Items.Add("Register New Establishment", "", "", "/Establishment/RegisterNew");
+                                            subsubitem.Items.Add("Add Existing Establishment", "", "", "/Establishment/AddExisting");
+                                            subsubitem.Items.Add("Re-Print Acknowedgement Letter", "", "", "/Establishment/RePrint");
+                                            subsubitem.Items.Add("Update Establishment Record", "", "", "/Establishment/UpdateEstablishment");
+                                            subsubitem.Items.Add("Update Director Information", "", "", "/Establishment/UpdateDirector");
 
-                   subItem.Text = "Customer Services";
+                                            subsubitem.Items.Add(sb2 =>
+                                            {
+                                                sb2.Text = "Update Employer Categories";
 
-                   subItem.Items.Add("Member Master File Query", "", "", "/");
-                   subItem.Items.Add("Member Identification", "", "", "/");
-                   subItem.Items.Add("Employer File Query", "", "", "/");
-                   subItem.Items.Add("Empoyees Under an Establishment", "", "", "/");
-                   subItem.Items.Add("Removed Employees of an Establishment", "", "", "/");
-                   subItem.Items.Add("Contribution Details", "", "", "/");
-                   subItem.Items.Add("Quarterly Pre-printed", "", "", "/");
-                   subItem.Items.Add("Member Statement", "", "", "/");
-                   subItem.Items.Add("Details of Credit Purchased", "", "", "/");
+                                                sb2.Items.Add("Update Main Categories", "", "", "/Establishment/UpdateEmployerMain");
+                                                sb2.Items.Add("Update Staff Categories", "", "", "/Establishment/UpdateEmployerStaff");
 
-               });
+                                            });
 
-               settings.Items.Add(subItem =>
-               {
+                                            subsubitem.Items.Add("Deactivate Establishment", "", "", "/Establishment/Deactivate");
+                                            subsubitem.Items.Add("Reactivate Establishment", "", "", "/Establishment/Reactivate");
 
-                   subItem.Text = "Reports";
+                                        });
 
-                   subItem.Items.Add("Newly Registered Establishment", "", "", "/");
-                   subItem.Items.Add("List of Active Establishments", "", "", "/");
-                   subItem.Items.Add("List Establishments By", "", "", "/");
-                   subItem.Items.Add("List of Dormant/Closed Down Establishments", "", "", "/");
-                   subItem.Items.Add("List of Reactivated Establishments", "", "", "/");
 
-                   subItem.Items.Add("Establishment Payment Details", "", "", "/");
-                   subItem.Items.Add("Establishments that paid ...", "", "", "/");
-                   subItem.Items.Add("Establishments that paid For a Perios in Same Period", "", "", "/");
-                   subItem.Items.Add("Defaulters ...", "", "", "/");
-                   subItem.Items.Add("Payments on a Receipt", "", "", "/");
-                   subItem.Items.Add("CR/Payments", "", "", "/");
 
-                   subItem.Items.Add("Monthly Reports", "", "", "/");
-               });
+                                        subItem.Items.Add("Generate Reference No", "generaterefno", "", "/ReferenceNos/ReferenceNos");
+                                        subItem.Items.Add("Add Member to Credit Purchase List", "", "", "/");
 
-           }).GetHtml()
+                                        subItem.Items.Add(subitem =>
+                                        {
+                                            subitem.Text = "Receive Contribution Report";
+
+                                            subitem.Items.Add("Receive CR at Data Control", "receivecr", "", "/Contribution/ReceiveCRDataControl");
+                                            subitem.Items.Add("Receive CR at Data Capturing", "receivecratdcapture", "", "/Contribution/ReceiveCRDataCapturing");
+                                            subitem.Items.Add("Edit Received CR", "editreceive", "", "/Contribution/EditReceive");
+
+                                        });
+
+
+                                        subItem.Items.Add("View Contribution Reports Received", "", "", "/Contribution/ReceiveReport");
+
+                                        subItem.Items.Add("Process Hardcopy Contribution Reports", "", "", "/Contribution/HardCopy");
+                                        subItem.Items.Add("Capture Old Cr", "", "", "/Contribution/OldCR");
+                                        subItem.Items.Add("Capture Backpay", "", "", "/Contribution/Backpay");
+                                        subItem.Items.Add("View Short Payment", "", "", "/Contribution/ViewShortPayments");
+                                        subItem.Items.Add("Capture Short Payments", "", "", "/Contribution/CaptureShortPayments");
+                                        subItem.Items.Add("Process Softcopy Contribution Reports", "", "", "/");
+                                        subItem.Items.Add("Change Staff Category", "", "", "/");
+
+                                        subItem.Items.Add("View Members Under Establishment", "viewmembers", "", "/Contribution/ViewMembers");
+                                        subItem.Items.Add("Member Statement", "memberstatement", "", "/Contribution/MemberStatement");
+                                        subItem.Items.Add("List Invalid Numbers ...", "", "", "/");
+                                        subItem.Items.Add("List Invalid Numbers by Category", "", "", "/");
+                                        subItem.Items.Add("Member Master File Search", "", "", "/");
+                                        subItem.Items.Add("Member Identification", "", "", "/NewContribution/Memberid");
+                                        subItem.Items.Add("Establishment With Valid Numbers", "", "", "/");
+
+                                        subItem.Items.Add("Reverse Captured Contribution Reports", "", "", "/");
+                                        subItem.Items.Add("Correct Invalid Numbers", "", "", "/");
+
+                                        subItem.Items.Add("Member Credit Processing", "", "", "/Contribution/MemberCreditProcessing");
+                                    });
+
+                                    item.Items.Add(subItem =>
+                                    {
+
+                                        subItem.Text = "Benefits";
+
+                                        subItem.Items.Add("Receive Member Application", "", "", "/");
+                                        subItem.Items.Add("Capture Member Application", "", "", "/");
+                                        subItem.Items.Add("Edit Member Application", "", "", "/");
+                                        subItem.Items.Add("Approve Application", "", "", "/");
+                                        subItem.Items.Add("Re-approve Application", "", "", "/");
+
+                                        subItem.Items.Add("Receive Death Report", "", "", "/");
+                                        subItem.Items.Add("Edit Death Report", "", "", "/");
+                                        subItem.Items.Add("Confirm Death Report", "", "", "/");
+
+                                        subItem.Items.Add("View Released Dependants", "", "", "/");
+                                        subItem.Items.Add("Receive/Edit Dependant Application", "", "", "/");
+                                        subItem.Items.Add("Approve Dependant Application", "", "", "/");
+
+                                        subItem.Items.Add("List Applications for the Day", "", "", "/");
+                                        subItem.Items.Add("Print Checklist", "", "", "/");
+                                        subItem.Items.Add("Print Transfer Checklist", "", "", "/");
+                                        subItem.Items.Add("Transfer Data", "", "", "/");
+
+                                        subItem.Items.Add("Read Benefit Information", "", "", "/");
+
+                                        subItem.Items.Add("Pay Member", "", "", "/");
+                                        subItem.Items.Add("Pay Dependant", "", "", "/");
+
+                                        subItem.Items.Add("Re-print Acknowledgement", "", "", "/");
+                                        subItem.Items.Add("Re-print Dependant Acknowledgement", "", "", "/");
+
+                                        subItem.Items.Add("Reports", "", "", "/");
+                                        subItem.Items.Add("Government Pension", "", "", "/");
+
+                                    });
+
+                                    item.Items.Add(subItem =>
+                                    {
+
+                                        subItem.Text = "Prosecutions";
+
+                                        subItem.Items.Add("Add Establishment to List", "", "", "/");
+                                        subItem.Items.Add("End Prosecutions", "", "", "/");
+
+                                        subItem.Items.Add("View Establishment on Prosecution", "", "", "/");
+                                        subItem.Items.Add("View Establishments on Judgement Debt", "", "", "/");
+
+                                    });
+
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "Accounts";
+
+                                    subItem.Items.Add("On-Line Receipt Payment", "", "", "/");
+                                    subItem.Items.Add("Purchase Credit", "", "", "/");
+                                    subItem.Items.Add("Manual Receipt Capture (Credit Purchase)", "", "", "/");
+                                    subItem.Items.Add("Manual Receipt Capture", "", "", "/");
+
+                                    subItem.Items.Add("NASSIT Journal Payments", "", "", "/");
+
+                                    subItem.Items.Add("Capture Bank Lodgement", "", "", "/");
+                                    subItem.Items.Add("Daily Cash Control Entries", "", "", "/");
+                                    subItem.Items.Add("Cash Control Report", "", "", "/");
+                                    subItem.Items.Add("Cheque Control Report", "", "", "/");
+                                    subItem.Items.Add("Bank Lodgement Report", "", "", "/");
+
+                                    subItem.Items.Add("Generate Sun Transaction", "", "", "/");
+                                    subItem.Items.Add("Transfer Sun Transaction", "", "", "/");
+                                    subItem.Items.Add("Move Transaction for Re-transfer", "", "", "/");
+
+                                    subItem.Items.Add("Reverse Payments", "", "", "/");
+
+                                    subItem.Items.Add("Daily Activity Reports", "", "", "/");
+                                    subItem.Items.Add("Print Payment with Codes", "", "", "/");
+
+
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "MIS";
+                                    subItem.Items.Add("Inspectorate", "", "", "/");
+
+                                    subItem.Items.Add("Accounts", "", "", "/");
+
+                                    subItem.Items.Add("Generate Zero Debits", "", "", "/");
+                                    subItem.Items.Add("Register New Establishment", "", "", "/");
+                                    subItem.Items.Add("Edit Establishment Information", "", "", "/");
+                                    subItem.Items.Add("Deactivate Establishment", "", "", "/");
+                                    subItem.Items.Add("Create Cash Point", "", "", "/");
+                                    subItem.Items.Add("Delete Prosecution Record", "", "", "/");
+
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "Utilities";
+                                    subItem.Items.Add("Validate Number", "", "", "/");
+                                    subItem.Items.Add("Setup", "", "", "/");
+                                    subItem.Items.Add("File Operations", "", "", "/");
+                                    subItem.Items.Add("Data Transfers", "", "", "/");
+
+                                    subItem.Items.Add("Update Member Master Tables", "", "", "/");
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "Customer Services";
+
+                                    subItem.Items.Add("Member Master File Query", "", "", "/");
+                                    subItem.Items.Add("Member Identification", "", "", "/");
+                                    subItem.Items.Add("Employer File Query", "", "", "/");
+                                    subItem.Items.Add("Empoyees Under an Establishment", "", "", "/");
+                                    subItem.Items.Add("Removed Employees of an Establishment", "", "", "/");
+                                    subItem.Items.Add("Contribution Details", "", "", "/");
+                                    subItem.Items.Add("Quarterly Pre-printed", "", "", "/");
+                                    subItem.Items.Add("Member Statement", "", "", "/");
+                                    subItem.Items.Add("Details of Credit Purchased", "", "", "/");
+
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "Reports";
+
+                                    subItem.Items.Add("Newly Registered Establishment", "", "", "/");
+                                    subItem.Items.Add("List of Active Establishments", "", "", "/");
+                                    subItem.Items.Add("List Establishments By", "", "", "/");
+                                    subItem.Items.Add("List of Dormant/Closed Down Establishments", "", "", "/");
+                                    subItem.Items.Add("List of Reactivated Establishments", "", "", "/");
+
+                                    subItem.Items.Add("Establishment Payment Details", "", "", "/");
+                                    subItem.Items.Add("Establishments that paid ...", "", "", "/");
+                                    subItem.Items.Add("Establishments that paid For a Perios in Same Period", "", "", "/");
+                                    subItem.Items.Add("Defaulters ...", "", "", "/");
+                                    subItem.Items.Add("Payments on a Receipt", "", "", "/");
+                                    subItem.Items.Add("CR/Payments", "", "", "/");
+
+                                    subItem.Items.Add("Monthly Reports", "", "", "/");
+                                });
+
+                                settings.Items.Add(subItem =>
+                                {
+
+                                    subItem.Text = "User's Account";
+
+                                    subItem.Items.Add("Logout", "", "", "/Accounts/Logout");
+                                    subItem.Items.Add("Account Specifications", "", "", "/Accounts/AccountSpecs");
+                                    subItem.Items.Add("Change Password", "", "", "/Accounts/ChangePassword");
+                                    subItem.Items.Add("Messenger", "", "", "/Accounts/Messenger");
+
+                                });
+
+                                }).GetHtml()
+
+                        }
+
+                }
 
             </ul>
-
             @*<ul class="nav navbar-nav" style="padding-left:30px;">
-                <text style="color:midnightblue; padding-left:10px; font-size:small;">Welcome: </text>
-                <text style="color:midnightblue; padding-left:10px; font-size:large;"> Mohammed Turay</text>
+                    <text style="color:midnightblue; padding-left:10px; font-size:small;">Welcome: </text>
+                    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Mohammed Turay</text>
 
-            </ul>*@
-
-        </div>
- 
-            
+                </ul>*@
 
         </div>
+
+
+
+    </div>
 
 </body>
 </html>
-
-
 @*<div class='title'>
         <a href="@Url.Action("Home", "Pages")">NAPSOMIS Webpoint</a>
         <p class="small">Mobile friendly</p>

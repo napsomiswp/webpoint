@@ -1,0 +1,167 @@
+﻿@model NAPSOMIS_Webpoint.Models.StaffCat
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "Update Staff Categories";
+}
+
+  
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Employer Staff Categories </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the form below using appropriate data </text>
+
+
+    <br />
+
+</div>
+
+@using (Html.BeginForm("Establishment", "UpdateEmployerMain", FormMethod.Post))
+    {
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+
+    setting.Name = "updateemployerstaff";
+    setting.ColCount = 2;
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ferno";
+
+        });
+
+        group.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdsearch";
+                b.Text = "Load";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEmployerStaff_ERNO", ParamValue = "" };
+            });
+        });
+
+
+        group.Items.Add(b => b.cat_code).NestedExtension().TextBox(c =>
+        {
+            c.Name = "cat_code";
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.description).NestedExtension().Memo(c =>
+        {
+            c.Name = "description";
+
+            c.Width = Unit.Pixel(250);
+
+        });
+
+        group.Items.Add(b => b.mediatype).NestedExtension().RadioButtonList(c =>
+        {
+            c.Name = "mediatype";
+            c.Properties.Items.Add("Pre-printed", "P");
+            c.Properties.Items.Add("Diskette", "D");
+            c.Properties.Items.Add("Manual", "M");
+
+        });
+
+    });
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "searchgroup";
+        group.Caption = "Update Existing Category";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 1;
+
+        group.Items.Add(i =>
+        {
+            i.Name = "codedropdowngroup";
+            i.Caption = "Existing Categories";
+
+            i.NestedExtension().ComboBox(b =>
+            {
+                b.Name = "cat_code_search";
+
+                List<PDCTemplate> mystaffcategories = (List<PDCTemplate>)TempData.Peek("MyStaffCategories");
+
+                b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                b.Properties.Columns.Add("Name", "Name", Unit.Pixel(200));
+
+                b.Properties.DataSource = mystaffcategories;
+                b.Properties.TextField = "Name";
+                b.Properties.ValueField = "Code";
+
+            });
+        });
+    });
+
+    setting.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 2;
+        sb.ColCount = 2;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
+
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "clear";
+                b.Text = "Clear";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEmployerStaff", ParamValue = "" };
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "save";
+                b.Text = "Accept";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "UpdateEmployerStaff_Save", ParamValue = "" };
+
+            });
+        });
+
+    });
+
+}).GetHtml();
+    }

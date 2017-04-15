@@ -8,22 +8,17 @@ namespace NAPSOMIS_Webpoint.Models
 
     public partial class pdrpt_tr
     {
-        [StringLength(17)]
-        public string fbatch_no { get; set; }
-
-        [StringLength(3)]
-        public string floc { get; set; }
-
+        [Key]
         [StringLength(17)]
         public string fssno { get; set; }
 
-        [StringLength(30)]
+        [StringLength(100)]
         public string fsurname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string firstname { get; set; }
 
-        [StringLength(20)]
+        [StringLength(100)]
         public string fothname { get; set; }
 
         [StringLength(1)]
@@ -34,7 +29,7 @@ namespace NAPSOMIS_Webpoint.Models
 
         public DateTime? fb_date { get; set; }
 
-        [StringLength(60)]
+        [StringLength(500)]
         public string fper_addr { get; set; }
 
         [StringLength(15)]
@@ -43,10 +38,10 @@ namespace NAPSOMIS_Webpoint.Models
         [StringLength(1)]
         public string fmst_stat { get; set; }
 
-        [StringLength(45)]
+        [StringLength(100)]
         public string frname { get; set; }
 
-        [StringLength(60)]
+        [StringLength(500)]
         public string fraddress { get; set; }
 
         [StringLength(15)]
@@ -66,67 +61,30 @@ namespace NAPSOMIS_Webpoint.Models
         public DateTime? fjoindate { get; set; }
 
         [StringLength(60)]
-        public string fburial_pl { get; set; }
+        public string fburial_place { get; set; }
 
         [StringLength(4)]
         public string fdth_evid { get; set; }
 
-        [StringLength(60)]
-        public string fmresd_add { get; set; }
+        [StringLength(500)]
+        public string fmresd_addr { get; set; }
 
         [StringLength(40)]
-        public string fmhome_tow { get; set; }
+        public string fmhome_town { get; set; }
 
         [StringLength(11)]
         public string flast_erno { get; set; }
 
         [StringLength(1)]
-        public string fdth_statu { get; set; }
+        public string fdth_status { get; set; }
 
-        [StringLength(60)]
+        [StringLength(200)]
         public string freason { get; set; }
 
-        [StringLength(1)]
-        public string freject_co { get; set; }
-
         [StringLength(2)]
-        public string finvestiga { get; set; }
+        public string finvestigator { get; set; }
 
-        [StringLength(1)]
-        public string fstatus { get; set; }
-
-        public DateTime? finvest_da { get; set; }
-
-        [StringLength(1)]
-        public string fpen_stat { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? fdue_age { get; set; }
-
-        [StringLength(2)]
-        public string fbt_award { get; set; }
-
-        public DateTime? fdue_date { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? fmths_cr { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? flast_3mths { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? fcredit_p { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? fadd_mths { get; set; }
-
-        [Column(TypeName = "numeric")]
-        public decimal? fpen_right { get; set; }
-
-        public DateTime? fterm_date { get; set; }
-
-        [StringLength(1)]
-        public string fjob_stat { get; set; }
+        public DateTime? finvest_date { get; set; }
 
         public DateTime? fdateupd { get; set; }
 
@@ -142,7 +100,9 @@ namespace NAPSOMIS_Webpoint.Models
 
         public bool? DeleteFlag { get; set; }
 
-        [Key]
-        public int ID_SBTS { get; set; }
+        public bool? ftran_log { get; set; }
+
+        [StringLength(12)]
+        public string fsclaim_no { get; set; }
     }
 }

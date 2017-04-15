@@ -1,0 +1,200 @@
+﻿@model NAPSOMIS_Webpoint.Models.Message
+
+@using NAPSOMIS_Webpoint.Models
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "Messenger";
+}
+
+<div class="accountHeader">
+
+    @*<p style="color:red">@ViewBag.ErrorMessage</p>*@
+</div>
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/mail_reply_all-3.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">NAPSOMIS Messenger </text>
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please click below to navigate to your desired section. </text>
+    <br />
+
+</div>
+
+@Html.DevExpress().FormLayout(settings =>
+{
+
+    settings.Name = "prefgroup";
+    settings.ColCount = 1;
+
+    settings.Items.Add(b =>
+    {
+        b.ShowCaption = DefaultBoolean.True;
+        b.Caption = "";
+
+        b.NestedExtension().Button(bt =>
+        {
+
+            bt.Name = "cmdCompose";
+            bt.Text = "Compose New Message";
+            bt.UseSubmitBehavior = true;
+            bt.Width = Unit.Pixel(180);
+
+            bt.RouteValues = new { Controller = "Accounts", Action = "Messenger_Compose" };
+
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.ShowCaption = DefaultBoolean.True;
+        b.Caption = "";
+
+        b.NestedExtension().Button(bt =>
+        {
+
+            bt.Name = "cmdInbox";
+            bt.Text = "Inbox";
+            bt.UseSubmitBehavior = true;
+            bt.Width = Unit.Pixel(180);
+
+            bt.RouteValues = new { Controller = "Accounts", Action = "Messenger_Inbox" };
+
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.ShowCaption = DefaultBoolean.True;
+        b.Caption = "";
+
+        b.NestedExtension().Button(bt =>
+        {
+
+            bt.Name = "cmdSent";
+            bt.Text = "Sent";
+            bt.UseSubmitBehavior = true;
+            bt.Width = Unit.Pixel(180);
+
+            bt.RouteValues = new { Controller = "Accounts", Action = "Messenger_Sent" };
+
+        });
+    });
+
+    settings.Items.Add(b =>
+    {
+        b.ShowCaption = DefaultBoolean.True;
+        b.Caption = "";
+
+        b.NestedExtension().Button(bt =>
+        {
+
+            bt.Name = "cmdSummary";
+            bt.Text = "Summary";
+            bt.UseSubmitBehavior = true;
+            bt.Width = Unit.Pixel(180);
+
+            bt.RouteValues = new { Controller = "Accounts", Action = "Messenger_Summary" };
+
+        });
+    });
+
+}).GetHtml()
+
+<br />
+<br />
+
+@{
+    if (ViewBag.Operation != null)
+        {
+
+
+        @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "operatonpopup";
+
+       //setting.ShowOnPageLoad = true;
+       //setting.CloseOnEscape = true;
+       //setting.CloseAction = CloseAction.CloseButton;
+
+       //setting.ShowPinButton = true;
+       //setting.ShowMaximizeButton = true;
+       setting.ShowCollapseButton = true;
+       //setting.PopupAnimationType = AnimationType.Fade;
+       //setting.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+       //setting.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+
+       string Operation = ViewBag.Operation;
+       setting.HeaderText = Operation;
+
+       setting.SetContent(() =>
+       {
+
+           if (Operation == "Compose")
+               {
+
+               Html.RenderPartial("Compose", new Message());
+
+               }
+
+           if (Operation == "Inbox")
+               {
+
+               NAPSOMIS_Webpoint.Models.NAPSOMISModel db = new NAPSOMIS_Webpoint.Models.NAPSOMISModel();
+               List<Message> dmess = new List<Message>();
+
+               string ReceipientID = Session["AccountID"].ToString();
+
+               dmess = db.Messages.Where(b => b.ReceipientID == ReceipientID).ToList();
+
+               IEnumerable<Message> enu = (IEnumerable<Message>)dmess;
+
+               Html.RenderPartial("Inbox", enu);
+
+               }
+
+           if (Operation == "Sent")
+               {
+
+               Html.RenderPartial("Sent");
+
+               }
+
+           if (Operation == "Summary")
+               {
+
+               Html.RenderPartial("Summary");
+
+               }
+
+           if (Operation == "View")
+               {
+
+               NAPSOMIS_Webpoint.Models.NAPSOMISModel db = new NAPSOMIS_Webpoint.Models.NAPSOMISModel();
+               List<Message> dmess = new List<Message>();
+
+               string ReceipientID = Session["AccountID"].ToString();
+
+               dmess = db.Messages.Where(b => b.ReceipientID == ReceipientID).Where(b => b.MessageID == Model.MessageID).ToList();
+ 
+               Html.RenderPartial("Compose", dmess[0]);
+
+               }
+
+
+       });
+
+   }).GetHtml()
+
+
+
+        }
+}
+

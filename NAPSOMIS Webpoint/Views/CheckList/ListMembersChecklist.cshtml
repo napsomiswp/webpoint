@@ -4,13 +4,31 @@
 @model PrintCheckListTemplate
 
 @{
-    ViewBag.Title = "Print Check List";
+    ViewBag.Title = "Search Member";
 }
+ 
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> List/Search for Members Records</text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
+
+
+    <br />
+
+</div>
+
 <br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:larger;"> List/Search for Members Records</text>
 <br />
-<text style="font-size:small; padding-left:10px;">Please provide the required information below</text>
+<br />
+<br />
 
 
 @using (Html.BeginForm("ListMembersCheckListbyReferenceNo", "CheckList", FormMethod.Post))
@@ -59,7 +77,7 @@
     settings.ColCount = 2;
 
     settings.Items.AddGroupItem(group => {
-        group.Caption = "Search by Date";
+        group.Caption = "Search by Date (CreatedOn)";
         group.ColSpan = 2;
 
         group.Items.Add(b => b.StartDate).NestedExtension().DateEdit(d =>
@@ -107,13 +125,17 @@
 
     }
 
+@{ 
+    if (Model.StartDate != null)
+        {
+
 @Html.DevExpress().RoundPanel(settings =>
 {
     settings.Name = "panellistmembers";
     settings.HeaderText = "Search Result (Members)";
     settings.AllowCollapsingByHeaderClick = true;
     settings.EnableAnimation = true;
-    settings.ShowCollapseButton = true;
+    //settings.ShowCollapseButton = true;
 
     settings.SetContent(() =>
     {
@@ -122,22 +144,22 @@
 
             NAPSOMISModel db = new NAPSOMISModel();
 
-            List<MemberTransaction> fmd = new List<MemberTransaction>();
+            List<mem_tr> fmd = new List<mem_tr>();
 
             if (Model.ReferenceNo == "")
                 {
 
-                var dmember = from s in db.MemberTransactions where s.CreatedOn >= Model.StartDate && s.CreatedOn <= Model.EndDate select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
+                var dmember = from s in db.mem_tr where s.CreatedOn >= Model.StartDate && s.CreatedOn <= Model.EndDate select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
 
                 var fullmember = dmember.ToList();
 
                 int dindex = 0;
 
-                List<NomTemp> alldependants = new List<NomTemp>();
+                List<nom_tr> alldependants = new List<nom_tr>();
 
                 foreach (var record in fullmember)
                     {
-                    MemberTransaction cm = new MemberTransaction();
+                    mem_tr cm = new mem_tr();
 
                     cm.fref_no = record.fref_no;
                     cm.fssno = record.fssno;
@@ -154,7 +176,7 @@
                     cm.ftown = record.ftown;
                     cm.fb_date = record.fb_date;
 
-                    cm.ID_SBTS = record.ID_SBTS;
+                    //cm.ID_SBTS = record.ID_SBTS;
 
                     fmd.Add(cm);
                     }
@@ -162,7 +184,7 @@
                 if (fmd.Count > 0)
                     {
 
-                    IEnumerable<MemberTransaction> memberslist = (IEnumerable<MemberTransaction>)fmd;
+                    IEnumerable<mem_tr> memberslist = (IEnumerable<mem_tr>)fmd;
 
                     if (memberslist.Count() > 0)
                         {
@@ -174,15 +196,15 @@
             else
                 {
 
-                var dmember = from s in db.MemberTransactions where s.fref_no == Model.ReferenceNo select new { s.ID_SBTS, s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
+                var dmember = from s in db.mem_tr where s.fref_no == Model.ReferenceNo select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, s.ftown, s.fb_date };
 
                 var fullmember = dmember.ToList();
 
-                List<NomTemp> alldependants = new List<NomTemp>();
+                List<nom_tr> alldependants = new List<nom_tr>();
 
                 foreach (var record in fullmember)
                     {
-                    MemberTransaction cm = new MemberTransaction();
+                    mem_tr cm = new mem_tr();
 
                     cm.fref_no = record.fref_no;
                     cm.fssno = record.fssno;
@@ -199,7 +221,7 @@
                     cm.ftown = record.ftown;
                     cm.fb_date = record.fb_date;
 
-                    cm.ID_SBTS = record.ID_SBTS;
+                    //cm.ID_SBTS = record.ID_SBTS;
 
                     fmd.Add(cm);
                     }
@@ -207,7 +229,7 @@
                 if (fmd.Count > 0)
                     {
 
-                    IEnumerable<MemberTransaction> memberslist = (IEnumerable<MemberTransaction>)fmd;
+                    IEnumerable<mem_tr> memberslist = (IEnumerable<mem_tr>)fmd;
 
                     if (memberslist.Count() > 0)
                         {
@@ -229,3 +251,5 @@
 }).GetHtml()
 
 
+        }
+}

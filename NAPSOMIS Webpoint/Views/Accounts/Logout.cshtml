@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Successfull Logout";
+}
+
+<br />
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/user_group_properties.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">You have been logged out! </text>
+    <br />
+
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">You have successfully logout.  </text>
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">All your session variables have been cleared.</text>
+
+    <br />
+    <br />
+
+@Html.DevExpress().Button(bt =>
+{
+    bt.Text = "Goto to Login";
+    bt.Width = Unit.Pixel(100);
+    bt.Name = "loginbutton";
+
+    bt.RouteValues = new { Controller = "Accounts", Action = "Login" };
+
+}).GetHtml()
+
+    <br />
+    <br />
+
+</div>
+ 

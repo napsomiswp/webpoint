@@ -5,12 +5,26 @@
     ViewBag.Title = "Update Establishment";
 }
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Establishment </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please edit the form using reliable and approprivate information</text>
 
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Establishment </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please edit the form using reliable and approprivate information</text>
+
+
+
+    <br />
+
+</div>
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
@@ -81,6 +95,11 @@
 
     settings.Items.AddGroupItem(g =>
     {
+        g.Caption = "Search";
+        g.Name = "searchttab";
+        g.ColSpan = 1;
+        g.ColCount = 1;
+
         g.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
         {
             b.Name = "ferno_search";
@@ -143,6 +162,7 @@
                     {
                         b.Name = "ferno";
                         b.ReadOnly = true;
+                        b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
                     });
 
                     dg.Items.Add(m => m.femp_name).NestedExtension().TextBox(b =>
@@ -405,6 +425,29 @@
                             //b.Properties.IncrementalFilteringMode = IncrementalFilteringMode.Contains;
                         });
                     });
+
+
+                    dg.Items.AddGroupItem(gr =>
+                    {
+                        gr.Name = "statusgroup";
+                        gr.Caption = "Establishment Status";
+                        gr.ColSpan = 1;
+                        gr.ColCount = 1;
+                        gr.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                        gr.Items.Add(m => m.fstatus).NestedExtension().ComboBox(b =>
+                        {
+
+                            b.Name = "fstatus";
+                            b.Properties.Items.Add("Normal", "N");
+                            b.Properties.Items.Add("Deactivated", "D");
+                            b.Properties.Items.Add("Active", "A");
+                            b.Properties.Items.Add("Close Down", "C");
+
+                        });
+
+                    });
+
 
                 });
 

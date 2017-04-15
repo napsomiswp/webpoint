@@ -20,8 +20,8 @@ namespace NAPSOMIS_Webpoint.Controllers
  
         public ActionResult Search(ListGeneratedEmployerViewModel l)
             {
-            List<EmployMastersheet> emp = new List<EmployMastersheet>();
-            emp = db.EmployMastersheets.Where(b => b.ferno == l.ferno).ToList();
+            List<emp_mst> emp = new List<emp_mst>();
+            emp = db.emp_mst.Where(b => b.ferno == l.ferno).ToList();
 
             if (emp.Count > 0)
                 {
@@ -43,8 +43,8 @@ namespace NAPSOMIS_Webpoint.Controllers
  
         public ActionResult PrintPreview(ListGeneratedEmployerViewModel l)
             {
-            List<MemberTransaction> m = new List<MemberTransaction>();
-            m = db.MemberTransactions.Where(b => b.ferno == l.ferno).ToList();
+            List<mem_tr> m = new List<mem_tr>();
+            m = db.mem_tr.Where(b => b.ferno == l.ferno).ToList();
 
             if (m.Count > 0)
                 {

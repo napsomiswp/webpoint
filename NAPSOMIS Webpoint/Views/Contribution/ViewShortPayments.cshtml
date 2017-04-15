@@ -1,0 +1,306 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ViewShortPaymentsViewModel
+
+    @using NAPSOMIS_Webpoint.ViewModels
+    @using NAPSOMIS_Webpoint.Models;
+
+    @{
+        ViewBag.Title = "View Short Payments";
+    }
+
+
+    <div class="col-md-1" style="background-color:white; font-size:small;">
+        <br />
+        <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
+
+    </div>
+
+    <div class="col-md-11" style="background-color:white; font-size:small;">
+        <br />
+        <text style="color:midnightblue; padding-left:10px; font-size:large;"> View Short Payments </text>
+        <br />
+        <text style="font-size:small; padding-left:10px;">Please search using the form below</text>
+        <br />
+        <text style="font-size:small; padding-left:10px;">by providing the relevant search criteria</text>
+         
+        <br />
+         
+
+        @using (Html.BeginForm("ViewShortPayments_Receive", "Contribution", FormMethod.Post))
+            {
+
+            @Html.AntiForgeryToken()
+            @Html.DevExpress().FormLayout(setting =>
+       {
+           setting.Name = "receivecrlayout";
+           setting.ColCount = 3;
+
+           setting.Items.AddGroupItem(group =>
+           {
+               group.Name = "firstgroup";
+               group.Caption = "Basic Details";
+               group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+               group.ColSpan = 3;
+               group.ColCount = 3;
+
+               if (ViewBag.Message != null)
+                   {
+                   group.Items.Add(b =>
+                   {
+                       b.ShowCaption = DefaultBoolean.False;
+                       b.Name = "MessageGroup";
+
+                       b.NestedExtension().Label(lb =>
+                       {
+                           lb.Name = "lblmessage";
+                           lb.Text = ViewBag.Message;
+                           lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+                       });
+
+                   });
+
+                   group.Items.AddEmptyItem();
+                   group.Items.AddEmptyItem();
+
+                   }
+
+               group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "ferno";
+
+               });
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup0";
+                   bt.ShowCaption = DefaultBoolean.True;
+                   bt.Caption = "";
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdloaderno";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Load";
+                       b.RouteValues = new { Controller = "Contribution", Action = "ViewShortPayments_LoadERNo" };
+                       b.UseSubmitBehavior = true;
+
+                   });
+
+               });
+
+               group.Items.Add(b => b.femp_name).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "femp_name";
+                   c.ReadOnly = true;
+                   c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+               });
+
+
+               group.Items.Add(b => b.fcat).NestedExtension().ComboBox(b =>
+               {
+
+                   b.Name = "fcat";
+
+                   List<PDCTemplate> myprovinces = (List<PDCTemplate>)TempData.Peek("MyEmployerCategories");
+
+                   b.Properties.Columns.Add("Code", "Code", Unit.Pixel(70));
+                   b.Properties.Columns.Add("Name", "Name", Unit.Pixel(250));
+
+                   b.Properties.DataSource = myprovinces;
+                   b.Properties.TextField = "Name";
+                   b.Properties.ValueField = "Code";
+
+               });
+
+               group.Items.Add(b => b.fperiod).NestedExtension().TextBox(c =>
+               {
+                   c.Name = "fperiod";
+
+               });
+
+               group.Items.Add(b => b.ftype).NestedExtension().ComboBox(t =>
+               {
+                   t.Name = "ftype";
+                   t.Properties.Items.Add("Regular", "R");
+                   t.Properties.Items.Add("Backpay", "B");
+
+                   t.SelectedIndex = 0;
+
+               });
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup";
+                   bt.ShowCaption = DefaultBoolean.True;
+                   bt.Caption = "";
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdsearch";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "OK";
+                       b.RouteValues = new { Controller = "Contribution", Action = "ViewShortPayments_OK" };
+                       b.UseSubmitBehavior = true;
+
+                   });
+
+               });
+
+
+
+           });
+
+           setting.Items.AddGroupItem(group =>
+           {
+
+               group.Name = "buttongroup";
+               group.Caption = "Actions";
+               group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+               group.ColSpan = 3;
+               group.ColCount = 3;
+
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup";
+                   bt.ShowCaption = DefaultBoolean.False;
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdreset";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Clear";
+                       b.RouteValues = new { Controller = "Contribution", Action = "ViewShortPayments" };
+                       b.UseSubmitBehavior = false;
+
+                   });
+
+               });
+
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup2";
+                   bt.ShowCaption = DefaultBoolean.False;
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdfetch";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Fetch";
+                       b.RouteValues = new { Controller = "Contribution", Action = "ViewShortPayments_Fetch" };
+                       b.UseSubmitBehavior = false;
+
+                   });
+
+               });
+
+
+               group.Items.Add(bt =>
+               {
+                   bt.Name = "btgroup3";
+                   bt.ShowCaption = DefaultBoolean.False;
+
+                   bt.NestedExtension().Button(b =>
+                   {
+                       b.Name = "cmdProcess";
+                       b.Width = Unit.Pixel(100);
+                       b.Text = "Process";
+                       b.RouteValues = new { Controller = "Contribution", Action = "ViewShortPayments_Process" };
+                       b.UseSubmitBehavior = false;
+
+                   });
+
+               });
+
+
+           });
+
+
+       }).GetHtml()
+
+
+            }
+
+@Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "tobepostedpanel";
+       setting.HeaderText = "To Be Posted";
+       setting.ShowCollapseButton = true;
+       setting.Width = Unit.Pixel(800);
+
+       setting.SetContent(() =>
+       {
+
+           if (TempData.Peek("TOBEPOSTED") != null)
+               {
+
+               List<MemberContributionTransaction> mems = new List<MemberContributionTransaction>();
+               mems = (List<MemberContributionTransaction>)TempData.Peek("TOBEPOSTED");
+
+               IEnumerable<MemberContributionTransaction> penum = (IEnumerable<MemberContributionTransaction>)mems;
+
+               @Html.RenderPartial("ViewShortPaymentsPToBePosted", penum);
+
+               }
+
+       });
+
+   }).GetHtml()
+
+
+        @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "postedpanel";
+       setting.HeaderText = "Posted";
+       setting.ShowCollapseButton = true;
+       setting.Width = Unit.Pixel(800);
+
+       setting.SetContent(() =>
+       {
+
+           if (TempData.Peek("POSTED") != null)
+               {
+
+               List<MemberContributionTransaction> mems = new List<MemberContributionTransaction>();
+               mems = (List<MemberContributionTransaction>)TempData.Peek("POSTED");
+
+               IEnumerable<MemberContributionTransaction> penum = (IEnumerable<MemberContributionTransaction>)mems;
+
+               @Html.RenderPartial("ViewShortPaymentsPToBePosted", penum);
+
+               }
+
+       });
+
+   }).GetHtml()
+
+
+        @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "invalidpanel";
+       setting.HeaderText = "Invalid";
+       setting.ShowCollapseButton = true;
+       setting.Width = Unit.Pixel(800);
+
+       setting.SetContent(() =>
+       {
+
+           if (TempData.Peek("INVALID") != null)
+               {
+
+               List<InvalidContributionReport> mems = new List<InvalidContributionReport>();
+               mems = (List<InvalidContributionReport>)TempData.Peek("INVALID");
+
+               IEnumerable<InvalidContributionReport> penum = (IEnumerable<InvalidContributionReport>)mems;
+
+               @Html.RenderPartial("ViewShortPaymentsInvalid", penum);
+
+               }
+
+       });
+
+   }).GetHtml()
+
+
+    </div>

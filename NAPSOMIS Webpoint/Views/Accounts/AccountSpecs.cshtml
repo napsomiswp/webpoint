@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "AccountSpecs";
+}
+
+<br />
+<br />
+ 
+<div class="col-md-2" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/user_group_properties.png" />
+
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:medium; height:100%">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">Details of your Account </text>
+
+    <br />
+
+    @{
+        if (Session["UserName"] != null)
+            {
+             @Html.DevExpress().FormLayout(settings =>
+        {
+
+            settings.Name = "prefgroup";
+            settings.ColCount = 1;
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["FullNameofUser"].ToString();
+                    b.Caption = "Full Name";
+                });
+
+            });
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["UserGroup"].ToString();
+                    b.Caption = "User Group";
+                });
+
+            });
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["AccountStatus"].ToString();
+                    b.Caption = "Account Status";
+                });
+
+            });
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["Department"].ToString();
+                    b.Caption = "Department";
+                });
+
+            });
+
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["Branch"].ToString();
+                    b.Caption = "Branch";
+
+                });
+
+            });
+
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["RecordAccessLevel"].ToString();
+                    b.Caption = "Record Access Level";
+
+                });
+
+            });
+
+
+            settings.Items.AddEmptyItem();
+            settings.Items.AddEmptyItem();
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["LoginDate"].ToString();
+                    b.Caption = "Login Date";
+
+                });
+
+            });
+
+            settings.Items.Add(b =>
+            {
+                b.NestedExtension().Label(lb =>
+                {
+                    lb.Text = Session["LoginTime"].ToString();
+                    b.Caption = "Login Time";
+
+                });
+
+            });
+
+        }).GetHtml()
+
+            }
+
+    }
+
+
+</div>
+

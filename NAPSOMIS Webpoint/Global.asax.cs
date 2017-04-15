@@ -33,8 +33,10 @@ namespace NAPSOMIS_Webpoint
         {
             Exception exception = System.Web.HttpContext.Current.Server.GetLastError();
             //TODO: Handle Exception
+             
+            
         }
-
+        
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             DevExpressHelper.Theme = "PlasticBlue";
@@ -53,6 +55,6 @@ namespace NAPSOMIS_Webpoint
             //Office2010Black
             //Glass   *
         }
-
+ 
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.NomTemp>
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.nom_tr>
   
 @{
     ViewBag.Title = "Dependants";
@@ -41,8 +41,8 @@
              {
           <tr>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID_SBTS }) |
-            @Html.ActionLink("Delete", "Delete", new { Controller = "CaptureRegistrationForms", id = item.ID_SBTS }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.nom_id }) |
+            @Html.ActionLink("Delete", "Delete", new { Controller = "CaptureRegistrationForms", id = item.nom_id }) |
             @*@Html.ActionLink("Delete", "Delete", new { Controller = "CaptureRegistrationForms", Action = "CompleteCapture", id = item.ID_SBTS }) |*@
 
         </td>

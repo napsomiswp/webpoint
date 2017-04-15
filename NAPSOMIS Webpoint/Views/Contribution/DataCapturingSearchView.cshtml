@@ -1,0 +1,82 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.CRSReg>
+
+@{
+    ViewBag.Title = "Data Capturing Search View";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Action</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fperiod)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcat)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ftype)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fmedia)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fdate_rec)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fnowkr)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.ftot_cr)
+            </th>
+
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Accept", "ReceiveCRDC_Accept", new { Controller = "Contribution", id = item.ID_SBTS }) |
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fperiod)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ftype)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fmedia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fdate_rec)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fnowkr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ftot_cr)
+                        </td>
+
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>

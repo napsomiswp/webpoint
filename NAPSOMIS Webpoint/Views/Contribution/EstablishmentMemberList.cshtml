@@ -1,0 +1,97 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.HistoryMaster>
+
+
+@{
+    ViewBag.Title = "Establishmemt Members";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;"> 
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+           
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcat)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fpcentre)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fsurname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fothername)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fstaffno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcur_cr)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fflag)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fremark)
+            </th>
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                         
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fpcentre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fsurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fothername)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fstaffno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcur_cr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fflag)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fremark)
+                        </td>
+                       
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

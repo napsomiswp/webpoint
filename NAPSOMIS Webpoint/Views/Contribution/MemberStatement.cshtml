@@ -1,0 +1,196 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.MemberStatementViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Member Statement";
+}
+<br />
+<br />
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Member Statement </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Produce Member Statement by using the form below</text> 
+</div>
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ftype.GetText();
+
+        if (thetype == "Regular") {
+            fbaktype.SetVisible(false);
+            fmode.SetVisible(true);
+        } else {
+            fbaktype.SetVisible(true);
+            fmode.SetVisible(false);
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("MemberStatement_Receive", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(m => m.TypeofReport).NestedExtension().RadioButtonList(b =>
+        {
+            b.Name = "TypeofReport";
+            b.Properties.Items.Add("For a Member SS Number", "S");
+            b.Properties.Items.Add("For all Members of an Employer", "E");
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.SSNo).NestedExtension().TextBox(c =>
+        {
+            c.Name = "SSNo";
+
+        });
+
+        group.Items.Add(b => b.NameOfMember).NestedExtension().TextBox(c =>
+        {
+            c.Name = "NameOfMember";
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btloadssno";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloadssnodata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberStatement_LoadSSNo" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.ERNo).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ERNo";
+
+        });
+
+        group.Items.Add(b => b.Emp_Name).NestedExtension().TextBox(c =>
+        {
+            c.Name = "Emp_Name";
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btloaderno";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloadernodata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberStatement_LoadERNo" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.Year).NestedExtension().TextBox(c =>
+        {
+            c.Name = "Year";
+
+        });
+
+    });
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Start New Entry";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberStatement" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdcomplete";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Accept";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberStatement_OK" };
+                b.UseSubmitBehavior = true;
+              
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+
+    }
+ 

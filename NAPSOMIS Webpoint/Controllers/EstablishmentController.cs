@@ -35,7 +35,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             }
 
 
-        public ActionResult RegisterNew_Save(EmployMastersheet emp)
+        public ActionResult RegisterNew_Save(emp_mst emp)
             {
 
             try
@@ -52,7 +52,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                         startno += 1;
                         string fullstartno = CompleteStartNo(startno);
 
-                        erno = "W01" + emp.fecon_act.ToString() + emp.freg_date.ToString("yyyy") + fullstartno;
+                        erno = "W01" + emp.fecon_act.ToString() + emp.freg_date.Value.ToString("yyyy") + fullstartno;
 
                         if (checkifernoisused(erno) == false) break;
 
@@ -63,7 +63,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                     emp.CreatedOn = DateTime.Today;
 
 
-                    db.EmployMastersheets.Add(emp);
+                    db.emp_mst.Add(emp);
                     db.SaveChanges();
 
                     return View("RegisterNew", emp);
@@ -85,7 +85,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
         private bool checkifernoisused(string erno)
             {
-            int thecount = db.EmployMastersheets.Where(p => p.ferno == erno).Count();
+            int thecount = db.emp_mst.Where(p => p.ferno == erno).Count();
 
             if (thecount > 0)
                 {
@@ -154,8 +154,8 @@ namespace NAPSOMIS_Webpoint.Controllers
             if (emp.ferno != "" && emp.ferno != null)
                 {
 
-                List<EmployMastersheet> employer = new List<EmployMastersheet>();
-                employer = db.EmployMastersheets.Where(b => b.ferno == emp.ferno).ToList();
+                List<emp_mst> employer = new List<emp_mst>();
+                employer = db.emp_mst.Where(b => b.ferno == emp.ferno).ToList();
 
                 if (employer.Count > 0)
                     {
@@ -187,14 +187,14 @@ namespace NAPSOMIS_Webpoint.Controllers
             {
             return View("UpdateEstablishment");
             }
-        
-        public ActionResult UpdateEstablishment_Search(EmployMastersheet emp)
+
+        public ActionResult UpdateEstablishment_Search(emp_mst emp)
             {
 
             var refno = Request["ferno_search"];
 
-            List<EmployMastersheet> employer = new List<EmployMastersheet>();
-            employer = db.EmployMastersheets.Where(b => b.ferno == refno).ToList();
+            List<emp_mst> employer = new List<emp_mst>();
+            employer = db.emp_mst.Where(b => b.ferno == refno).ToList();
 
             if (employer.Count > 0)
                 {
@@ -208,13 +208,13 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             }
 
-        public ActionResult UpdateEstablishment_Update(EmployMastersheet emp)
+        public ActionResult UpdateEstablishment_Update(emp_mst emp)
             {
 
-            List<EmployMastersheet> employer = new List<EmployMastersheet>();
-            employer = db.EmployMastersheets.Where(b => b.ferno == emp.ferno).ToList();
+            List<emp_mst> employer = new List<emp_mst>();
+            employer = db.emp_mst.Where(b => b.ferno == emp.ferno).ToList();
 
-            EmployMastersheet demp = new EmployMastersheet();
+            emp_mst demp = new emp_mst();
 
             //This checks if the an employer record was collected
 
@@ -245,7 +245,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 demp.fsalpatt = emp.fsalpatt;
                 demp.fschme = emp.fschme;
                 demp.fsite = emp.fsite;
-                demp.fstatus = emp.fstatus;
+                //demp.fstatus = emp.fstatus;
                 demp.ftelno = emp.ftelno;
                 demp.ftown = emp.ftown;
                 demp.fzone = emp.fzone;
@@ -253,7 +253,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 demp.ModifiedOn = DateTime.Today;
 
 
-                db.EmployMastersheets.Attach(demp);
+                db.emp_mst.Attach(demp);
                 var entry = db.Entry(demp);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -264,7 +264,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 emp.CreatedOn = DateTime.Today;
                 emp.CreatedBy = "DEFAULT";
 
-                db.EmployMastersheets.Add(emp);
+                db.emp_mst.Add(emp);
                 db.SaveChanges();
                 }
 
@@ -375,7 +375,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             DataTable mytable = new DataTable();
 
             string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
-            string Query = "SELECT TOP 200 ferno, femp_name From EmployMastersheet ORDER BY femp_name ASC";
+            string Query = "SELECT TOP 200 ferno, femp_name From emp_mst ORDER BY femp_name ASC";
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
             dp.Fill(mytable);
 
@@ -411,12 +411,12 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             if (Search != "")
                 {
-                Query = "SELECT ferno, femp_name From EmployMastersheet WHERE femp_name LIKE '" + Search + "%' ORDER BY femp_name ASC";
+                Query = "SELECT ferno, femp_name From emp_mst WHERE femp_name LIKE '" + Search + "%' ORDER BY femp_name ASC";
 
                 }
             else
                 {
-                Query = "SELECT TOP 200 ferno, femp_name From EmployMastersheet ORDER BY femp_name ASC";
+                Query = "SELECT TOP 200 ferno, femp_name From emp_mst ORDER BY femp_name ASC";
 
                 }
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
@@ -443,6 +443,409 @@ namespace NAPSOMIS_Webpoint.Controllers
                 return mylist;
                 }
             }
+
+        #region "UPDATE MAIN EMPLOYER CATEGORIES"
+
+        public ActionResult UpdateEmployerMain()
+            {
+
+            TempData["MyMainCategories"] = GetMainCategories();
+
+            return View("UpdateEmployerMain");
+            }
+
+
+        public ActionResult UpdateEmployerMain_Save(main_cat m)
+            {
+
+            string searchCat = Request["cat_code_search"].ToString();
+
+            if (searchCat != "")
+                {
+                string[] thesplit = searchCat.Split(';');
+                string thecode = thesplit[0];
+
+                List<main_cat> themain = new List<main_cat>();
+                themain = db.main_cat.Where(b => b.cat_code == thecode).ToList();
+
+                if (themain.Count > 0)
+                    {
+                    themain[0].cat_code = m.cat_code;
+                    themain[0].description = m.description;
+
+                    db.main_cat.Attach(themain[0]);
+                    var entry = db.Entry(themain[0]);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+                    }
+
+                }
+            else
+                {
+                main_cat themain = new main_cat();
+                themain.cat_code = m.cat_code;
+                themain.description = m.description;
+
+                db.main_cat.Add(themain);
+                db.SaveChanges();
+                }
+
+            return RedirectToAction("UpdateEmployerMain");
+            }
+
+        private List<PDCTemplate> GetMainCategories()
+            {
+            DataTable mytable = new DataTable();
+
+            string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
+            string Query = "SELECT cat_code, description From main_cat";
+            System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
+            dp.Fill(mytable);
+
+            //List<District> district = db.Districts.SqlQuery("SELECT ID_SBTS, d_code, d_desc From District").ToList();
+
+            List<PDCTemplate> mylist = new List<PDCTemplate>();
+
+            if (mytable.Rows.Count > 0)
+                {
+                foreach (DataRow myp in mytable.Rows)
+                    {
+                    PDCTemplate ct = new PDCTemplate();
+                    ct.Code = myp.Field<String>("cat_code");
+                    ct.Name = myp.Field<String>("description");
+
+                    mylist.Add(ct);
+                    }
+
+                return mylist;
+                }
+            else
+                {
+                return mylist;
+                }
+            }
+
+
+
+        #endregion
+
+
+        #region "UPDATE STAFF CATEGORIES"
+
+        public ActionResult UpdateEmployerStaff()
+            {
+
+            TempData["MyStaffCategories"] = null;
+
+            return View("UpdateEmployerStaff");
+            }
+
+        public ActionResult UpdateEmployerStaff_ERNO(staf_cat m)
+            {
+
+
+            string ferno = m.ferno;
+            TempData["MyStaffCategories"] = GetStaffCategories(ferno);
+
+            staf_cat s = new staf_cat();
+            s.ferno = m.ferno;
+
+            return View("UpdateEmployerStaff", s);
+            }
+
+        public ActionResult UpdateEmployerStaff_Save(staf_cat m)
+            {
+
+            string searchCat = Request["cat_code_search"].ToString();
+
+            if (searchCat != "")
+                {
+                string[] thesplit = searchCat.Split(';');
+                string thecode = thesplit[0];
+
+                List<staf_cat> themain = new List<staf_cat>();
+                themain = db.staf_cat.Where(b => b.fcat == thecode).Where(c => c.ferno == m.ferno).ToList();
+
+                if (themain.Count > 0)
+                    {
+                    themain[0].fcat = m.fcat;
+                    themain[0].fdesc = m.fdesc;
+                    themain[0].ferno = m.ferno;
+                    themain[0].fmedia = m.fmedia;
+
+                    db.staf_cat.Attach(themain[0]);
+                    var entry = db.Entry(themain[0]);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+                    }
+
+                staf_cat st = new staf_cat();
+                st.ferno = m.ferno;
+
+                return RedirectToAction("UpdateEmployerStaff_ERNO", st);
+
+                }
+            else
+                {
+                staf_cat themain = new staf_cat();
+                themain.fcat = m.fcat;
+                themain.fdesc = m.fdesc;
+                themain.ferno = m.ferno;
+                themain.fmedia = m.fmedia;
+
+                db.staf_cat.Add(themain);
+                db.SaveChanges();
+
+                return RedirectToAction("UpdateEmployerStaff_ERNO", themain);
+                }
+
+
+            }
+
+        private List<PDCTemplate> GetStaffCategories(string erno)
+            {
+            DataTable mytable = new DataTable();
+
+            string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
+            string Query = "SELECT cat_code, description From Staf_Cat WHERE ferno = '" + erno + "'";
+
+            System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
+            dp.Fill(mytable);
+
+            //List<District> district = db.Districts.SqlQuery("SELECT ID_SBTS, d_code, d_desc From District").ToList();
+
+            List<PDCTemplate> mylist = new List<PDCTemplate>();
+
+            if (mytable.Rows.Count > 0)
+                {
+                foreach (DataRow myp in mytable.Rows)
+                    {
+                    PDCTemplate ct = new PDCTemplate();
+                    ct.Code = myp.Field<String>("cat_code");
+                    ct.Name = myp.Field<String>("description");
+
+                    mylist.Add(ct);
+                    }
+
+                return mylist;
+                }
+            else
+                {
+                return mylist;
+                }
+            }
+
+
+        #endregion
+
+
+        #region "DEACTIVATE ESTABLISHMENT"
+        public ActionResult Deactivate()
+            {
+            TempData["MyEstablishments"] = GetMyEstablishmentsbyFilter("");
+
+            return View("Deactivate");
+            }
+
+
+        public ActionResult Deactivate_OK(EstablishmentDeactReactViewModel est)
+            {
+            List<emp_mst> emp = new List<emp_mst>();
+            emp = db.emp_mst.Where(b => b.ferno == est.ferno).ToList();
+
+            if (emp.Count > 0)
+                {
+
+                emp_mst newemp = new emp_mst();
+                newemp = emp[0];
+                newemp.fstatus = "D";
+
+                db.emp_mst.Attach(newemp);
+                var entry = db.Entry(newemp);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+
+                est_deac estd = new est_deac();
+                estd.flast_cr = est.contribution.Value;
+                estd.ferno = est.ferno;
+                estd.flast_period = est.last_period;
+                estd.flast_lf = est.labour_force.Value;
+
+                db.est_deac.Add(estd);
+                db.SaveChanges();
+
+                return RedirectToAction("Deactivate");
+
+                }
+            else
+                {
+                return RedirectToAction("Deactivate");
+                }
+
+
+            }
+
+
+        public ActionResult Deactivate_CLOSE(EstablishmentDeactReactViewModel est)
+            {
+            List<emp_mst> emp = new List<emp_mst>();
+            emp = db.emp_mst.Where(b => b.ferno == est.ferno).ToList();
+
+            if (emp.Count > 0)
+                {
+
+                emp_mst newemp = new emp_mst();
+                newemp = emp[0];
+                newemp.fstatus = "C";
+
+                db.emp_mst.Attach(newemp);
+                var entry = db.Entry(newemp);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+
+                est_deac estd = new est_deac();
+                estd.flast_cr = est.contribution.Value;
+                estd.ferno = est.ferno;
+                estd.flast_period = est.last_period;
+                estd.flast_lf = est.labour_force.Value;
+
+                db.est_deac.Add(estd);
+                db.SaveChanges();
+
+                return RedirectToAction("Deactivate");
+
+                }
+            else
+                {
+                return RedirectToAction("Deactivate");
+                }
+
+
+            }
+
+        public ActionResult Deactivate_Load(EstablishmentDeactReactViewModel est)
+            {
+
+            List<emp_mst> ed = new List<emp_mst>();
+            ed = db.emp_mst.Where(b => b.ferno == est.ferno).ToList();
+
+            if (ed.Count > 0)
+                {
+
+                List<PDCTemplate> mylist = new List<PDCTemplate>();
+
+                PDCTemplate ct = new PDCTemplate();
+                ct.Code = ed[0].ferno;
+                ct.Name = ed[0].femp_name; 
+                mylist.Add(ct);
+
+                TempData["MyEstablishments"] = mylist;
+
+                EstablishmentDeactReactViewModel estmodel = new EstablishmentDeactReactViewModel();
+                estmodel.ferno = est.ferno;
+
+                return View("Deactivate", estmodel);
+                }
+
+            return View("Deactivate", est);
+            }
+
+
+        public ActionResult Deactivate_Filter(EstablishmentDeactReactViewModel est)
+            {
+
+            TempData["MyEstablishments"] = GetMyEstablishmentsbyFilter(est.fsearch);
+
+            return View("Deactivate", est);
+            }
+
+
+
+        #endregion
+
+
+        #region "DEACTIVATE ESTABLISHMENT"
+        public ActionResult ReActivate()
+            {
+            TempData["MyEstablishments"] = GetMyEstablishmentsbyFilter("");
+
+            return View("ReActivate");
+            }
+
+
+        public ActionResult ReActivate_OK(EstablishmentDeactReactViewModel est)
+            {
+            List<emp_mst> emp = new List<emp_mst>();
+            emp = db.emp_mst.Where(b => b.ferno == est.ferno).ToList();
+
+            if (emp.Count > 0)
+                {
+
+                emp_mst newemp = new emp_mst();
+                newemp = emp[0];
+                newemp.fstatus = "A";
+
+                db.emp_mst.Attach(newemp);
+                var entry = db.Entry(newemp);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+
+                est_deac estd = new est_deac();
+                estd.flast_cr = est.contribution.Value;
+                estd.ferno = est.ferno;
+                estd.flast_period = est.last_period;
+                estd.flast_lf = est.labour_force.Value;
+                estd.freact_period = est.begin_period;
+
+                db.est_deac.Add(estd);
+                db.SaveChanges();
+
+                return RedirectToAction("ReActivate");
+
+                }
+            else
+                {
+                return RedirectToAction("ReActivate");
+                }
+
+
+            }
+
+        public ActionResult ReActivate_Filter(EstablishmentDeactReactViewModel est)
+            {
+
+            TempData["MyEstablishments"] = GetMyEstablishmentsbyFilter(est.fsearch);
+
+            return View("ReActivate", est);
+            }
+
+
+        public ActionResult ReActivate_Load(EstablishmentDeactReactViewModel est)
+            {
+
+            List<est_deac> ed = new List<est_deac>();
+            ed = db.est_deac.Where(b => b.ferno == est.ferno).ToList();
+
+            if (ed.Count > 0)
+                {
+                EstablishmentDeactReactViewModel estmodel = new EstablishmentDeactReactViewModel();
+                estmodel.contribution = ed[0].flast_cr;
+                estmodel.ferno = ed[0].ferno;
+                estmodel.labour_force = ed[0].flast_lf;
+                estmodel.last_period = ed[0].flast_period;
+
+                return View("ReActivate", estmodel);
+                }
+
+            return View("ReActivate", est);
+            }
+
+        #endregion
 
         }
 

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.PeriodBreakDownViewModel>
+
+
+@{
+    ViewBag.Title = "Contribution Breakdown";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.Period)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.NoOfWorkers)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.TotalContribution)
+            </th>
+            
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.ID_SBTS }) |*@
+                            @Html.ActionLink("Delete", "DeletePeriod", new { Controller = "Contribution", id = item.ID}) |
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Period)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NoOfWorkers)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalContribution)
+                        </td>
+                        
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

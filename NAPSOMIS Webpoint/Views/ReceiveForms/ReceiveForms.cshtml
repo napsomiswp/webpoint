@@ -1,15 +1,25 @@
-﻿@model NAPSOMIS_Webpoint.Models.MemberTransaction
+﻿@model NAPSOMIS_Webpoint.Models.mem_tr
 
 @{
     ViewBag.Title = "Receive Forms";
 }
+ 
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Receive Form </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+</div>
 
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Receive Form </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the information below using the member form</text>
+
+
+    <br />
+
+</div>
 
 @using (Html.BeginForm()){
 
@@ -31,6 +41,27 @@
             sb.ColSpan = 3;
             sb.ColCount = 3;
 
+            if (ViewBag.Message != null)
+                {
+                sb.Items.Add(b =>
+                {
+                    b.ShowCaption = DefaultBoolean.False;
+                    b.Name = "MessageGroup";
+
+                    b.NestedExtension().Label(lb =>
+                    {
+                        lb.Name = "lblmessage";
+                        lb.Text = ViewBag.Message;
+                        lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+                    });
+
+                });
+
+                sb.Items.AddEmptyItem();
+                sb.Items.AddEmptyItem();
+
+                }
+
             sb.Items.Add(b => b.fref_no).NestedExtension().TextBox(t => {
                 t.Name = "fref_no";
                 t.Properties.HelpText = "Enter the Reference No here";
@@ -50,7 +81,7 @@
             sb.Items.Add(b => b.fjoindate);
 
             sb.Items.AddEmptyItem();
-            
+
             sb.Items.Add(i =>
             {
                 i.Caption = " ";

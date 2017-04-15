@@ -17,7 +17,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         //MEMBER TRANSACTION FIELDS
 
         [StringLength(17)]
-        [Display(Name="Batch")]
+        [Display(Name = "Batch")]
         public string fbatch { get; set; }
 
         [StringLength(12)]

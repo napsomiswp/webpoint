@@ -5,12 +5,23 @@
     ViewBag.Title = "Edit Government Employees Form";
 }
 
-<br />
-<img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
-<text style="color:midnightblue; padding-left:10px; font-size:large;"> Edit Member Registration Form </text>
-<br />
-<text style="font-size:small; padding-left:10px;">Please fill the information below using the government member form</text>
  
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Edit Member Registration Form </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the information below using the government member form</text>
+
+
+    <br />
+
+</div>
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
@@ -112,6 +123,27 @@
 
     s.Name = "CaptureGovernmentForms";
     s.ColCount = 3;
+
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
 
     s.Items.AddTabbedGroupItem(group =>
     {
@@ -399,6 +431,8 @@
 
             });
 
+
+           
         });
 
 

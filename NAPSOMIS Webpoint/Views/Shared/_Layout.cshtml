@@ -7,42 +7,47 @@
         @ViewBag.Title
     </title>
 
-@{
-    string TheTag = ViewBag.Tag;
 
-    if (TheTag == "PRINT")
-        {
-        Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
-    new StyleSheet { ExtensionSuite = ExtensionSuite.Report, Theme = "PlasticBlue" }, 
-    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
-);
 
-        Html.DevExpress().GetScripts(
-    new Script { ExtensionSuite = ExtensionSuite.Report },
-    new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
-);
-        }
-    else
-        {
-        @Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
+    @{
+        string TheTag = ViewBag.Tag;
+
+        if (TheTag == "PRINT")
+            {
+            Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Report, Theme = "PlasticBlue" },
         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
-    )
+        );
 
-        @Html.DevExpress().GetScripts(
+            Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.Report },
         new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
-    )
-        }
-}
- 
+        );
+            }
+        else
+            {
+            @Html.DevExpress().GetStyleSheets(ASPxWebClientUIControl.ColorSchemeLight,
+         new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "PlasticBlue" }
+     )
+
+            @Html.DevExpress().GetScripts(
+         new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+     )
+            }
+    }
+
 
     <link href="@Url.Content("~/Content/bootstrap-lumen.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/site.css")" rel="stylesheet">
 
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/site.js")" type="text/javascript"></script>
+
 </head>
 
 <body>
+
+
     <div class="wrapper">
         <header>
             <div class="container">
@@ -66,6 +71,25 @@
         </header>
 
         <div class="content" style="background-color:whitesmoke;">
+
+            <script type="text/javascript">
+                function ShowTime() {
+                 
+                    var dt = new Date();
+                    
+                    var labelref = document.getElementById("lbltime"); 
+                    labelref.innerText = dt.toLocaleTimeString();
+  
+                    window.setTimeout("ShowTime()", 1000);
+                }
+            </script>
+
+
+            <script type="text/javascript"> 
+               
+                window.setTimeout("ShowTime()", 1000);
+            </script>
+
             @*@using (Html.BeginForm()) {
 
                  @Html.DevExpress().Splitter(settings =>
@@ -114,13 +138,55 @@
                 }).GetHtml()
                  }*@
 
+
             <div class="col-md-1" style="background-color:whitesmoke; font-size:small;">
-                <p><H4 style="color:darkblue;">Welcome</H4></p>
-                <p>Name: Mohammed Turay</p>
-                <p>User Group: Administrator</p>
-                <p>Record Access: Save, Update, Delete</p>
-                <p>Login Date: 26/01/2017</p>
-                <p>Login Time: 09:21 AM</p>
+
+                @{
+                    if (Session["UserName"] != null)
+                        {
+                        <p><H4 style="color:darkblue;">Welcome</H4></p>
+                        <p>Name: @Session["FullNameofUser"]</p>
+                        <p>User Group: @Session["UserGroup"]</p>
+                        <p>Record Access: @Session["RecordAccessLevel"]</p>
+
+                        <p>Branch: @Session["Branch"]</p>
+                        <p>Department: @Session["Department"]</p>
+
+                        <p></p>
+                        <p>Login Date: @Session["LoginDate"]</p>
+                        <p>Login Time:@Session["LoginTime"]</p>
+
+                        <p></p>
+                        <p><H4 style="color:darkblue;">Time</H4></p>
+
+                        @Html.DevExpress().FormLayout(settings =>
+                   {
+                       settings.Name = "myset112";
+                       settings.ColCount = 1;
+                       settings.Items.Add(b =>
+                       {
+
+                           b.NestedExtension().Label(c =>
+                           {
+                               b.Caption = "";
+                               b.ShowCaption = DefaultBoolean.False;
+
+                               c.Name = "lbltime";
+                               c.ControlStyle.Font.Size = 11;
+                               c.ControlStyle.Font.Bold = true;
+                               c.ControlStyle.Font.Name = "Segoe UI";
+                             
+                           });
+                       });
+
+                   }).GetHtml()
+
+                        @*<label id="lbltime" onwaiting="ShowTime();">12:00:41</label>*@
+
+                        }
+
+                }
+
             </div>
 
             <div class="col-md-11">
@@ -142,6 +208,20 @@
                 }
 
             </div>
+
+            @*<div class="col-md-1" style="background-color:whitesmoke; font-size:small;">
+
+                    @{
+                        if (Session["UserName"] != null)
+                            {
+                            <p><H4 style="color:darkblue;">Welcome</H4></p>
+                            <p>Name: @Session["FullNameofUser"]</p>
+                            <p>User Group: @Session["UserGroup"]</p>
+                            }
+
+                    }
+
+                </div>*@
 
         </div>
 

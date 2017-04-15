@@ -440,7 +440,7 @@ public class XtraReportDependantsSubReport : DevExpress.XtraReports.UI.XtraRepor
             // 
             // objectDataSource1
             // 
-            this.objectDataSource1.DataSource = typeof(NAPSOMIS_Webpoint.Models.NomTemp);
+            this.objectDataSource1.DataSource = typeof(NAPSOMIS_Webpoint.Models.nom_tr);
             this.objectDataSource1.Name = "objectDataSource1";
             // 
             // REFNo

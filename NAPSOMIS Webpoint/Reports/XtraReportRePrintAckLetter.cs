@@ -67,9 +67,10 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
     private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraPrinting.BarCode.PDF417Generator pdF417Generator1 = new DevExpress.XtraPrinting.BarCode.PDF417Generator();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XtraReportRePrintAckLetter));
+            DevExpress.XtraPrinting.BarCode.Code128Generator code128Generator1 = new DevExpress.XtraPrinting.BarCode.Code128Generator();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
             this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel13 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel11 = new DevExpress.XtraReports.UI.XRLabel();
@@ -79,6 +80,7 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
+            this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPageInfo1 = new DevExpress.XtraReports.UI.XRPageInfo();
@@ -88,8 +90,6 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.xrLabel66 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrPictureBox1 = new DevExpress.XtraReports.UI.XRPictureBox();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
-            this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
-            this.xrRichText1 = new DevExpress.XtraReports.UI.XRRichText();
             this.EmployerMasterDataSource = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployerMasterDataSource)).BeginInit();
@@ -112,6 +112,15 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // xrRichText1
+            // 
+            this.xrRichText1.Dpi = 100F;
+            this.xrRichText1.Font = new System.Drawing.Font("Times New Roman", 9.75F);
+            this.xrRichText1.LocationFloat = new DevExpress.Utils.PointFloat(50.16667F, 209.7084F);
+            this.xrRichText1.Name = "xrRichText1";
+            this.xrRichText1.SerializableRtfString = resources.GetString("xrRichText1.SerializableRtfString");
+            this.xrRichText1.SizeF = new System.Drawing.SizeF(650.1663F, 357.375F);
             // 
             // xrLabel14
             // 
@@ -227,6 +236,19 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
+            // xrBarCode1
+            // 
+            this.xrBarCode1.AutoModule = true;
+            this.xrBarCode1.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "ferno", "{0}")});
+            this.xrBarCode1.Dpi = 100F;
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(24.58334F, 19.00001F);
+            this.xrBarCode1.Name = "xrBarCode1";
+            this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
+            this.xrBarCode1.ShowText = false;
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(264.125F, 35.29167F);
+            this.xrBarCode1.Symbology = code128Generator1;
+            // 
             // xrLabel5
             // 
             this.xrLabel5.Dpi = 100F;
@@ -315,7 +337,7 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             // 
             this.xrPictureBox1.Dpi = 100F;
             this.xrPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("xrPictureBox1.Image")));
-            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(635.7501F, 10.00001F);
+            this.xrPictureBox1.LocationFloat = new DevExpress.Utils.PointFloat(629.7501F, 17.00001F);
             this.xrPictureBox1.Name = "xrPictureBox1";
             this.xrPictureBox1.SizeF = new System.Drawing.SizeF(106.25F, 80.20834F);
             this.xrPictureBox1.Sizing = DevExpress.XtraPrinting.ImageSizeMode.ZoomImage;
@@ -327,29 +349,6 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // xrBarCode1
-            // 
-            this.xrBarCode1.AutoModule = true;
-            this.xrBarCode1.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "ferno", "{0}")});
-            this.xrBarCode1.Dpi = 100F;
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(24.58334F, 10.00001F);
-            this.xrBarCode1.Name = "xrBarCode1";
-            this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
-            this.xrBarCode1.ShowText = false;
-            this.xrBarCode1.SizeF = new System.Drawing.SizeF(264.125F, 35.29167F);
-            pdF417Generator1.Rows = 9;
-            this.xrBarCode1.Symbology = pdF417Generator1;
-            // 
-            // xrRichText1
-            // 
-            this.xrRichText1.Dpi = 100F;
-            this.xrRichText1.Font = new System.Drawing.Font("Times New Roman", 9.75F);
-            this.xrRichText1.LocationFloat = new DevExpress.Utils.PointFloat(50.16667F, 209.7084F);
-            this.xrRichText1.Name = "xrRichText1";
-            this.xrRichText1.SerializableRtfString = resources.GetString("xrRichText1.SerializableRtfString");
-            this.xrRichText1.SizeF = new System.Drawing.SizeF(650.1663F, 357.375F);
             // 
             // EmployerMasterDataSource
             // 
@@ -369,6 +368,7 @@ public class XtraReportRePrintAckLetter : DevExpress.XtraReports.UI.XtraReport
             this.PageHeight = 1169;
             this.PageWidth = 827;
             this.PaperKind = System.Drawing.Printing.PaperKind.A4;
+            this.SnapToGrid = false;
             this.Version = "16.1";
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployerMasterDataSource)).EndInit();

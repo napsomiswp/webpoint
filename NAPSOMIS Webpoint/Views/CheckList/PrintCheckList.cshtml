@@ -4,13 +4,11 @@
 
 @{
     ViewBag.Title = "Print Check List";
-}
-<br />
-
+} 
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/document-preview.png" style="width:60px; height:50px; padding-left:10px;" />
 
 </div>
 
@@ -32,6 +30,27 @@
 {
     settings.Name = "printchecklist";
     settings.ColCount = 2;
+
+
+    if (ViewBag.Message != null)
+        {
+        settings.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+         
+        settings.Items.AddEmptyItem();
+
+        }
 
     settings.Items.AddGroupItem(g =>
     {
@@ -63,6 +82,7 @@
             btn.Width = Unit.Pixel(100);
             btn.Text = "Accept";
             btn.UseSubmitBehavior = true;
+            btn.RouteValues = new { Controller = "CheckList", Action = "PrintCheckList_Print" };
         });
     });
 

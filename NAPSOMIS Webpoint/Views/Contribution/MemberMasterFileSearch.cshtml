@@ -1,0 +1,278 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.MemberMasterFileSearchViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Member Master File Search";
+}
+<br />
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Member Master File Search </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Search for Member records using any or all of the required fields below.</text>
+    <br />
+</div>
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ListBy.GetText();
+
+        if (thetype == "Period") {
+
+            //periodgroup.SetVisible(true);
+
+        } else {
+
+            //BeginPeriod.readOnly(true);
+            //BeginPeriod.SetText("")
+
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("MemberMasterFileSearch_OK", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Search Criteria";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(b => b.fssno).NestedExtension().TextBox(c =>
+        {
+            c.Name = "fssno";
+
+        });
+
+
+        group.Items.Add(b => b.fref_no).NestedExtension().TextBox(c =>
+        {
+            c.Name = "fref_no";
+
+        });
+
+        group.Items.Add(b => b.fsurname).NestedExtension().TextBox(c =>
+        {
+            c.Name = "fsurname";
+
+        });
+
+        group.Items.Add(b => b.firstname).NestedExtension().TextBox(c =>
+        {
+            c.Name = "firstname";
+
+        });
+
+        group.Items.Add(b => b.fothername).NestedExtension().TextBox(c =>
+        {
+            c.Name = "fothername";
+
+        });
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btloadssno";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloadernodata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Search";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberMasterFileSearch_Search" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+    });
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "detailsgroup";
+        group.Caption = "Member Record Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(b => b.dateofbirth).NestedExtension().DateEdit(c =>
+        {
+            c.Name = "dateofbirth";
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+
+        group.Items.Add(b => b.sex).NestedExtension().TextBox(c =>
+        {
+            c.Name = "sex";
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+
+        group.Items.AddGroupItem(groupin =>
+        {
+            groupin.Name = "detailsgroup";
+            groupin.Caption = "Place of Birth";
+            groupin.GroupBoxDecoration = GroupBoxDecoration.Box ;
+            groupin.ColSpan = 2;
+            groupin.ColCount = 2;
+
+            groupin.Items.Add(b => b.province).NestedExtension().TextBox(c =>
+            {
+                c.Name = "province";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            groupin.Items.Add(b => b.district).NestedExtension().TextBox(c =>
+            {
+                c.Name = "district";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            groupin.Items.Add(b => b.chiefdom).NestedExtension().TextBox(c =>
+            {
+                c.Name = "chiefdom";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+
+            groupin.Items.Add(b => b.town).NestedExtension().TextBox(c =>
+            {
+                c.Name = "town";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+        });
+
+
+    });
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Start New Entry";
+                b.RouteValues = new { Controller = "Contribution", Action = "MemberMasterFileSearch" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+
+    }
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+   
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+
+    @{
+        if (TempData.Peek("SearchMemberMasterList") != null)
+            {
+            @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "dearchownpanel";
+       setting.HeaderText = "List of Members from Search Criteria";
+
+       setting.SetContent(() =>
+       {
+
+           List<mper_mst> mlist = (List<mper_mst>)TempData.Peek("SearchMemberMasterList");
+
+           IEnumerable<mper_mst> penum = (IEnumerable<mper_mst>)mlist;
+
+           @Html.RenderPartial("MemberMasterSearchList", penum);
+
+       });
+
+   }).GetHtml()
+            }
+    }
+ 
+</div>
+
+
+

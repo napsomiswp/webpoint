@@ -10,7 +10,7 @@
  
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/folder_user.png" style="width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/view-pim-tasks.png" style="width:70px; height:60px; padding-left:10px;" />
 
 </div>
 
@@ -51,6 +51,10 @@
         });
 
         group.Items.AddEmptyItem();
+
+
+        group.Items.AddEmptyItem();
+
 
         group.Items.Add(b => b.fbegindate).NestedExtension().DateEdit(c =>
         {
@@ -133,11 +137,11 @@
             {
 
             NAPSOMIS_Webpoint.Models.NAPSOMISModel db = new NAPSOMIS_Webpoint.Models.NAPSOMISModel();
-            List<CRSReg> c = new List<CRSReg>();
+            List<crsreg> c = new List<crsreg>();
 
-            c = db.CRSRegs.Where(b => b.ferno == Model.ferno).Where(b => b.fdate_rec >= Model.fbegindate).Where(b => b.fdate_rec <= Model.fenddate).ToList();
+            c = db.crsregs.Where(b => b.ferno == Model.ferno).Where(b => b.fdate_rec >= Model.fbegindate).Where(b => b.fdate_rec <= Model.fenddate).ToList();
 
-            IEnumerable<CRSReg> penum = (IEnumerable<CRSReg>)c;
+            IEnumerable<crsreg> penum = (IEnumerable<crsreg>)c;
 
             @Html.RenderPartial("ReceiveReportSearchView", penum);
 

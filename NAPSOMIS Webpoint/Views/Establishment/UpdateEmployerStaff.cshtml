@@ -1,4 +1,4 @@
-﻿@model NAPSOMIS_Webpoint.Models.StaffCat
+﻿@model NAPSOMIS_Webpoint.Models.staf_cat
 @using NAPSOMIS_Webpoint.ViewModels
 
 @{
@@ -33,11 +33,31 @@
     setting.Name = "updateemployerstaff";
     setting.ColCount = 2;
 
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+ 
+        setting.Items.AddEmptyItem();
+
+        }
+
     setting.Items.AddGroupItem(group =>
     {
         group.Name = "firstgroup";
         group.Caption = "Details";
-        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
         group.ColSpan = 2;
         group.ColCount = 2;
 
@@ -50,6 +70,8 @@
         group.Items.Add(i =>
         {
             i.Caption = " ";
+            i.ShowCaption = DefaultBoolean.False;
+
             i.NestedExtension().Button(b =>
             {
                 b.Name = "cmdsearch";
@@ -61,25 +83,25 @@
         });
 
 
-        group.Items.Add(b => b.cat_code).NestedExtension().TextBox(c =>
+        group.Items.Add(b => b.fcat).NestedExtension().TextBox(c =>
         {
-            c.Name = "cat_code";
+            c.Name = "fcat";
 
         });
 
         group.Items.AddEmptyItem();
 
-        group.Items.Add(b => b.description).NestedExtension().Memo(c =>
+        group.Items.Add(b => b.fdesc).NestedExtension().Memo(c =>
         {
-            c.Name = "description";
+            c.Name = "fdesc";
 
             c.Width = Unit.Pixel(250);
 
         });
 
-        group.Items.Add(b => b.mediatype).NestedExtension().RadioButtonList(c =>
+        group.Items.Add(b => b.fmedia).NestedExtension().RadioButtonList(c =>
         {
-            c.Name = "mediatype";
+            c.Name = "fmedia";
             c.Properties.Items.Add("Pre-printed", "P");
             c.Properties.Items.Add("Diskette", "D");
             c.Properties.Items.Add("Manual", "M");
@@ -93,7 +115,7 @@
 
         group.Name = "searchgroup";
         group.Caption = "Update Existing Category";
-        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
         group.ColSpan = 2;
         group.ColCount = 1;
 

@@ -217,9 +217,9 @@
            if (TempData.Peek("MemberList") != null)
                {
 
-               List<HistoryMaster> mlist = (List<HistoryMaster>)TempData["MemberList"];
+               List<hist_mst> mlist = (List<hist_mst>)TempData["MemberList"];
 
-               IEnumerable<HistoryMaster> penum = (IEnumerable<HistoryMaster>)mlist;
+               IEnumerable<hist_mst> penum = (IEnumerable<hist_mst>)mlist;
 
                @Html.RenderPartial("EstablishmentMemberList", penum);
 

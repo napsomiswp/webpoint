@@ -1,0 +1,288 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.PaymentJournalViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Payment Journal";
+}
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/kspread-3.png" style="width:70px; height:60px; padding-left:10px;" />
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Payment Journal </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please fill the form below prior to processing the request</text>
+    <br />
+    <br />
+
+</div>
+
+
+@using (Html.BeginForm("ManualPayments_OK", "AccountPayment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 3;
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddTabbedGroupItem(tab =>
+    {
+        tab.Name = "tablayout";
+        tab.Caption = "Payment Journal";
+        tab.ColSpan = 3;
+
+        tab.Items.AddGroupItem(group =>
+        {
+            group.Name = "PaymentJournalgroup";
+            group.Caption = "PaymentJournal";
+            group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            group.ColSpan = 3;
+            group.ColCount = 3;
+
+
+            group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+            {
+                c.Name = "ferno";
+
+            });
+
+            group.Items.Add(b => b.festablishment).NestedExtension().TextBox(c =>
+            {
+                c.Name = "festablishment";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            group.Items.Add(bt =>
+            {
+                bt.Name = "btchloaderno";
+                bt.ShowCaption = DefaultBoolean.True;
+                bt.Caption = "";
+
+                bt.NestedExtension().Button(b =>
+                {
+                    b.Name = "cmdPaymentJournalernodata";
+                    b.Width = Unit.Pixel(100);
+                    b.Text = "Load";
+                    b.RouteValues = new { Controller = "AccountPayment", Action = "PaymentJournal_LoadERNo" };
+                    b.UseSubmitBehavior = true;
+
+                });
+
+            });
+
+            group.Items.AddEmptyItem();
+
+            group.Items.AddEmptyItem();
+
+            group.Items.AddGroupItem(group2 =>
+            {
+                group2.Name = "secondgroup";
+                group2.Caption = "Receipt and Payment Details";
+                group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                group2.ColSpan = 3;
+                group2.ColCount = 3;
+
+                group2.Items.Add(b => b.fjournalno).NestedExtension().TextBox(c =>
+                {
+                    c.Name = "fjournalno";
+
+                });
+
+                group2.Items.Add(b => b.freceiptno).NestedExtension().TextBox(c =>
+                {
+                    c.Name = "freceiptno";
+
+                });
+
+                group2.Items.Add(b => b.freceiptdate).NestedExtension().DateEdit(c =>
+                {
+                    c.Name = "freceiptdate";
+
+                });
+
+
+            });
+
+
+            group.Items.AddGroupItem(group2 =>
+            {
+                group2.Name = "furthergroup";
+                group2.Caption = "Payment Details";
+                group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                group2.ColSpan = 3;
+                group2.ColCount = 3;
+
+                group2.Items.Add(b => b.fpaymentdate).NestedExtension().DateEdit(c =>
+                {
+                    c.Name = "fpaymentdate";
+
+                });
+
+                group2.Items.Add(b => b.famount).NestedExtension().TextBox(c =>
+                {
+                    c.Name = "famount";
+
+                });
+
+                group2.Items.Add(m => m.fbank).NestedExtension().ComboBox(b =>
+                {
+                    b.Name = "fbank";
+
+                    if (TempData.Peek("MyBanks") != null)
+                        {
+                        List<PDCTemplate> myoffices = (List<PDCTemplate>)TempData.Peek("MyBanks");
+
+                        b.Properties.Columns.Add("Code", "Code", Unit.Pixel(50));
+                        b.Properties.Columns.Add("Name", "Name", Unit.Pixel(250));
+
+                        b.Properties.DataSource = myoffices;
+                        b.Properties.TextField = "Name";
+                        b.Properties.ValueField = "Code";
+                        }
+
+                });
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btchloadbranches";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdchernodata";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Load";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "PaymentJournal_LoadBranches" };
+                        b.UseSubmitBehavior = true;
+                        b.RenderMode = ButtonRenderMode.Button;
+
+                    });
+
+                });
+
+                group2.Items.Add(m => m.fbranch).NestedExtension().ComboBox(b =>
+                {
+                    b.Name = "fbranch";
+
+                    if (TempData.Peek("MyBankBranches") != null)
+                        {
+                        List<PDCTemplate> myoffices = (List<PDCTemplate>)TempData.Peek("MyBankBranches");
+
+                        b.Properties.Columns.Add("Code", "Code", Unit.Pixel(70));
+                        b.Properties.Columns.Add("Name", "Name", Unit.Pixel(230));
+
+                        b.Properties.DataSource = myoffices;
+                        b.Properties.TextField = "Name";
+                        b.Properties.ValueField = "Code";
+                        }
+
+                });
+
+
+            });
+
+            group.Items.AddGroupItem(group2 =>
+            {
+
+                group2.Name = "buttongroup";
+                group2.Caption = "Actions";
+                group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                group2.ColSpan = 2;
+                group2.ColCount = 2;
+
+                group2.Items.Add(b => b.fmanual).NestedExtension().CheckBox(c =>
+                {
+                    c.Name = "fmanual";
+
+                });
+
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btgroup";
+                    bt.ShowCaption = DefaultBoolean.False;
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdPaymentJournalreset";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Clear";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "ManualPayments" };
+                        b.UseSubmitBehavior = false;
+
+                    });
+
+                });
+
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdPaymentJournalcomplete";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Accept";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "PaymentJournal_Accept" };
+                        b.UseSubmitBehavior = true;
+
+                        if (Model.freceiptdate != null && Model.fjournalno != null)
+                            {
+                            b.Enabled = true;
+                            }
+                        else
+                            {
+                            b.Enabled = false;
+                            }
+                    });
+
+                });
+
+            });
+
+
+
+        });
+
+    });
+
+
+
+
+}).GetHtml()
+
+
+    }

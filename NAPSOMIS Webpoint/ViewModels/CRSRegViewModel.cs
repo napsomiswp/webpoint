@@ -43,7 +43,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
 
         [StringLength(1)]
         [Display(Name = "Backpay Type")]
-        public decimal? fbaktype { get; set; }
+        public string fbaktype { get; set; }
 
         [Column(TypeName="numeric")]
         [Display(Name = "No. of Workers")]

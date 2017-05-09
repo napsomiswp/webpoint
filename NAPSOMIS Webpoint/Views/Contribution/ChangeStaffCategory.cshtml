@@ -1,0 +1,224 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ChangeStaffCategoryViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Change Staff Category - Change Category";
+}
+<br />
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/tools-wizard-3.png" width:60px; height:50px; padding-left:10px;" />
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Change Staff Category - Change Category </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Change member staff category from the list below</text>
+    <br />
+</div>
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ListBy.GetText();
+
+        if (thetype == "Period") {
+
+            //periodgroup.SetVisible(true);
+
+        } else {
+
+            //BeginPeriod.readOnly(true);
+            //BeginPeriod.SetText("")
+
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("ChangeStaffCategory_OK", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "mylayout";
+    setting.ColCount = 2;
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddTabbedGroupItem(tab =>
+    {
+
+        tab.Name = "firstgroup";
+        tab.Caption = "Change Category";
+
+        tab.ColSpan = 2;
+
+        setting.Items.AddGroupItem(group =>
+        {
+            group.Name = "firstgroup";
+            group.Caption = "Change Category";
+            group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            group.ColSpan = 2;
+            group.ColCount = 2;
+
+            group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+            {
+                c.Name = "ferno";
+
+            });
+
+            group.Items.Add(bt =>
+            {
+                bt.Name = "btloadssno";
+                bt.ShowCaption = DefaultBoolean.True;
+                bt.Caption = "";
+
+                bt.NestedExtension().Button(b =>
+                {
+                    b.Name = "cmdloadernodata";
+                    b.Width = Unit.Pixel(100);
+                    b.Text = "Load";
+                    b.RouteValues = new { Controller = "Contribution", Action = "ChangeStaffCategory_LoadERNo" };
+                    b.UseSubmitBehavior = true;
+
+                });
+
+            });
+
+            group.Items.Add(b => b.establishment).NestedExtension().TextBox(c =>
+            {
+                c.Name = "EstablishmentName";
+                c.ReadOnly = true;
+                c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+            });
+
+
+        });
+    });
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Clear";
+                b.RouteValues = new { Controller = "Contribution", Action = "ChangeStaffCategory" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+
+    });
+
+}).GetHtml()
+     
+    }
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    @{
+        if (TempData.Peek("ChangeCategoryList") != null)
+            {
+            @Html.DevExpress().RoundPanel(setting =>
+       {
+           setting.Name = "memberlistpanel";
+           setting.HeaderText = "List of member record for Establishment in the History File";
+
+           setting.SetContent(() =>
+           {
+
+               List<ChangeStaffCategoryListViewModel> mlist = (List<ChangeStaffCategoryListViewModel>)TempData["ChangeCategoryList"];
+
+               IEnumerable<ChangeStaffCategoryListViewModel> penum = (IEnumerable<ChangeStaffCategoryListViewModel>)mlist;
+
+               @Html.RenderPartial("ChangeStaffCategoryList", penum);
+
+               TempData["ChangeCategoryList"] = null;
+
+           });
+
+       }).GetHtml()
+            }
+    }
+
+
+</div>
+
+
+@{
+    if (TempData.Peek("ChangeCategoryLoad") != null)
+        {
+        @Html.DevExpress().PopupControl(setting =>
+   {
+       setting.Name = "chgpanel";
+       setting.HeaderText = "Change Staff Category";
+       setting.FooterText = "Current staff details is presented above";
+       setting.ShowOnPageLoad = true;
+       setting.CloseOnEscape = true;
+       setting.CloseAction = CloseAction.CloseButton;
+       setting.ShowFooter = true;
+
+       setting.PopupAnimationType = AnimationType.Fade;
+       setting.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+       setting.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+
+
+       setting.SetContent(() =>
+       {
+
+           ChangeStaffCategoryViewModel mlist = (ChangeStaffCategoryViewModel)TempData.Peek("ChangeCategoryLoad"); 
+           @Html.RenderPartial("ChangeStaffCategory_Change", mlist);
+
+       });
+
+   }).GetHtml()
+        }
+}

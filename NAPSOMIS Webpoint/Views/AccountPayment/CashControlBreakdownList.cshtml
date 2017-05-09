@@ -1,0 +1,63 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.CashControlBreakdownViewModel>
+
+ 
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.denomination)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.number)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.amount)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.type)
+            </th>
+            
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+
+                            @Html.ActionLink("Edit", "CashControl_Edit", new { id = item.id }) |
+                            @Html.ActionLink("Delete", "CashControl_Delete", new { Controller = "AccountPayment", id = item.id })
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.denomination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                       
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

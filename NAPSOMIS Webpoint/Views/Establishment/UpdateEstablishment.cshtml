@@ -1,4 +1,4 @@
-﻿@model NAPSOMIS_Webpoint.Models.EmployMastersheet
+﻿@model NAPSOMIS_Webpoint.Models.emp_mst
 @using NAPSOMIS_Webpoint.ViewModels
 
 @{
@@ -10,21 +10,20 @@
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
 
 </div>
 
 <div class="col-md-11" style="background-color:white; font-size:small;">
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Establishment </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Update Establishment Record </text>
     <br />
     <text style="font-size:small; padding-left:10px;">Please edit the form using reliable and approprivate information</text>
-
-
-
+ 
     <br />
-
+    <br />
 </div>
+
 <script type="text/javascript">
     var lastprovince = null;
     function OnProvinceChanged(fprovince) {
@@ -92,6 +91,28 @@
 
     settings.Name = "EstablishmentUpdateLayout";
     settings.ColCount = 4;
+
+    if (ViewBag.Message != null)
+        {
+        settings.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        settings.Items.AddEmptyItem();
+        settings.Items.AddEmptyItem();
+        settings.Items.AddEmptyItem();
+
+        }
 
     settings.Items.AddGroupItem(g =>
     {
@@ -474,7 +495,7 @@
                     b.Text = "Add Directors";
                     b.UseSubmitBehavior = true;
                     b.Width = Unit.Pixel(130);
-                    b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment_Directors", ParamValue = "" };
+                    b.RouteValues = new { Controller = "Establishment", Action = "UpdateEstablishment_Director", ParamValue = "" };
 
                 });
             });

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.ReversePaymentBreakdownViewModel>
+
+ 
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+             
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcode)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fdesc)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.famount)
+            </th>
+            
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fdesc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.famount)
+                        </td>
+                       
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

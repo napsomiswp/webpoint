@@ -15,6 +15,12 @@ namespace NAPSOMIS_Webpoint.Controllers
 
         NAPSOMISModel db = new NAPSOMISModel();
 
+        public ActionResult AddExisting()
+            {
+            return View();
+            }
+
+
         #region "Register New Establishment"
 
 
@@ -31,7 +37,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 TempData["MyEconActivities"] = GetMyEconActivities();
                 }
 
-            return View();
+            return View("RegisterNew", new emp_mst() { ferno = "Auto" });
             }
 
 
@@ -41,35 +47,71 @@ namespace NAPSOMIS_Webpoint.Controllers
             try
                 {
 
+                if (Session["Branch"] == null)
+                    {
+                    return RedirectToAction("Login", "Accounts");
+                    }
+
                 if (ModelState.IsValid)
                     {
-                    string erno = "";
 
-                    int startno = 0;
+                    List<emp_mst> emps = new List<emp_mst>();
+                    emps = db.emp_mst.Where(b => b.ferno == emp.ferno).ToList();
 
-                    while (true)
+                    if (emps.Count > 0)
                         {
-                        startno += 1;
-                        string fullstartno = CompleteStartNo(startno);
 
-                        erno = "W01" + emp.fecon_act.ToString() + emp.freg_date.Value.ToString("yyyy") + fullstartno;
+                        string Branch = Session["Branch"].ToString();
 
-                        if (checkifernoisused(erno) == false) break;
+                        emp.ModifiedBy = Session["AccountID"].ToString();
+                        emp.ModifiedOn = DateTime.Today;
 
+                        db.emp_mst.Attach(emp);
+                        var entry = db.Entry(emp);
+                        entry.State = System.Data.Entity.EntityState.Modified;
+
+                        db.SaveChanges();
+
+                        ViewBag.Message = "ESTABLISHMENT WAS SUCCESSFULLY UPDATED";
                         }
+                    else
+                        {
+                        string erno = "";
 
-                    emp.ferno = erno;
-                    emp.CreatedBy = "DEFAULT";
-                    emp.CreatedOn = DateTime.Today;
+                        int startno = 0;
 
+                        string Branch = Session["Branch"].ToString();
 
-                    db.emp_mst.Add(emp);
-                    db.SaveChanges();
+                        while (true)
+                            {
+                            startno += 1;
+                            string fullstartno = CompleteStartNo(startno);
+
+                            erno = Branch + emp.fecon_act.ToString() + emp.freg_date.Value.ToString("yyyy") + fullstartno;
+
+                            if (checkifernoisused(erno) == false) break;
+
+                            }
+
+                        emp.fstatus = "N";
+                        emp.ferno = erno;
+                        emp.CreatedBy = Session["AccountID"].ToString();
+                        emp.CreatedOn = DateTime.Today;
+
+                        emp.ModifiedBy = Session["AccountID"].ToString();
+                        emp.ModifiedOn = DateTime.Today;
+
+                        db.emp_mst.Add(emp);
+                        db.SaveChanges();
+
+                        ViewBag.Message = "ESTABLISHMENT SUCCESSFULLY REGISTERED";
+                        }
 
                     return View("RegisterNew", emp);
                     }
                 else
                     {
+                    ViewBag.Message = "There is an model error on the form. Please verify before proceeding.";
                     return View("RegisterNew", emp);
                     }
 
@@ -114,15 +156,73 @@ namespace NAPSOMIS_Webpoint.Controllers
             return newValue;
             }
 
+        [HttpPost]
+        public ActionResult RegisterNew_Director(emp_mst d)
+            {
+
+            if (d.ferno == "Auto")
+                {
+
+                ViewBag.Message = "Please save the form before proceeding to the directors.";
+                return View("RegisterNew", d);
+                }
+            else
+                {
+
+                TempData["DirectorERNo"] = d.ferno;
+
+                dir_mst dir = new dir_mst();
+                dir.ferno = d.ferno;
+
+                return View("RegisterDirectors", dir);
+                }
+
+            }
+
+
+        [HttpGet]
+        public ActionResult RegisterNew_DirectorReload()
+            {
+
+            if (TempData["DirectorERNo"] != null)
+                {
+                dir_mst dir = new dir_mst();
+                dir.ferno = TempData.Peek("DirectorERNo").ToString();
+
+                return View("RegisterDirectors", dir);
+                }
+            else
+                {
+                ViewBag.Message = "No ERNo Detected. Please navigate to this form through the proper channel";
+                dir_mst dir = new dir_mst();
+
+                return View("RegisterDirectors", dir);
+                }
+
+
+            }
+
+        public ActionResult RegisterNew_DirectorSave(dir_mst d)
+            {
+
+            d.ModifiedBy = Session["AccountID"].ToString();
+            d.ModifiedOn = DateTime.Today;
+
+            d.CreatedBy = Session["AccountID"].ToString();
+            d.CreatedOn = DateTime.Today;
+
+            db.dir_mst.Add(d);
+            db.SaveChanges();
+
+            ViewBag.Message = "DIRECTOR WAS SUCCESSFULLY ADDED";
+
+            return View("RegisterDirectors", new dir_mst() { ferno = d.ferno });
+            }
+
         #endregion
 
 
-
         // GET: Add Existing Establishment
-        public ActionResult AddExisting()
-            {
-            return View();
-            }
 
 
         #region "RePrint Acknowledgement Letter"
@@ -179,8 +279,7 @@ namespace NAPSOMIS_Webpoint.Controllers
         #endregion
 
 
-
-        #region "Update Establishment Record"
+        #region UPDATE ESTABLISHMENT RECORD
 
         // GET:  Update Establishment Record
         public ActionResult UpdateEstablishment()
@@ -202,7 +301,7 @@ namespace NAPSOMIS_Webpoint.Controllers
                 }
             else
                 {
-                ViewBag.Error = "No record was found matching the ERNo: " + emp.ferno + ". Please verify and try again.";
+                ViewBag.Message = "No record was found matching the ERNo: " + emp.ferno + ". Please verify and try again.";
                 return View("UpdateEstablishment");
                 }
 
@@ -249,7 +348,9 @@ namespace NAPSOMIS_Webpoint.Controllers
                 demp.ftelno = emp.ftelno;
                 demp.ftown = emp.ftown;
                 demp.fzone = emp.fzone;
-                demp.ModifiedBy = "DEFAULT";
+                demp.fprint = emp.fprint;
+
+                demp.ModifiedBy = Session["AccountID"].ToString();
                 demp.ModifiedOn = DateTime.Today;
 
 
@@ -257,6 +358,9 @@ namespace NAPSOMIS_Webpoint.Controllers
                 var entry = db.Entry(demp);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                ViewBag.Message = "ESTABLISHMENT RECORD WAS SUCCESSFULLY UPDATED";
+
                 }
             else
                 {
@@ -266,19 +370,195 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 db.emp_mst.Add(emp);
                 db.SaveChanges();
+
+                ViewBag.Message = "ESTABLISHMENT SUCCESSFULLY REGISTERED";
+
                 }
 
             return View("UpdateEstablishment", emp);
 
             }
 
+
+        [HttpPost]
+        public ActionResult UpdateEstablishment_Director(emp_mst d)
+            {
+
+            if (d.ferno == "Auto")
+                {
+
+                ViewBag.Message = "Please save the form before proceeding to the directors.";
+                return View("UpdateEstablishment", d);
+                }
+            else
+                {
+
+                TempData["DirectorERNo"] = d.ferno;
+
+                dir_mst dir = new dir_mst();
+                dir.ferno = d.ferno;
+
+                return View("RegisterDirectorsUpdate", dir);
+                }
+
+            }
+
+
+        [HttpGet]
+        public ActionResult UpdateEstablishment_DirectorReload()
+            {
+
+            if (TempData["DirectorERNo"] != null)
+                {
+                dir_mst dir = new dir_mst();
+                dir.ferno = TempData.Peek("DirectorERNo").ToString();
+
+                return View("RegisterDirectorsUpdate", dir);
+                }
+            else
+                {
+                ViewBag.Message = "No ERNo Detected. Please navigate to this form through the proper channel";
+                dir_mst dir = new dir_mst();
+
+                return View("RegisterDirectorsUpdate", dir);
+                }
+
+
+            }
+
+        public ActionResult UpdateEstablishment_DirectorSave(dir_mst d)
+            {
+
+            d.ModifiedBy = Session["AccountID"].ToString();
+            d.ModifiedOn = DateTime.Today;
+
+            d.CreatedBy = Session["AccountID"].ToString();
+            d.CreatedOn = DateTime.Today;
+
+            db.dir_mst.Add(d);
+            db.SaveChanges();
+
+            ViewBag.Message = "DIRECTOR WAS SUCCESSFULLY ADDED";
+
+            return View("RegisterDirectorsUpdate", new dir_mst() { ferno = d.ferno });
+            }
+
+
+        #endregion
+
+
+        #region UPDATE DIRECTOR
+        public ActionResult RegisterDirectorsUpdate()
+            {
+            return View("RegisterDirectorsUpdate", new dir_mst());
+            }
+
+
+        [HttpPost]
+        public ActionResult UpdateDirector_DirectorLoad(dir_mst d)
+            {
+
+            TempData["UpdateDirectorERNo"] = d.ferno;
+
+            dir_mst dir = new dir_mst();
+            dir.ferno = d.ferno;
+
+            return View("RegisterDirectorsUpdate", dir);
+
+            }
+
+
+        [HttpGet]
+        public ActionResult UpdateDirector_DirectorReload()
+            {
+
+            if (TempData["DirectorERNo"] != null)
+                {
+                dir_mst dir = new dir_mst();
+                dir.ferno = TempData.Peek("DirectorERNo").ToString();
+
+                return View("UpdateDirector", dir);
+                }
+            else
+                {
+                ViewBag.Message = "No ERNo Detected. Please navigate to this form through the proper channel";
+                dir_mst dir = new dir_mst();
+
+                return View("UpdateDirector", dir);
+                }
+
+
+            }
+
+        public ActionResult UpdateDirector_DirectorSave(dir_mst d)
+            {
+
+            d.ModifiedBy = Session["AccountID"].ToString();
+            d.ModifiedOn = DateTime.Today;
+
+            d.CreatedBy = Session["AccountID"].ToString();
+            d.CreatedOn = DateTime.Today;
+
+            if (d.ID_SBTS == 0)
+                {
+                db.dir_mst.Add(d);
+                db.SaveChanges();
+
+                ViewBag.Message = "DIRECTOR WAS SUCCESSFULLY ADDED";
+                }
+            else
+                {
+
+                db.dir_mst.Attach(d);
+                var entry = db.Entry(d);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                ViewBag.Message = "DIRECTOR RECORD WAS SUCCESSFULLY UPDATED";
+
+                }
+
+
+            return View("RegisterDirectorsUpdate", new dir_mst() { ferno = d.ferno });
+
+            }
+
+
+        public ActionResult UpdateDirector_Edit(string id)
+            {
+            dir_mst d = new dir_mst();
+
+            int theid = int.Parse(id);
+
+            d = db.dir_mst.Where(b => b.ID_SBTS == theid).Single();
+
+            return View("RegisterDirectorsUpdate", d);
+            }
+
+        public ActionResult UpdateDirector_Delete(string id)
+            {
+
+            dir_mst d = new dir_mst();
+
+            int theid = int.Parse(id);
+
+            d = db.dir_mst.Where(b => b.ID_SBTS == theid).Single();
+
+            db.dir_mst.Attach(d);
+            var entry = db.Entry(d);
+            entry.State = System.Data.Entity.EntityState.Deleted;
+            db.SaveChanges();
+
+            return View("RegisterDirectorsUpdate", d);
+
+            }
+
+
+
         #endregion
 
         // GET: Update Director Information 
-        public ActionResult UpdateDirector()
-            {
-            return View();
-            }
+
 
         // GET:  Update Employer Categories
         public ActionResult UpdateEmployer()
@@ -310,7 +590,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             DataTable mytable = new DataTable();
 
             string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
-            string Query = "SELECT fzone, fzone_name From ZoneCode";
+            string Query = "SELECT fzone, fzone_name From Zone_Cod";
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
             dp.Fill(mytable);
 
@@ -473,11 +753,17 @@ namespace NAPSOMIS_Webpoint.Controllers
                     themain[0].cat_code = m.cat_code;
                     themain[0].description = m.description;
 
+                    themain[0].ModifiedBy = Session["AccountID"].ToString();
+                    themain[0].ModifiedOn = DateTime.Today;
+
                     db.main_cat.Attach(themain[0]);
                     var entry = db.Entry(themain[0]);
                     entry.State = System.Data.Entity.EntityState.Modified;
 
                     db.SaveChanges();
+
+                    ViewBag.Message = "MAIN CATEGORY WAS SUCCESSFULLY UPDATED";
+
                     }
 
                 }
@@ -487,11 +773,19 @@ namespace NAPSOMIS_Webpoint.Controllers
                 themain.cat_code = m.cat_code;
                 themain.description = m.description;
 
+                themain.CreatedBy = Session["AccountID"].ToString();
+                themain.CreatedOn = DateTime.Today;
+
+                themain.ModifiedBy = Session["AccountID"].ToString();
+                themain.ModifiedOn = DateTime.Today;
+
                 db.main_cat.Add(themain);
                 db.SaveChanges();
+
+                ViewBag.Message = "MAIN CATEGORY WAS SUCCESSFULLY REGISTERED";
                 }
 
-            return RedirectToAction("UpdateEmployerMain");
+            return View("UpdateEmployerMain", m);
             }
 
         private List<PDCTemplate> GetMainCategories()
@@ -544,7 +838,6 @@ namespace NAPSOMIS_Webpoint.Controllers
         public ActionResult UpdateEmployerStaff_ERNO(staf_cat m)
             {
 
-
             string ferno = m.ferno;
             TempData["MyStaffCategories"] = GetStaffCategories(ferno);
 
@@ -574,17 +867,24 @@ namespace NAPSOMIS_Webpoint.Controllers
                     themain[0].ferno = m.ferno;
                     themain[0].fmedia = m.fmedia;
 
+                    themain[0].ModifiedBy = Session["AccountID"].ToString();
+                    themain[0].ModifiedOn = DateTime.Today;
+
                     db.staf_cat.Attach(themain[0]);
                     var entry = db.Entry(themain[0]);
                     entry.State = System.Data.Entity.EntityState.Modified;
 
                     db.SaveChanges();
+
+                    ViewBag.Message = "STAFF CATEGORY WAS SUCCESSFULLY UPDATED";
+
                     }
 
                 staf_cat st = new staf_cat();
                 st.ferno = m.ferno;
 
-                return RedirectToAction("UpdateEmployerStaff_ERNO", st);
+                TempData["MyStaffCategories"] = GetStaffCategories(m.ferno);
+                return View("UpdateEmployerStaff", m);
 
                 }
             else
@@ -595,10 +895,20 @@ namespace NAPSOMIS_Webpoint.Controllers
                 themain.ferno = m.ferno;
                 themain.fmedia = m.fmedia;
 
+                themain.CreatedBy = Session["AccountID"].ToString();
+                themain.CreatedOn = DateTime.Today;
+
+                themain.ModifiedBy = Session["AccountID"].ToString();
+                themain.ModifiedOn = DateTime.Today;
+
                 db.staf_cat.Add(themain);
                 db.SaveChanges();
 
-                return RedirectToAction("UpdateEmployerStaff_ERNO", themain);
+                ViewBag.Message = "STAFF CATEGORY WAS SUCCESSFULLY REGISTERED";
+
+                TempData["MyStaffCategories"] = GetStaffCategories(m.ferno);
+                return View("UpdateEmployerStaff", m);
+
                 }
 
 
@@ -609,7 +919,7 @@ namespace NAPSOMIS_Webpoint.Controllers
             DataTable mytable = new DataTable();
 
             string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
-            string Query = "SELECT cat_code, description From Staf_Cat WHERE ferno = '" + erno + "'";
+            string Query = "SELECT fcat, fdesc From Staf_Cat WHERE ferno = '" + erno + "'";
 
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
             dp.Fill(mytable);
@@ -623,8 +933,8 @@ namespace NAPSOMIS_Webpoint.Controllers
                 foreach (DataRow myp in mytable.Rows)
                     {
                     PDCTemplate ct = new PDCTemplate();
-                    ct.Code = myp.Field<String>("cat_code");
-                    ct.Name = myp.Field<String>("description");
+                    ct.Code = myp.Field<String>("fcat");
+                    ct.Name = myp.Field<String>("fdesc");
 
                     mylist.Add(ct);
                     }
@@ -662,32 +972,91 @@ namespace NAPSOMIS_Webpoint.Controllers
                 newemp = emp[0];
                 newemp.fstatus = "D";
 
+                newemp.ModifiedBy = Session["AccountID"].ToString();
+                newemp.ModifiedOn = DateTime.Today;
+
                 db.emp_mst.Attach(newemp);
                 var entry = db.Entry(newemp);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
 
-                est_deac estd = new est_deac();
-                estd.flast_cr = est.contribution.Value;
-                estd.ferno = est.ferno;
-                estd.flast_period = est.last_period;
-                estd.flast_lf = est.labour_force.Value;
+                List<est_deac> ed = new List<est_deac>();
+                ed = db.est_deac.Where(b => b.ferno == est.ferno).OrderByDescending(b => b.ID_SBTS).ToList();
 
-                db.est_deac.Add(estd);
-                db.SaveChanges();
+                if (ed.Count > 0)
+                    {
+                    est_deac estd = new est_deac();
+                      estd = ed[0];
 
-                return RedirectToAction("Deactivate");
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+                    
+                    estd.flast_lf = est.labour_force.Value;
+                  
+                    estd.fdate_deac = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Attach(estd);
+                    var eentry = db.Entry(estd);
+                    eentry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    }
+                else
+                    {
+                    est_deac estd = new est_deac();
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+                    estd.flast_lf = est.labour_force.Value;
+                  
+                    estd.fdate_deac = DateTime.Today;
+
+                    estd.CreatedBy = Session["AccountID"].ToString();
+                    estd.CreatedOn = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Add(estd);
+                    db.SaveChanges();
+                    }
+
+
+                ViewBag.Message = "ESTABLISHMENT WAS SUCCESSFULLY DEACTIVATED";
+                return View("Deactivate");
 
                 }
             else
                 {
-                return RedirectToAction("Deactivate");
+                ViewBag.Message = "Unable to find Establishment record. Please verify the ERNo";
+                return View("Deactivate");
                 }
 
 
             }
 
+
+        private string GetEmployerName(string ferno)
+            {
+            List<emp_mst> emp = new List<emp_mst>();
+            emp = db.emp_mst.Where(b => b.ferno == ferno).ToList();
+
+            if (emp.Count > 0)
+                {
+
+                return emp[0].femp_name;
+                }
+            else
+                {
+                return "";
+                }
+            }
 
         public ActionResult Deactivate_CLOSE(EstablishmentDeactReactViewModel est)
             {
@@ -701,27 +1070,68 @@ namespace NAPSOMIS_Webpoint.Controllers
                 newemp = emp[0];
                 newemp.fstatus = "C";
 
+                newemp.ModifiedBy = Session["AccountID"].ToString();
+                newemp.ModifiedOn = DateTime.Today;
+
                 db.emp_mst.Attach(newemp);
                 var entry = db.Entry(newemp);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
 
-                est_deac estd = new est_deac();
-                estd.flast_cr = est.contribution.Value;
-                estd.ferno = est.ferno;
-                estd.flast_period = est.last_period;
-                estd.flast_lf = est.labour_force.Value;
+                List<est_deac> ed = new List<est_deac>();
+                ed = db.est_deac.Where(b => b.ferno == est.ferno).OrderByDescending(b => b.ID_SBTS).ToList();
 
-                db.est_deac.Add(estd);
-                db.SaveChanges();
+                if (ed.Count > 0)
+                    {
+                    est_deac estd = new est_deac();
+                      estd = ed[0];
 
-                return RedirectToAction("Deactivate");
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+
+                    estd.flast_lf = est.labour_force.Value;
+                  
+                    estd.fdate_deac = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Attach(estd);
+                    var eentry = db.Entry(estd);
+                    eentry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    }
+                else
+                    {
+                    est_deac estd = new est_deac();
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+                    estd.flast_lf = est.labour_force.Value;
+                   
+                    estd.CreatedBy = Session["AccountID"].ToString();
+                    estd.CreatedOn = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Add(estd);
+                    db.SaveChanges();
+                    }
+
+
+                ViewBag.Message = "ESTABLISHMENT WAS SUCCESSFULLY CLOSED";
+                return View("Deactivate");
 
                 }
             else
                 {
-                return RedirectToAction("Deactivate");
+                ViewBag.Message = "Unable to find Establishment record. Please verify the ERNo";
+                return View("Deactivate");
                 }
 
 
@@ -740,7 +1150,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 PDCTemplate ct = new PDCTemplate();
                 ct.Code = ed[0].ferno;
-                ct.Name = ed[0].femp_name; 
+                ct.Name = ed[0].femp_name;
                 mylist.Add(ct);
 
                 TempData["MyEstablishments"] = mylist;
@@ -768,7 +1178,7 @@ namespace NAPSOMIS_Webpoint.Controllers
         #endregion
 
 
-        #region "DEACTIVATE ESTABLISHMENT"
+        #region "REACTIVATE ESTABLISHMENT"
         public ActionResult ReActivate()
             {
             TempData["MyEstablishments"] = GetMyEstablishmentsbyFilter("");
@@ -789,28 +1199,70 @@ namespace NAPSOMIS_Webpoint.Controllers
                 newemp = emp[0];
                 newemp.fstatus = "A";
 
+                newemp.ModifiedBy = Session["AccountID"].ToString();
+                newemp.ModifiedOn = DateTime.Today;
+
                 db.emp_mst.Attach(newemp);
                 var entry = db.Entry(newemp);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
 
-                est_deac estd = new est_deac();
-                estd.flast_cr = est.contribution.Value;
-                estd.ferno = est.ferno;
-                estd.flast_period = est.last_period;
-                estd.flast_lf = est.labour_force.Value;
-                estd.freact_period = est.begin_period;
+                List<est_deac> ed = new List<est_deac>();
+                ed = db.est_deac.Where(b => b.ferno == est.ferno).OrderByDescending(b => b.ID_SBTS).ToList();
 
-                db.est_deac.Add(estd);
-                db.SaveChanges();
+                if (ed.Count > 0)
+                    {
+                    est_deac estd = new est_deac();
+                    estd = ed[0];
 
-                return RedirectToAction("ReActivate");
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+
+                    estd.flast_lf = est.labour_force.Value;
+                    estd.freact_period = est.begin_period;
+                    estd.fdate_react = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Attach(estd);
+                    var eentry = db.Entry(estd);
+                    eentry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    }
+                else
+                    {
+                    est_deac estd = new est_deac();
+                    estd.flast_cr = est.contribution.Value;
+                    estd.ferno = est.ferno;
+                    estd.femp_name = GetEmployerName(est.ferno);
+                    estd.flast_period = est.last_period;
+                    estd.flast_lf = est.labour_force.Value;
+                    estd.freact_period = est.begin_period;
+
+                    estd.CreatedBy = Session["AccountID"].ToString();
+                    estd.CreatedOn = DateTime.Today;
+
+                    estd.ModifiedBy = Session["AccountID"].ToString();
+                    estd.ModifiedOn = DateTime.Today;
+
+                    db.est_deac.Add(estd);
+                    db.SaveChanges();
+                    }
+
+
+                ViewBag.Message = "ESTABLISHMENT WAS SUCCESSFULLY REACTIVATED";
+                return View("ReActivate");
 
                 }
             else
                 {
-                return RedirectToAction("ReActivate");
+
+                ViewBag.Message = "Unable to find Establishment record. Please verify the ERNo";
+                return View("ReActivate");
                 }
 
 

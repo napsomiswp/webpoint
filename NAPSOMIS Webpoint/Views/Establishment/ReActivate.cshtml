@@ -45,6 +45,28 @@
     s.Name = "EstablishmentFormLayout";
     s.ColCount = 4;
 
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
+
     s.Items.AddTabbedGroupItem(group =>
     {
         group.ColSpan = 4;

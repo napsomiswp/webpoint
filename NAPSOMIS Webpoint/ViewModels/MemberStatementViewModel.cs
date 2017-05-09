@@ -28,6 +28,8 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "Year")]
         [StringLength(4)]
         public string Year { get; set; }
-         
+
+        public bool PrintConsolidated { get; set; }
+
         }
     }

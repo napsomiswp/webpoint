@@ -1,0 +1,88 @@
+﻿
+@model IEnumerable<NAPSOMIS_Webpoint.Models.nom_mst>
+
+@{
+    ViewBag.Title = "Dependants";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fnom_ssno)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fnfirstnam)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fnothname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fnsurname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fper_addr)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fres_addr)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.frelation)
+            </th>
+            <th class=whitesmokeheader></th>
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Display", "StartEditDependants", new { id = item.ID_SBTS }) |
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fnom_ssno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fnfirstnam)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fnothname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fnsurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fper_addr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fres_addr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.frelation)
+                        </td>
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>

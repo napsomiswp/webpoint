@@ -3,27 +3,49 @@
 @using NAPSOMIS_Webpoint.ViewModels;
 
 @{
-    ViewBag.Title = "Capture Backpay";
+    ViewBag.Title = "Process Backpay Contribution Report";
 }
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/document_open_8.png" width:70px; height:60px; padding-left:10px;" />
 
 </div>
 
 <div class="col-md-11" style="background-color:white; font-size:small;">
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:large;">Capture Backpay </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">Process Backpay Contribution </text>
     <br />
 
     <text style="color:midnightblue; padding-left:10px; font-size:small;">Please fill the form below. </text>
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if in case you need further assistance. </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator in case you need further assistance. </text>
 
     <br />
 
 </div>
+
+
+<script type="text/javascript">
+    function SetTab() {
+
+        SetActiveTabByIndexIncrement();
+
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    window.setTimeout("SetTab()", 10);
+
+    function SetActiveTabByIndexIncrement() {
+        var theindex = '@Html.Raw(Model.TabIndex)';
+        hardcopycapture.SetActiveTab(hardcopycapture.GetTab(theindex));
+    }
+
+</script>
+
 
 
 <script type="text/javascript">
@@ -60,6 +82,7 @@
         //    fbaktype.SetVisible(true);
         //    fmode.SetVisible(false);
         //}
+
     }
 
     function changetext(s, e) {
@@ -83,7 +106,7 @@
     {
     @Html.DevExpress().FormLayout(setting =>
 {
-    setting.Name = "Backpaylayout";
+    setting.Name = "hardcopylayout";
     setting.ColCount = 3;
 
 
@@ -186,6 +209,9 @@
     setting.Items.AddTabbedGroupItem(tabs =>
     {
 
+        tabs.Name = "hardcopycapture";
+        tabs.ColSpan = 2;
+
         tabs.Items.AddGroupItem(tgroup =>
         {
             tgroup.Name = "summarytab";
@@ -217,7 +243,7 @@
                         b.Name = "cmdLoadErnoSummary";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Load";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryLoadErno" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_SummaryLoadErno" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -260,7 +286,7 @@
                         b.Name = "cmdLoadLastEntrySummary";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Continue";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryLoadLastEntry" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_SummaryLoadLastEntry" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -273,11 +299,19 @@
 
                 group.Items.Add(b => b.fmodesubmission).NestedExtension().ComboBox(t =>
                 {
+
                     t.Name = "fmodesubmission";
                     t.Properties.Items.Add("CONTRIBUTION", "C");
-
-                    t.SelectedIndex = 0;
+                    t.Properties.Items.Add("SALARY", "S");
                     t.Properties.ClientSideEvents.SelectedIndexChanged = "changetext";
+                    t.ReadOnly = true;
+                    t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+                });
+
+                group.Items.Add(b => b.fdebitperiod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fdebitperiod";
                 });
 
                 group.Items.Add(b => b.fnoofworkers).NestedExtension().TextBox(t =>
@@ -304,7 +338,7 @@
                         b.Name = "cmdAcceptSummary";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Accept";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryAccept" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_SummaryAccept" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -324,7 +358,7 @@
                         b.Name = "cmdResetEditAll";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Reset Edit All";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryResetEditAll" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_SummaryResetEditAll" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -343,7 +377,7 @@
                         b.Name = "cmdStartAfresh";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Start Afresh";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_SummaryStartAfresh" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_SummaryStartAfresh" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -361,7 +395,7 @@
                         b.Name = "cmdshowmembers";
                         b.Width = Unit.Pixel(150);
                         b.Text = "Show Captured Members";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_ShowCapturedMembers" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_ShowCapturedMembers" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -405,7 +439,7 @@
                         b.Name = "cmdloadmemberdetails";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Load Details";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_LoadMemberDetails" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_LoadMemberDetails" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -429,19 +463,23 @@
                 group.Items.Add(b => b.fAddResponsibilityCentre).NestedExtension().TextBox(t =>
                 {
                     t.Name = "fAddResponsibilityCentre";
-                    t.ReadOnly = true;
-                    t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
-                });
-
-
-                group.Items.Add(b => b.fAddFirstContributionPeriod).NestedExtension().TextBox(t =>
-                {
-                    t.Name = "fAddFirstContributionPeriod";
+                    //t.ReadOnly = true;
+                    //t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
                 });
 
                 group.Items.Add(b => b.fAddStaffNumber).NestedExtension().TextBox(t =>
                 {
                     t.Name = "fAddStaffNumber";
+                });
+
+                group.Items.Add(b => b.fAddbackpaybeginperiod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddbackpaybeginperiod";
+                });
+
+                group.Items.Add(b => b.fAddbackpayendperiod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fAddbackpayendperiod";
                 });
 
                 group.Items.Add(b => b.fAddContributionorSalary).NestedExtension().TextBox(t =>
@@ -460,7 +498,7 @@
                         b.Name = "cmdAcceptAddNew";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Accept";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_AddNewAccept" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_AddNewAccept" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -515,7 +553,7 @@
                         b.Name = "cmdloadeditamember";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Load";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditLoad" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_EditLoad" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -547,6 +585,17 @@
                     t.Name = "fEditStaffNumber";
                 });
 
+
+                group.Items.Add(b => b.fEditbackpaybeginperiod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditbackpaybeginperiod";
+                });
+
+                group.Items.Add(b => b.fEditbackpayendperiod).NestedExtension().TextBox(t =>
+                {
+                    t.Name = "fEditbackpayendperiod";
+                });
+
                 group.Items.Add(b => b.fEditContributionorSalary).NestedExtension().TextBox(t =>
                 {
                     t.Name = "fEditContributionorSalary";
@@ -556,12 +605,7 @@
                 {
                     t.Name = "fEditName";
                 });
-
-                group.Items.Add(b => b.fEditPeriod).NestedExtension().TextBox(t =>
-                {
-                    t.Name = "fEditPeriod";
-                });
-
+ 
                 group.Items.Add(bt =>
                 {
                     bt.Name = "btRemoveEditgroup";
@@ -573,7 +617,7 @@
                         b.Name = "cmdremoveedit";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Remove";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditRemove" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_EditRemove" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -591,7 +635,7 @@
                         b.Name = "cmdeditaccept";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Accept";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditAccept" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_EditAccept" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -608,7 +652,7 @@
                         b.Name = "cmdeditundo";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Undo";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_EditUndo" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_EditUndo" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -617,7 +661,6 @@
             });
 
         });
-
 
         tabs.Items.AddGroupItem(tgroup =>
         {
@@ -651,7 +694,7 @@
 
                     t.Properties.Columns.Add("Period", "Period", Unit.Pixel(70));
                     t.Properties.Columns.Add("Type", "Type", Unit.Pixel(40));
-                    t.Properties.Columns.Add("Media", "Mode", Unit.Pixel(40));
+                    t.Properties.Columns.Add("Media", "Category", Unit.Pixel(70));
 
                     t.Properties.DataSource = mypers;
                     t.Properties.TextField = "Period";
@@ -672,7 +715,7 @@
                         b.Name = "cmdPeriodLoadMaster";
                         b.Width = Unit.Pixel(100);
                         b.Text = "OK";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_MasterPeriodLoad" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_MasterPeriodLoad" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -711,10 +754,42 @@
 
                 });
 
+                group.Items.AddGroupItem(group2 =>
+                {
+                    group2.Name = "gpmastertextCRControlgroup";
+                    group2.Caption = "Details of Expected from C.R. Control";
+                    group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    group2.Visible = true;
+
+                    group2.Items.Add(b => b.fmasterperiodCRControltext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodCRControltext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmastercontributionCRControltext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmastercontributionCRControltext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmasterperiodnoofworkersCRControl).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodnoofworkersCRControl";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+
+                });
+
                 group.Items.Add(bt =>
                 {
                     bt.Name = "btPrintChecklistMasterUpdategroup";
-                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.ShowCaption = DefaultBoolean.False;
                     bt.Caption = "";
 
                     bt.NestedExtension().Button(b =>
@@ -722,7 +797,7 @@
                         b.Name = "cmdPrinChecklistMasterUpdate";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Print Checklist";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_PrintCheckList" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_PrintCheckList" };
                         b.UseSubmitBehavior = true;
 
                     });
@@ -740,17 +815,20 @@
                         b.Name = "cmdPeriodCompleteMaster";
                         b.Width = Unit.Pixel(100);
                         b.Text = "Complete";
-                        b.RouteValues = new { Controller = "Contribution", Action = "Backpay_MasterUpdateOK" };
+                        b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_MasterUpdateOK" };
                         b.UseSubmitBehavior = true;
 
-                        if (Model.fAddcontributioncaptured == Model.fAddcontributionexpected && Model.fAddworkercaptured == Model.fAddworkersexpected)
-                            {
-                            b.Enabled = true;
-                            }
-                        else
-                            {
-                            b.Enabled = false;
-                            }
+                        //if (Model.fmasterperiodnoofworkersCRControl == Model.fmasterperiodnoofworkers && Model.fmastercontributionCRControltext == Model.fmastercontributiontext)
+                        //    {
+                        //    if (Model.fmasterperiodnoofworkersCRControl != null)
+                        //        {
+                        //        b.Enabled = true;
+                        //        }
+                        //    }
+                        //else
+                        //    {
+                        //    b.Enabled = false;
+                        //    }
                     });
 
                 });
@@ -768,7 +846,7 @@
     setting.Items.Add(bt =>
     {
         bt.Name = "btreloadpage";
-        bt.ShowCaption = DefaultBoolean.True;
+        bt.ShowCaption = DefaultBoolean.False;
         bt.Caption = "";
 
         bt.NestedExtension().Button(b =>
@@ -777,7 +855,7 @@
             b.Name = "cmdreloadpage";
             b.Width = Unit.Pixel(150);
             b.Text = "Start New Entry";
-            b.RouteValues = new { Controller = "Contribution", Action = "Backpay" };
+            b.RouteValues = new { Controller = "Contribution", Action = "HardCopy" };
             b.UseSubmitBehavior = false;
 
         });
@@ -818,10 +896,10 @@
 
                NAPSOMISModel db = new NAPSOMISModel();
 
-               List<HistoryTransaction> plist = new List<HistoryTransaction>();
-               plist = db.HistoryTransactions.Where(b => b.ferno == Model.ferno).Where(b => b.fcat == Model.fcat).ToList();
+               List<hist_tr> plist = new List<hist_tr>();
+               plist = db.hist_tr.Where(b => b.ferno == Model.ferno).Where(b => b.fcat == Model.fcat).ToList();
 
-               IEnumerable<HistoryTransaction> penum = (IEnumerable<HistoryTransaction>)plist;
+               IEnumerable<hist_tr> penum = (IEnumerable<hist_tr>)plist;
 
                @Html.RenderPartial("CapturedContributionMembers", penum);
 

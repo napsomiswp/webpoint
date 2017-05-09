@@ -1,0 +1,245 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ReversePaymentsViewModel
+
+    @using NAPSOMIS_Webpoint.ViewModels
+    @using NAPSOMIS_Webpoint.Models
+
+    @{
+        ViewBag.Title = "Reverse Payments";
+    }
+
+    <div class="col-md-1" style="background-color:white; font-size:small;">
+        <br />
+        <img src="~/Content/Images/view-refresh-8.png" style="width:70px; height:60px; padding-left:10px;" />
+        <br />
+    </div>
+
+    <div class="col-md-10" style="background-color:white; font-size:small;">
+        <br />
+        <text style="color:midnightblue; padding-left:10px; font-size:large;"> Reverse Payments</text>
+        <br />
+        <text style="font-size:small; padding-left:10px;">Please enter the receipt date and the EstNo below and click search</text>
+        <br />
+        <br />
+
+    </div>
+
+
+    @using (Html.BeginForm("ReversePayment_OK", "AccountPayment", FormMethod.Post))
+        {
+
+        @Html.AntiForgeryToken()
+        @Html.DevExpress().FormLayout(setting =>
+   {
+       setting.Name = "receivecrlayout";
+       setting.ColCount = 2;
+
+       if (ViewBag.Message != null)
+           {
+           setting.Items.Add(b =>
+           {
+               b.ShowCaption = DefaultBoolean.False;
+               b.Name = "MessageGroup";
+
+               b.NestedExtension().Label(lb =>
+               {
+                   lb.Name = "lblmessage";
+                   lb.Text = ViewBag.Message;
+                   lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+               });
+
+           });
+
+           setting.Items.AddEmptyItem();
+
+           }
+
+       setting.Items.AddTabbedGroupItem(tab =>
+       {
+           tab.Name = "tablayout";
+           tab.Caption = "Bank Lodgment";
+           tab.ColSpan = 2;
+
+           tab.Items.AddGroupItem(group =>
+           {
+               group.Name = "ReversePaymentgroup";
+               group.Caption = "Capture Bank Logement";
+               group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+               group.ColSpan = 2;
+               group.ColCount = 2;
+
+
+
+               group.Items.AddGroupItem(group2 =>
+               {
+                   group2.Name = "secondgroup";
+                   group2.Caption = "Search";
+                   group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                   group2.ColSpan = 2;
+                   group2.ColCount = 2;
+
+                   group2.Items.Add(b => b.receiptno).NestedExtension().TextBox(c =>
+                   {
+                       c.Name = "receiptno";
+
+                   });
+
+                   group2.Items.Add(bt =>
+                   {
+                       bt.Name = "btseach";
+                       bt.ShowCaption = DefaultBoolean.False;
+
+                       bt.NestedExtension().Button(b =>
+                       {
+                           b.Name = "cmdsearch";
+                           b.Width = Unit.Pixel(100);
+                           b.Text = "Search";
+                           b.RouteValues = new { Controller = "AccountPayment", Action = "ReversePayment_Search" };
+                           b.UseSubmitBehavior = true;
+
+                       });
+
+                   });
+
+                   group2.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+                   {
+                       c.Name = "ferno";
+                       c.ReadOnly = true;
+                       c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                   });
+
+                   group2.Items.Add(b => b.establishment).NestedExtension().TextBox(c =>
+                   {
+                       c.Name = "establishment";
+                       c.ReadOnly = true;
+                       c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                   });
+
+                   group2.Items.Add(b => b.receiptdate).NestedExtension().DateEdit(c =>
+                   {
+                       c.Name = "receiptdate";
+                       c.ReadOnly = true;
+                       c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                   });
+
+                   group2.Items.Add(b => b.reason).NestedExtension().ComboBox(c =>
+                   {
+                       c.Name = "reason";
+                       c.Properties.Items.Add("Dishonoured Cheque", "D");
+                       c.Properties.Items.Add("Wrong Entry", "W");
+                   });
+
+               });
+
+               group.Items.AddGroupItem(group2 =>
+               {
+                   group2.Name = "displaygroup";
+                   group2.Caption = "Summary";
+                   group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                   group2.ColSpan = 2;
+                   group2.ColCount = 1;
+
+
+                   group2.Items.Add(b =>
+                   {
+                       b.Name = "breakdowngridview";
+                       b.Caption = "";
+                       b.ShowCaption = DefaultBoolean.False;
+
+                       b.SetNestedContent(() =>
+                       {
+
+                           if (TempData.Peek("ReversePaymentBreakdowns") != null)
+                               {
+
+                               List<ReversePaymentBreakdownViewModel> plist = (List<ReversePaymentBreakdownViewModel>)TempData.Peek("ReversePaymentBreakdowns");
+                               IEnumerable<ReversePaymentBreakdownViewModel> penum = (IEnumerable<ReversePaymentBreakdownViewModel>)plist;
+                               @Html.RenderPartial("ReversePaymentBreakdownList", penum);
+
+                               }
+
+                       });
+
+                   });
+
+                   group2.Items.Add(b => b.totalamount).NestedExtension().TextBox(c =>
+                   {
+                       c.Name = "totalamount";
+                       c.ReadOnly = true;
+                       c.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                       c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.White;
+                       c.Properties.DisplayFormatString = "N2";
+                       c.Properties.ReadOnlyStyle.Font.Size = 11;
+                   });
+
+               });
+
+
+               group.Items.AddGroupItem(group2 =>
+               {
+
+                   group2.Name = "buttongroup";
+                   group2.Caption = "Actions";
+                   group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                   group2.ColSpan = 2;
+                   group2.ColCount = 2;
+
+                   group2.Items.Add(bt =>
+                   {
+                       bt.Name = "btgroup";
+                       bt.ShowCaption = DefaultBoolean.False;
+
+                       bt.NestedExtension().Button(b =>
+                       {
+                           b.Name = "cmdReversePaymentreset";
+                           b.Width = Unit.Pixel(100);
+                           b.Text = "Clear";
+                           b.RouteValues = new { Controller = "AccountPayment", Action = "ReversePayment" };
+                           b.UseSubmitBehavior = false;
+
+                       });
+
+                   });
+
+
+                   group2.Items.Add(bt =>
+                   {
+                       bt.Name = "btgroup";
+                       bt.ShowCaption = DefaultBoolean.True;
+                       bt.Caption = "";
+
+                       bt.NestedExtension().Button(b =>
+                       {
+                           b.Name = "cmdReversePaymentcomplete";
+                           b.Width = Unit.Pixel(100);
+                           b.Text = "Reverse";
+                           b.RouteValues = new { Controller = "AccountPayment", Action = "ReversePayment_Reverse" };
+                           b.UseSubmitBehavior = true;
+
+
+                           if (Model.totalamount != null)
+                               {
+                               b.Enabled = true;
+                               }
+                           else
+                               {
+                               b.Enabled = false;
+                               }
+                       });
+
+                   });
+
+               });
+
+
+
+           });
+
+       });
+
+
+
+
+   }).GetHtml()
+
+
+        }

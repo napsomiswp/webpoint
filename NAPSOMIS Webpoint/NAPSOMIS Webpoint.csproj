@@ -215,6 +215,12 @@
     <Content Include="Content\dataTables.semanticui.min.css" />
     <Content Include="Content\dataTables.uikit.css" />
     <Content Include="Content\dataTables.uikit.min.css" />
+    <Content Include="Content\Images\address-book-new-3.png" />
+    <Content Include="Content\Images\Background\headerpanel.png" />
+    <Content Include="Content\Images\Background\modern_wood.jpg" />
+    <Content Include="Content\Images\Background\snow_white.jpg" />
+    <Content Include="Content\Images\Background\spoons.jpg" />
+    <Content Include="Content\Images\Background\spoons_updated.jpg" />
     <Content Include="Content\Images\Blog\image0.png" />
     <Content Include="Content\Images\Blog\image1.png" />
     <Content Include="Content\Images\Blog\image2.png" />
@@ -227,21 +233,37 @@
     <Content Include="Content\Images\Components\DevExpress-WinForms-Diagram-Control.jpg" />
     <Content Include="Content\Images\Components\Grid-Dashboard.jpg" />
     <Content Include="Content\Images\Components\WPF-Office-Inspired-App.jpg" />
+    <Content Include="Content\Images\contact_new_2.png" />
     <Content Include="Content\Images\Customers\GaryRubio.jpg" />
     <Content Include="Content\Images\Customers\HeidiLopez.jpg" />
     <Content Include="Content\Images\Customers\NathanBryant.jpg" />
     <Content Include="Content\Images\Customers\RafaelRaje.jpg" />
+    <Content Include="Content\Images\document-open-5.png" />
+    <Content Include="Content\Images\document-preview.png" />
     <Content Include="Content\Images\document_open_8.png" />
-    <Content Include="Content\Images\edit-find-3.png" />
+    <Content Include="Content\Images\edit_find_4.png" />
+    <Content Include="Content\Images\edit_delete_3.png" />
+    <Content Include="Content\Images\edit_find_3.png" />
     <Content Include="Content\Images\edit_layout.png" />
     <Content Include="Content\Images\edit_paste_9.png" />
     <Content Include="Content\Images\folder_user.png" />
+    <Content Include="Content\Images\generalinfo.png" />
     <Content Include="Content\Images\go-next-view.png" />
     <Content Include="Content\Images\help-hint.png" />
+    <Content Include="Content\Images\historyicon.png" />
+    <Content Include="Content\Images\invalidity.jpg" />
+    <Content Include="Content\Images\invalidity1.png" />
+    <Content Include="Content\Images\investment.jpg" />
+    <Content Include="Content\Images\kcalc-2.png" />
+    <Content Include="Content\Images\korganizer-3.png" />
+    <Content Include="Content\Images\kspread-3.png" />
+    <Content Include="Content\Images\light_blue_background_5.jpg" />
     <Content Include="Content\Images\lock_6.png" />
     <Content Include="Content\Images\logo-new.png" />
     <Content Include="Content\Images\mail-mark-task.png" />
     <Content Include="Content\Images\mail_reply_all-3.png" />
+    <Content Include="Content\Images\media-flash-usbpendrive_mount-2.png" />
+    <Content Include="Content\Images\media-zip_mount-2.png" />
     <Content Include="Content\Images\NAPSOMISLogo.png" />
     <Content Include="Content\Images\NASSITSmall\bn-top01.png" />
     <Content Include="Content\Images\NASSITSmall\bn-top02.png" />
@@ -254,13 +276,28 @@
     <Content Include="Content\Images\NASSIT\bn-main05.png" />
     <Content Include="Content\Images\NASSIT\bn-main06.png" />
     <Content Include="Content\Images\NASSIT\bn-main07.png" />
+    <Content Include="Content\Images\NASSIT\Trust GPS Location.png" />
+    <Content Include="Content\Images\oldage.jpg" />
+    <Content Include="Content\Images\oldage1.png" />
+    <Content Include="Content\Images\preferences-system-login.png" />
+    <Content Include="Content\Images\printer_7.png" />
     <Content Include="Content\Images\sort_asc.png" />
     <Content Include="Content\Images\sort_asc_disabled.png" />
     <Content Include="Content\Images\sort_both.png" />
     <Content Include="Content\Images\sort_desc.png" />
     <Content Include="Content\Images\sort_desc_disabled.png" />
+    <Content Include="Content\Images\strageticplan.jpg" />
+    <Content Include="Content\Images\survirors.png" />
+    <Content Include="Content\Images\theact1.jpg" />
+    <Content Include="Content\Images\tools-check-spelling-5.png" />
+    <Content Include="Content\Images\tools-wizard-3.png" />
     <Content Include="Content\Images\user_group_properties.png" />
+    <Content Include="Content\Images\view-pim-tasks.png" />
+    <Content Include="Content\Images\view-refresh-3.png" />
+    <Content Include="Content\Images\view-refresh-8.png" />
+    <Content Include="Content\Images\view-refresh-9.png" />
     <Content Include="Content\Images\view_pim_contacts.png" />
+    <Content Include="Content\Images\x_office_document_2.png" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Scripts\dataTables.bootstrap.js" />
@@ -297,6 +334,17 @@
     <Content Include="Scripts\globalize.message.js" />
     <Content Include="Scripts\globalize.number.js" />
     <Content Include="Content\Images\Sorting icons.psd" />
+    <Content Include="Content\Files\act2001.pdf" />
+    <Content Include="Content\Files\Strategicplan.pdf" />
+    <Content Include="Content\Files\Report2011.pdf" />
+    <Content Include="Content\Files\Report2010.pdf" />
+    <Content Include="Content\Files\report2008.pdf" />
+    <Content Include="Content\Files\report2009.pdf" />
+    <Content Include="Content\Files\ProposalsGuide.pdf" />
+    <Content Include="Content\Files\Report2007.pdf" />
+    <Content Include="Content\Files\EquityParticipation.pdf" />
+    <Content Include="Content\Files\StrategyProgram.pdf" />
+    <Content Include="Content\Files\investmentpolicy.pdf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -453,6 +501,50 @@
     <Content Include="Views\ViewMemberContribution\PrintPreview.cshtml" />
     <Content Include="Views\Contribution\MemberCreditProcessing.cshtml" />
     <Content Include="Views\Contribution\MemberCreditProcessBreakdown.cshtml" />
+    <Content Include="Views\Establishment\RegisterDirectors.cshtml" />
+    <Content Include="Views\Establishment\DirectorsTableView.cshtml" />
+    <Content Include="Views\Establishment\RegisterDirectorsUpdate.cshtml" />
+    <Content Include="Views\Establishment\DirectorsUpdateTableView.cshtml" />
+    <Content Include="Views\AccountPayment\ManualPayments.cshtml" />
+    <Content Include="Views\Contribution\ProcessSoftCopy.cshtml" />
+    <Content Include="Views\Contribution\SoftcopyMemberListView.cshtml" />
+    <Content Include="Views\Contribution\ListInvalidNumbers.cshtml" />
+    <Content Include="Views\Contribution\ListInvalidNumbersByCategory.cshtml" />
+    <Content Include="Views\Contribution\MemberMasterFileSearch.cshtml" />
+    <Content Include="Views\Contribution\MemberMasterSearchList.cshtml" />
+    <Content Include="Views\Contribution\MemberIdentification.cshtml" />
+    <Content Include="Views\Contribution\MemberIdentificationDependantEdit.cshtml" />
+    <Content Include="Views\Contribution\MemberIDDependantList.cshtml" />
+    <Content Include="Views\Contribution\ListofEstWithValidNos.cshtml" />
+    <Content Include="Views\Contribution\ReverseCapturedContribution.cshtml" />
+    <Content Include="Views\Contribution\CorrectInvalidNumbers.cshtml" />
+    <Content Include="Views\Contribution\ChangeStaffCategory.cshtml" />
+    <Content Include="Views\Contribution\ChangeStaffCategoryList.cshtml" />
+    <Content Include="Views\Contribution\ChangeStaffCategory_Change.cshtml" />
+    <Content Include="Views\Contribution\AddMemberToCPList.cshtml" />
+    <Content Include="Views\AccountPayment\ChequePaymentBreakdownList.cshtml" />
+    <Content Include="Views\AccountPayment\CashPaymentBreakdownList.cshtml" />
+    <Content Include="Views\AccountPayment\PaymentJournal.cshtml" />
+    <Content Include="Views\AccountPayment\PaymentJournalCapture.cshtml" />
+    <Content Include="Views\AccountPayment\CaptureBankLodgment.cshtml" />
+    <Content Include="Views\AccountPayment\CashControl.cshtml" />
+    <Content Include="Views\AccountPayment\CashControlBreakdownList.cshtml" />
+    <Content Include="Views\AccountPayment\CashControlReport.cshtml" />
+    <Content Include="Views\AccountPayment\PrintPreview.cshtml" />
+    <Content Include="Views\AccountPayment\ChequeControlReport.cshtml" />
+    <Content Include="Views\AccountPayment\BankLodgementReport.cshtml" />
+    <Content Include="Views\AccountPayment\GenerateSunTransaction.cshtml" />
+    <Content Include="Views\AccountPayment\ReversePayment.cshtml" />
+    <Content Include="Views\AccountPayment\ReversePaymentBreakdownList.cshtml" />
+    <Content Include="Views\Pages\MissionandVision.cshtml" />
+    <Content Include="Views\Pages\GeneralInfo.cshtml" />
+    <Content Include="Views\Pages\HistoricalOverview.cshtml" />
+    <Content Include="Views\Pages\OldAge.cshtml" />
+    <Content Include="Views\Pages\Invalidity.cshtml" />
+    <Content Include="Views\Pages\Survivors.cshtml" />
+    <Content Include="Views\Pages\TheAct.cshtml" />
+    <Content Include="Views\Pages\StrategicPlan.cshtml" />
+    <Content Include="Views\Pages\Investments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -468,6 +560,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AuthorizeFilter.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountPaymentController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\CaptureGovernmentEmployeesController.cs" />
     <Compile Include="Controllers\CaptureRegistrationFormsController.cs" />
@@ -480,6 +573,23 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PagesController.BlogPosts.cs" />
     <Compile Include="Controllers\PagesController.Contacts.cs" />
+    <Compile Include="Controllers\PagesController.BoardofTrustees.cs" />
+    <Compile Include="Controllers\PagesController.Directorate.cs" />
+    <Compile Include="Controllers\PagesController.Management.cs" />
+    <Compile Include="Controllers\PagesController.Divisions.cs" />
+    <Compile Include="Controllers\PagesController.Departments.cs" />
+    <Compile Include="Controllers\PagesController.OrganisationStructure.cs" />
+    <Compile Include="Controllers\PagesController.TheAct.cs" />
+    <Compile Include="Controllers\PagesController.StrategicPlan.cs" />
+    <Compile Include="Controllers\PagesController.BusinessPlan.cs" />
+    <Compile Include="Controllers\PagesController.NASSITRegulations.cs" />
+    <Compile Include="Controllers\PagesController.Investments.cs" />
+    <Compile Include="Controllers\PagesController.Survivors.cs" />
+    <Compile Include="Controllers\PagesController.Invalidity.cs" />
+    <Compile Include="Controllers\PagesController.OldAge.cs" />
+    <Compile Include="Controllers\PagesController.GeneralInfo.cs" />
+    <Compile Include="Controllers\PagesController.HistoricalOverview.cs" />
+    <Compile Include="Controllers\PagesController.MissionandVision.cs" />
     <Compile Include="Controllers\PagesController.Home.cs" />
     <Compile Include="Controllers\ReceiveFormsController.cs" />
     <Compile Include="Controllers\ReferenceNosController.cs" />
@@ -494,6 +604,7 @@
     <Compile Include="Models\APPLICATION_CTRL.cs" />
     <Compile Include="Models\AUDIT_LOG_DATA.cs" />
     <Compile Include="Models\AUDIT_LOG_TRANSACTIONS.cs" />
+    <Compile Include="Models\AUDIT_UNDO.cs" />
     <Compile Include="Models\Badge.cs" />
     <Compile Include="Models\BadgeAvailableField.cs" />
     <Compile Include="Models\bal_chk.cs" />
@@ -858,6 +969,7 @@
     <Compile Include="Models\tran_nom_tr.cs" />
     <Compile Include="Models\tran_parental.cs" />
     <Compile Include="Models\tran_prevname.cs" />
+    <Compile Include="Models\trnfile.cs" />
     <Compile Include="Models\user.cs" />
     <Compile Include="Models\user1.cs" />
     <Compile Include="Models\user_grp.cs" />
@@ -865,9 +977,21 @@
     <Compile Include="Models\user_log.cs" />
     <Compile Include="Models\user_test.cs" />
     <Compile Include="Models\vpay_tr.cs" />
+    <Compile Include="Models\vw_adl_bday_recpt.cs" />
+    <Compile Include="Models\vw_adl_dthchklst.cs" />
+    <Compile Include="Models\vw_adm_memchklst.cs" />
     <Compile Include="Models\zone_cod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\XtraReportBankLodgement.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReportCashControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\XtraReportCheckList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReportChequeControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\XtraReportContributionCheckList.cs">
@@ -879,13 +1003,25 @@
     <Compile Include="Reports\XtraReportListofEstGeneratedNos.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\XtraReportListofEstwithValidNos.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\XtraReportListofForms.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReportListofInvalidNumbers.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\XtraReportMemberStatement.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\XtraReportPreviewDependantSub.cs">
+    <Compile Include="Reports\XtraReportMemberStatementConsol.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReportPaymentJournal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\XtraReportPreviewDepenSubs.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\XtraReportPreviewMember.cs">
@@ -898,35 +1034,72 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AccountPaymentViewModel.cs" />
+    <Compile Include="ViewModels\AddMemberToCPListViewModel.cs" />
+    <Compile Include="ViewModels\BankLodgementReportPrintViewModel.cs" />
+    <Compile Include="ViewModels\CaptureBankLodgementViewModel.cs" />
     <Compile Include="ViewModels\CaptureMemRegViewModel.cs" />
     <Compile Include="ViewModels\CaptureShortPaymentsViewModel.cs" />
+    <Compile Include="ViewModels\CashControlBreakdownViewModel.cs" />
+    <Compile Include="ViewModels\CashControlPrintViewModel.cs" />
+    <Compile Include="ViewModels\CashControlReportViewModel.cs" />
+    <Compile Include="ViewModels\CashControlViewModel.cs" />
+    <Compile Include="ViewModels\CashPaymentBreakdownViewModel.cs" />
+    <Compile Include="ViewModels\ChangeStaffCategoryListViewModel.cs" />
+    <Compile Include="ViewModels\ChangeStaffCategoryViewModel.cs" />
+    <Compile Include="ViewModels\ChequeContorlPrintViewModel.cs" />
+    <Compile Include="ViewModels\ChequePaymentBreakdownViewModel.cs" />
     <Compile Include="ViewModels\ContributionCheckListViewModel.cs" />
+    <Compile Include="ViewModels\ContributionSoftCopyViewModel.cs" />
     <Compile Include="ViewModels\ContrPeriodTemplate.cs" />
+    <Compile Include="ViewModels\CorrectInvalidNosViewModel.cs" />
     <Compile Include="ViewModels\CRSRegViewModel.cs" />
     <Compile Include="ViewModels\EmployerTemplate.cs" />
     <Compile Include="ViewModels\EstablishmentDeactReactViewModel.cs" />
+    <Compile Include="ViewModels\GenerateSunTransactionViewModel.cs" />
     <Compile Include="ViewModels\HardCopyViewModel.cs" />
     <Compile Include="ViewModels\ListGeneratedEmployerViewModel.cs" />
+    <Compile Include="ViewModels\ListInvalidNumbersbyCategoryViewModel.cs" />
+    <Compile Include="ViewModels\ListInvalidNumbersViewModel.cs" />
+    <Compile Include="ViewModels\ListofEstWithValidNumViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MCreditProListViewModel.cs" />
     <Compile Include="ViewModels\MemberCheckListViewModel.cs" />
     <Compile Include="ViewModels\MemberCreditProcessingViewMode.cs" />
     <Compile Include="ViewModels\MemberIdentificationViewModel.cs" />
+    <Compile Include="ViewModels\MemberMasterFileSearchViewModel.cs" />
+    <Compile Include="ViewModels\MemberStatementConsolidatedViewModel.cs" />
     <Compile Include="ViewModels\MemberStatementPrintViewModel.cs" />
     <Compile Include="ViewModels\MemberStatementViewModel.cs" />
+    <Compile Include="ViewModels\PaymentJournalPrintViewModel.cs" />
+    <Compile Include="ViewModels\PaymentJournalViewModel.cs" />
     <Compile Include="ViewModels\PDCTemplate.cs" />
     <Compile Include="ViewModels\PeriodBreakDownViewModel.cs" />
     <Compile Include="ViewModels\PrintCheckListTemplate.cs" />
     <Compile Include="ViewModels\ProcessContributionViewModel.cs" />
     <Compile Include="ViewModels\ReceiveReportViewModel.cs" />
     <Compile Include="ViewModels\ReprintAckLetterViewModel.cs" />
+    <Compile Include="ViewModels\ReverseCapturedContributionViewModel.cs" />
+    <Compile Include="ViewModels\ReversePaymentBreakdownViewModel.cs" />
+    <Compile Include="ViewModels\ReversePaymentsViewModel.cs" />
+    <Compile Include="ViewModels\SoftCopyCRListViewModel.cs" />
+    <Compile Include="ViewModels\SoftcopyMemberListViewModel.cs" />
     <Compile Include="ViewModels\ViewMembersViewModel.cs" />
     <Compile Include="ViewModels\ViewShortPaymentsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Reports\XtraReportBankLodgement.resx">
+      <DependentUpon>XtraReportBankLodgement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportCashControl.resx">
+      <DependentUpon>XtraReportCashControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportCheckList.resx">
       <DependentUpon>XtraReportCheckList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportChequeControl.resx">
+      <DependentUpon>XtraReportChequeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportContributionCheckList.resx">
       <DependentUpon>XtraReportContributionCheckList.cs</DependentUpon>
@@ -937,14 +1110,26 @@
     <EmbeddedResource Include="Reports\XtraReportListofEstGeneratedNos.resx">
       <DependentUpon>XtraReportListofEstGeneratedNos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportListofEstwithValidNos.resx">
+      <DependentUpon>XtraReportListofEstwithValidNos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportListofForms.resx">
       <DependentUpon>XtraReportListofForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportListofInvalidNumbers.resx">
+      <DependentUpon>XtraReportListofInvalidNumbers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportMemberStatement.resx">
       <DependentUpon>XtraReportMemberStatement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\XtraReportPreviewDependantSub.resx">
-      <DependentUpon>XtraReportPreviewDependantSub.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\XtraReportMemberStatementConsol.resx">
+      <DependentUpon>XtraReportMemberStatementConsol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportPaymentJournal.resx">
+      <DependentUpon>XtraReportPaymentJournal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\XtraReportPreviewDepenSubs.resx">
+      <DependentUpon>XtraReportPreviewDepenSubs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\XtraReportPreviewMember.resx">
       <DependentUpon>XtraReportPreviewMember.cs</DependentUpon>

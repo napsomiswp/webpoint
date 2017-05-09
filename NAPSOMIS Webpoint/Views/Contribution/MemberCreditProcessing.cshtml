@@ -8,7 +8,7 @@
  
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/tools-wizard-3.png" width:60px; height:50px; padding-left:10px;" />
 
 </div>
 
@@ -19,7 +19,7 @@
 
     <text style="color:midnightblue; padding-left:10px; font-size:small;"> Below is a list of credit to be processed. </text>
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please Consult your system administrator if in case you need further assistance. </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please Consult your system administrator in case you need further assistance. </text>
 
     <br />
     <br />
@@ -61,6 +61,26 @@
     setting.Name = "receivecrlayout";
     setting.ColCount = 2;
 
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            });
+
+        });
+ 
+        setting.Items.AddEmptyItem();
+
+        }
+
     setting.Items.Add(b => b.ProcessAll).NestedExtension().CheckBox(t =>
     {
         t.Name = "ProcessAll";
@@ -93,6 +113,24 @@
 
     });
 
+
+    setting.Items.Add(bt =>
+    {
+        bt.Name = "btrefresh";
+        bt.ShowCaption = DefaultBoolean.False;
+        bt.Caption = "";
+
+        bt.NestedExtension().Button(b =>
+        {
+            b.Name = "cmdrefresh";
+            b.Width = Unit.Pixel(100);
+            b.Text = "Refresh";
+            b.RouteValues = new { Controller = "Contribution", Action = "MemberCreditProcessing" };
+            b.UseSubmitBehavior = false;
+
+        });
+
+    });
 
 }).GetHtml()
 

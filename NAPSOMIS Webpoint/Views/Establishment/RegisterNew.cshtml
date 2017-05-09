@@ -1,4 +1,4 @@
-﻿@model NAPSOMIS_Webpoint.Models.EmployMastersheet
+﻿@model NAPSOMIS_Webpoint.Models.emp_mst
 @using NAPSOMIS_Webpoint.ViewModels
 
 @{
@@ -8,7 +8,7 @@
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/document_open_8.png" style="width:60px; height:50px; padding-left:10px;" />
 
 </div>
 
@@ -19,6 +19,7 @@
     <text style="font-size:small; padding-left:10px;">Please fill the information below using the establishment form</text>
 
 
+    <br />
     <br />
 
 </div>
@@ -89,6 +90,28 @@
 
     s.Name = "EstablishmentFormLayout";
     s.ColCount = 4;
+    
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
 
     s.Items.AddTabbedGroupItem(group =>
     {
@@ -303,14 +326,14 @@
                         b.Properties.Items.Add("3 |NGOs", "3");
                         b.Properties.Items.Add("4 |PRIVATE CO.", "4");
                         b.Properties.Items.Add("5 |OTHERS", "5");
-                     });
+                    });
 
 
                     dg.Items.Add(m => m.fest_type).NestedExtension().ComboBox(b =>
                     {
                         b.Name = "fest_type";
                         b.Properties.Items.Add("NORMAL", "N");
-                     });
+                    });
 
                     dg.Items.Add(m => m.finsp_date).NestedExtension().DateEdit(b =>
                     {
@@ -408,14 +431,14 @@
                     b.Text = "Add Directors";
                     b.UseSubmitBehavior = true;
                     b.Width = Unit.Pixel(130);
-                    b.RouteValues = new { Controller = "Establishment", Action = "RegisterNew_Directors", ParamValue = "" };
+                    b.RouteValues = new { Controller = "Establishment", Action = "RegisterNew_Director", ParamValue = "" };
 
                 });
             });
 
             //sb.Items.AddGroupItem(g =>
             //{
- 
+
             //});
 
         });

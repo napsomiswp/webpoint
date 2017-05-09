@@ -1,0 +1,69 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.CashPaymentBreakdownViewModel>
+
+ 
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+           
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fType)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fCode)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fFrom)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fTo)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fAmount)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fLF)
+            </th>
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fFrom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fTo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fLF)
+                        </td>
+
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

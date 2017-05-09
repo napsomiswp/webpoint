@@ -7,12 +7,11 @@
     ViewBag.Title = "Member Statement";
 }
 <br />
-<br />
-
+ 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
     <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
-
+    <br />
 </div>
 
 <div class="col-md-10" style="background-color:white; font-size:small;">
@@ -20,6 +19,7 @@
     <text style="color:midnightblue; padding-left:10px; font-size:large;"> Member Statement </text>
     <br />
     <text style="font-size:small; padding-left:10px;">Produce Member Statement by using the form below</text> 
+    <br />
 </div>
 
 
@@ -150,6 +150,13 @@
         group.ColSpan = 2;
         group.ColCount = 2;
 
+        group.Items.Add(b => b.PrintConsolidated).NestedExtension().CheckBox(c =>
+        {
+            c.Name = "PrintConsolidated";
+
+        });
+
+        group.Items.AddEmptyItem();
 
         group.Items.Add(bt =>
         {
@@ -182,7 +189,7 @@
                 b.Text = "Accept";
                 b.RouteValues = new { Controller = "Contribution", Action = "MemberStatement_OK" };
                 b.UseSubmitBehavior = true;
-              
+
             });
 
         });

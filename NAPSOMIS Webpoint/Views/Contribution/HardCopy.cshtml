@@ -8,7 +8,7 @@
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/document_open_8.png" width:70px; height:60px; padding-left:10px;" />
 
 </div>
 
@@ -19,11 +19,33 @@
 
     <text style="color:midnightblue; padding-left:10px; font-size:small;">Please fill the form below. </text>
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if in case you need further assistance. </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator in case you need further assistance. </text>
 
     <br />
 
 </div>
+
+
+<script type="text/javascript">
+    function SetTab() {
+
+        SetActiveTabByIndexIncrement();
+ 
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    window.setTimeout("SetTab()", 10);
+
+    function SetActiveTabByIndexIncrement() { 
+        var theindex = '@Html.Raw(Model.TabIndex)'; 
+        hardcopycapture.SetActiveTab(hardcopycapture.GetTab(theindex));
+    }
+
+</script>
+
 
 
 <script type="text/javascript">
@@ -185,6 +207,9 @@
 
     setting.Items.AddTabbedGroupItem(tabs =>
     {
+
+        tabs.Name = "hardcopycapture";
+        tabs.ColSpan = 2;
 
         tabs.Items.AddGroupItem(tgroup =>
         {
@@ -867,7 +892,7 @@
 
                     t.Properties.Columns.Add("Period", "Period", Unit.Pixel(70));
                     t.Properties.Columns.Add("Type", "Type", Unit.Pixel(40));
-                    t.Properties.Columns.Add("Media", "Mode", Unit.Pixel(40));
+                    t.Properties.Columns.Add("Media", "Category", Unit.Pixel(70));
 
                     t.Properties.DataSource = mypers;
                     t.Properties.TextField = "Period";
@@ -927,10 +952,42 @@
 
                 });
 
+                group.Items.AddGroupItem(group2 =>
+                {
+                    group2.Name = "gpmastertextCRControlgroup";
+                    group2.Caption = "Details of Expected from C.R. Control";
+                    group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+                    group2.Visible = true;
+
+                    group2.Items.Add(b => b.fmasterperiodCRControltext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodCRControltext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmastercontributionCRControltext).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmastercontributionCRControltext";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+                    group2.Items.Add(b => b.fmasterperiodnoofworkersCRControl).NestedExtension().TextBox(t =>
+                    {
+                        t.Name = "fmasterperiodnoofworkersCRControl";
+                        t.ReadOnly = true;
+                        t.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                    });
+
+
+                });
+
                 group.Items.Add(bt =>
                 {
                     bt.Name = "btPrintChecklistMasterUpdategroup";
-                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.ShowCaption = DefaultBoolean.False;
                     bt.Caption = "";
 
                     bt.NestedExtension().Button(b =>
@@ -959,14 +1016,17 @@
                         b.RouteValues = new { Controller = "Contribution", Action = "HardCopy_MasterUpdateOK" };
                         b.UseSubmitBehavior = true;
 
-                        if (Model.fAddcontributioncaptured == Model.fAddcontributionexpected && Model.fAddworkercaptured == Model.fAddworkersexpected)
-                            {
-                            b.Enabled = true;
-                            }
-                        else
-                            {
-                            b.Enabled = false;
-                            }
+                        //if (Model.fmasterperiodnoofworkersCRControl == Model.fmasterperiodnoofworkers && Model.fmastercontributionCRControltext == Model.fmastercontributiontext)
+                        //    {
+                        //    if (Model.fmasterperiodnoofworkersCRControl != null)
+                        //        {
+                        //        b.Enabled = true;
+                        //        } 
+                        //    }
+                        //else
+                        //    {
+                        //    b.Enabled = false;
+                        //    }
                     });
 
                 });
@@ -984,7 +1044,7 @@
     setting.Items.Add(bt =>
     {
         bt.Name = "btreloadpage";
-        bt.ShowCaption = DefaultBoolean.True;
+        bt.ShowCaption = DefaultBoolean.False;
         bt.Caption = "";
 
         bt.NestedExtension().Button(b =>
@@ -1034,10 +1094,10 @@
 
                NAPSOMISModel db = new NAPSOMISModel();
 
-               List<HistoryTransaction> plist = new List<HistoryTransaction>();
-               plist = db.HistoryTransactions.Where(b => b.ferno == Model.ferno).Where(b => b.fcat == Model.fcat).ToList();
+               List<hist_tr> plist = new List<hist_tr>();
+               plist = db.hist_tr.Where(b => b.ferno == Model.ferno).Where(b => b.fcat == Model.fcat).ToList();
 
-               IEnumerable<HistoryTransaction> penum = (IEnumerable<HistoryTransaction>)plist;
+               IEnumerable<hist_tr> penum = (IEnumerable<hist_tr>)plist;
 
                @Html.RenderPartial("CapturedContributionMembers", penum);
 

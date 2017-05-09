@@ -10,8 +10,8 @@
 </div>
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
-    <br />
-     <img src="~/Content/Images/user_group_properties.png"width:60px; height:50px; padding-left:10px;" />
+    <br />  
+     <img src="~/Content/Images/preferences-system-login.png" style="width:70px; height:60px; padding-left:10px;" />
 
 </div>
 
@@ -20,9 +20,9 @@
     <text style="color:midnightblue; padding-left:10px; font-size:large;">Login </text>
     <br />
 
-    <text style="color:midnightblue; padding-left:10px; font-size:small;">Please enter your username and password. </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:medium;">Please enter your username and password. </text>
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if you do not have an account if you don't have an account. </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:small;"> Consult your system administrator if you do not have an account.</text>
 
 </div>
 
@@ -37,95 +37,113 @@
     settings.Name = "loginlayout";
     settings.ColCount = 3;
 
-    settings.Items.AddGroupItem(group =>
-    {
-        group.Name = "logingroup";
-        group.GroupBoxDecoration = GroupBoxDecoration.Box;
-        group.Caption = "User Login";
-        group.ColCount = 2;
-        group.ColSpan = 2;
+    settings.Items.AddTabbedGroupItem(tab => {
 
-        if (ViewBag.ErrorMessage != null)
-            {
-            group.Items.Add(l =>
-            {
-                l.Caption = "";
-                l.NestedExtension().Label(lb =>
+        tab.Items.AddGroupItem(gr =>
+        {
+            gr.Name = "logingroup";
+            gr.GroupBoxDecoration = GroupBoxDecoration.None;
+            gr.Caption = "User Login";
+            gr.ColCount = 2;
+            gr.ColSpan = 2;
+
+            gr.Items.AddGroupItem(group => {
+
+                group.Name = "logingroup";
+                group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+                group.Caption = "Please enter your username and password";
+                group.ColCount = 2;
+                group.ColSpan = 2;
+
+
+                if (ViewBag.ErrorMessage != null)
+                    {
+
+                    group.Items.Add(l =>
+                    {
+                        l.Caption = "";
+                        l.NestedExtension().Label(lb =>
+                        {
+                            lb.Text = ViewBag.ErrorMessage;
+                            lb.Name = "ErrorLabel";
+                            lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+                        });
+
+                    });
+
+                    group.Items.AddEmptyItem();
+                    }
+                group.Items.Add(m => m.UserName).NestedExtension().TextBox(tb =>
                 {
-                    lb.Text = ViewBag.ErrorMessage;
-                    lb.Name = "ErrorLabel";
-                    lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+
+                    tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    tb.ShowModelErrors = true;
+                    tb.Properties.ValidationSettings.Display = Display.Dynamic;
+                    tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                    tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+
                 });
 
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(m => m.Password).NestedExtension().TextBox(tb =>
+                {
+
+
+                    tb.Properties.Password = true;
+                    tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
+                    tb.ShowModelErrors = true;
+                    tb.Properties.ValidationSettings.Display = Display.Dynamic;
+                    tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
+                    tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+
+
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(b =>
+                {
+                    b.ShowCaption = DefaultBoolean.True;
+                    b.Caption = "";
+
+                    b.NestedExtension().Button(bt =>
+                    {
+
+                        bt.Name = "Button";
+                        bt.Text = "Log On";
+                        bt.UseSubmitBehavior = true;
+                        bt.Width = Unit.Pixel(130);
+
+                        bt.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
+
+                    });
+                });
+
+                group.Items.AddEmptyItem();
+
+                group.Items.Add(bt =>
+                {
+                    bt.NestedExtension().Button(b =>
+                    {
+                        bt.Caption = "";
+
+                        b.Name = "ForgotPassButton";
+                        b.Text = "Forgot Password?";
+                        b.UseSubmitBehavior = true;
+                        b.Width = Unit.Pixel(130);
+
+                        b.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
+                    });
+
+                });
             });
 
-            group.Items.AddEmptyItem();
-            }
-        group.Items.Add(m => m.UserName).NestedExtension().TextBox(tb =>
-        {
-          
-            tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-            tb.ShowModelErrors = true;
-            tb.Properties.ValidationSettings.Display = Display.Dynamic;
-            tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
-            tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
+
 
         });
-
-        group.Items.AddEmptyItem();
-
-        group.Items.Add(m => m.Password).NestedExtension().TextBox(tb =>
-        {
-
-
-            tb.Properties.Password = true;
-            tb.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
-            tb.ShowModelErrors = true;
-            tb.Properties.ValidationSettings.Display = Display.Dynamic;
-            tb.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.Text;
-            tb.Properties.ValidationSettings.ErrorTextPosition = ErrorTextPosition.Bottom;
-
-        });
-
-        group.Items.AddEmptyItem();
-
-        group.Items.Add(b =>
-        {
-            b.ShowCaption = DefaultBoolean.True;
-            b.Caption = "";
-
-            b.NestedExtension().Button(bt =>
-            {
-
-                bt.Name = "Button";
-                bt.Text = "Log On";
-                bt.UseSubmitBehavior = true;
-                bt.Width = Unit.Pixel(130);
-
-                bt.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
-
-            });
-        });
-
-        group.Items.AddEmptyItem();
-
-        group.Items.Add(bt =>
-        {
-            bt.NestedExtension().Button(b =>
-            {
-                bt.Caption = "";
-
-                b.Name = "ForgotPassButton";
-                b.Text = "Forgot Password?";
-                b.UseSubmitBehavior = true;
-                b.Width = Unit.Pixel(130);
-
-                b.RouteValues = new { Controller = "Accounts", Action = "Login_Check" };
-            });
-
-        });
-
     });
+
 
     settings.Items.AddGroupItem(group =>
     {

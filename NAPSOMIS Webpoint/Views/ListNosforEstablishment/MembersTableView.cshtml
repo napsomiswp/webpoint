@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.MemberTransaction>
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.mem_tr>
 
 @{
     ViewBag.Title = "Members";
@@ -10,9 +10,7 @@
     <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
         <tr>
             <th class=whitesmokeheader>Actions</th>
-            <th class=whitesmokeheader>
-                @Html.DisplayNameFor(model => model.ID_SBTS)
-            </th>
+          
             <th class=whitesmokeheader>
                 @Html.DisplayNameFor(model => model.fref_no)
             </th>
@@ -50,13 +48,11 @@
                     {
                     <tr>
                         <td>
-                            @Html.ActionLink("Preview", "Preview", new { Controller = "CheckList", Action = "Preview", id = item.ID_SBTS }) |
-                            @Html.ActionLink("Edit", "Edit", new { Controller = "CheckList", Action = "Edit", id = item.ID_SBTS }) |
-                            @Html.ActionLink("Delete", "Delete", new { Controller = "CheckList", Action = "Delete", id = item.ID_SBTS }) |
+                            @Html.ActionLink("Preview", "Preview", new { Controller = "CheckList", Action = "Preview", id = item.fref_no }) |
+                            @Html.ActionLink("Edit", "Edit", new { Controller = "CheckList", Action = "Edit", id = item.fref_no }) |
+                            @Html.ActionLink("Delete", "Delete", new { Controller = "CheckList", Action = "Delete", id = item.fref_no }) |
                          </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ID_SBTS)
-                        </td>
+                       
                         <td>
                             @Html.DisplayFor(modelItem => item.fref_no)
                         </td>

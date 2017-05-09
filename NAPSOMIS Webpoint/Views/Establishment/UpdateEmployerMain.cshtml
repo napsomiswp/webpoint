@@ -1,4 +1,4 @@
-﻿@model NAPSOMIS_Webpoint.Models.MainCat
+﻿@model NAPSOMIS_Webpoint.Models.main_cat
 @using NAPSOMIS_Webpoint.ViewModels
 
 @{
@@ -30,11 +30,31 @@
     setting.Name = "updateemployermain";
     setting.ColCount = 2;
 
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+       
+        }
+
     setting.Items.AddGroupItem(group =>
     {
         group.Name = "firstgroup";
         group.Caption = "Details";
-        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
         group.ColSpan = 2;
         group.ColCount = 1;
 
@@ -61,7 +81,7 @@
 
         group.Name = "searchgroup";
         group.Caption = "Update Existing Category";
-        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
         group.ColSpan = 2;
         group.ColCount = 1;
 

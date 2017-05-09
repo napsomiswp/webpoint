@@ -18,10 +18,10 @@ namespace NAPSOMIS_Webpoint.ViewModels
         public string femp_name { get; set; }
 
        [Required(AllowEmptyStrings = false, ErrorMessage = "The From Date is required!")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The To Date is required!")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         }
     }

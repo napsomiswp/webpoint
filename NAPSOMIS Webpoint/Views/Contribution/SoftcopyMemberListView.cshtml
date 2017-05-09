@@ -1,0 +1,122 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.SoftcopyMemberListViewModel>
+
+
+@{
+    ViewBag.Title = "Softcopy Member List";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FCODE)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FERNO)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FSSNO)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FNAME)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FNAME1)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FNAME2)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FCONTR)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FDATE)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FSTAFFNO)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FMISC)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FFLAG)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FBAK_BEGIN)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FBAK_END)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.FBAKTYPE)
+            </th>
+
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCODE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FERNO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FSSNO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FNAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FNAME1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FNAME2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FCONTR)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FDATE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FSTAFFNO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FMISC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FFLAG)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FBAK_BEGIN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FBAK_END)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FBAKTYPE)
+                        </td>
+                     
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

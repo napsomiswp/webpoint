@@ -1,0 +1,372 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ContributionSoftCopyViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+
+@{
+    ViewBag.Title = "Process Softcopy Contribution Report";
+}
+
+<br />
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/media-zip_mount-2.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;">Process Softcopy Contribution Report </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please enter the ERNo and browse for the contribution file from below.</text>
+    <br />
+
+    <br />
+</div>
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ftype.GetText();
+
+        if (thetype == "Regular") {
+            fbaktype.SetVisible(false);
+            fmode.SetVisible(true);
+        } else {
+            fbaktype.SetVisible(true);
+            fmode.SetVisible(false);
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("SoftCopy_Browse", "Contribution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 3;
+
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+        setting.Items.AddEmptyItem();
+
+        }
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Details";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.ColSpan = 3;
+        group.ColCount = 3;
+
+        group.Items.Add(b => b.ERNO).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ERNO";
+
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btload";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloaddata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "SoftCopy_Load" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.EstablishmentName).NestedExtension().TextBox(b =>
+        {
+            b.Name = "EstablishmentName";
+            b.ReadOnly = true;
+            b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+        group.Items.Add(b => b.CR).NestedExtension().ComboBox(b =>
+        {
+
+            b.Name = "CR";
+
+            List<SoftCopyCRListViewModel> mysofts = (List<SoftCopyCRListViewModel>)TempData.Peek("MySoftContributionPeriod");
+
+            b.Properties.Columns.Add("Period", "Period", Unit.Pixel(150));
+            b.Properties.Columns.Add("Type", "Type", Unit.Pixel(50));
+            b.Properties.Columns.Add("Category", "Category", Unit.Pixel(80));
+
+            b.Properties.DataSource = mysofts;
+            b.Properties.TextField = "Period";
+            b.Properties.ValueField = "Period";
+
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btloadcrperiod";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloadcrperiod";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "SoftCopy_LoadPeriod" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+
+        group.Items.Add(b => b.ContributionType).NestedExtension().TextBox(b =>
+        {
+            b.Name = "ContributionType";
+            b.ReadOnly = true;
+            b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+
+    });
+
+    if (Model.ContributionType == "Backpay")
+        {
+
+        setting.Items.AddGroupItem(group =>
+        {
+
+            group.Name = "backpaygroup";
+            group.Caption = "Backpay Details";
+            group.GroupBoxDecoration = GroupBoxDecoration.Box;
+            group.ColSpan = 3;
+            group.ColCount = 3;
+
+
+            group.Items.Add(b => b.SubmissionType).NestedExtension().ComboBox(b =>
+            {
+
+                b.Name = "SubmissionType";
+                b.Properties.Items.Add("Single", "S");
+                b.Properties.Items.Add("Bulk", "B");
+
+            });
+
+
+            group.Items.Add(b => b.DebitPeriod).NestedExtension().TextBox(b =>
+            {
+                b.Name = "DebitPeriod";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            group.Items.Add(b => b.ftype).NestedExtension().TextBox(b =>
+            {
+                b.Name = "ftype";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+
+            group.Items.Add(b => b.fcat).NestedExtension().TextBox(b =>
+            {
+                b.Name = "fcat";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+
+        });
+
+        }
+
+
+    if (Model.ContributionType != null)
+        {
+        setting.Items.AddGroupItem(group =>
+        {
+
+            group.Name = "secondgroup";
+            group.Caption = "Contribution Details";
+            group.GroupBoxDecoration = GroupBoxDecoration.Box;
+            group.ColSpan = 3;
+            group.ColCount = 3;
+
+            group.Items.Add(b => b.Period).NestedExtension().TextBox(b =>
+            {
+                b.Name = "Period";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+
+            });
+
+            group.Items.AddEmptyItem();
+            group.Items.AddEmptyItem();
+
+            group.Items.Add(b => b.NoOfRecords).NestedExtension().TextBox(b =>
+            {
+                b.Name = "NoOfRecords";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+
+            group.Items.Add(b => b.TotalContribution).NestedExtension().TextBox(b =>
+            {
+                b.Name = "TotalContribution";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+            group.Items.Add(b => b.NoOfInvalidRecords).NestedExtension().TextBox(b =>
+            {
+                b.Name = "NoOfInvalidRecords";
+                b.ReadOnly = true;
+                b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+            });
+
+        });
+        }
+
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 3;
+        group.ColCount = 3;
+
+
+        //group.Items.Add(bt =>
+        //{
+        //    bt.Name = "btgroup";
+        //    bt.ShowCaption = DefaultBoolean.False;
+
+        //    bt.NestedExtension().UploadControl(b =>
+        //    {
+        //        b.UploadMode = UploadControlUploadMode.Standard;
+        //        b.UploadStorage = UploadControlUploadStorage.FileSystem;
+        //        b.ValidationSettings.MaxFileSize = 100000;
+
+        //        b.Name = "cmdbrowse";
+        //        b.Width = Unit.Pixel(300);
+
+        //        b.BrowseButton.Text = "Browse";
+
+        //        b.ShowTextBox = true;
+        //        b.ShowClearFileSelectionButton = true;
+        //        b.ShowUploadButton = true;
+
+        //        b.ProgressBarSettings.DisplayMode = ProgressBarDisplayMode.Position;
+        //        b.ShowProgressPanel = true;
+
+        //    });
+
+        //});
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdok";
+                b.Width = Unit.Pixel(100);
+                b.Text = "OK";
+                b.RouteValues = new { Controller = "Contribution", Action = "SoftCopy_Complete" };
+                b.UseSubmitBehavior = true;
+                b.Enabled = false; 
+ 
+                if (TempData.Peek("SoftcopyMemberList") != null)
+                    {
+                    b.Enabled = true;
+                    }
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+    if (Model.ftype != null)
+        {
+        <div class="col-md-2">
+            <input type="file" name="file" style="width:500px" />
+            <input type="submit" value="Upload" />
+        </div>
+
+        <br />
+        <br />
+        <br />
+        }
+
+    }
+
+@{
+    if (TempData.Peek("SoftcopyMemberList") != null)
+        {
+         
+        @Html.DevExpress().RoundPanel(setting =>
+   {
+       setting.Name = "breakdownpanel";
+       setting.HeaderText = "Cached Estblishment Member Contributions for Processing";
+     
+       setting.SetContent(() =>
+       {
+
+           List<SoftcopyMemberListViewModel> plist = (List<SoftcopyMemberListViewModel>)TempData.Peek("SoftcopyMemberList");
+           IEnumerable<SoftcopyMemberListViewModel> penum = (IEnumerable<SoftcopyMemberListViewModel>)plist;
+           @Html.RenderPartial("SoftcopyMemberListView", penum);
+
+       });
+
+   }).GetHtml()
+
+        }
+}

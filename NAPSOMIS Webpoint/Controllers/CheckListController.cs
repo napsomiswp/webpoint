@@ -89,6 +89,29 @@ namespace NAPSOMIS_Webpoint.Controllers
             List<nom_tr> depen = new List<nom_tr>();
             depen = db.nom_tr.Where(b => b.fref_no == id).ToList();
 
+            if (depen.Count > 0)
+                    {
+                    foreach (nom_tr drow in depen)
+                        {
+                        nom_tr sd = new nom_tr();
+                        sd.fbirth_date = drow.fbirth_date;
+                        sd.fnfirstname = drow.fnfirstname;
+                        sd.fnothname = drow.fnothname;
+                        sd.fnsurname = drow.fnsurname;
+                        sd.fnom_ssno = drow.fnom_ssno;
+                        sd.fnomsex = drow.fnomsex;
+                        sd.frelation = drow.frelation;
+                        sd.fres_addr = drow.fres_addr;
+                        sd.fper_addr = drow.fper_addr;
+
+                        alldependants.Add(sd);
+                        }
+                    }
+                else
+                    {
+
+                    }
+             
             foreach (var record in fullmember)
                 {
                 MemberCheckListViewModel cm = new MemberCheckListViewModel();
@@ -152,29 +175,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                 fmd.Add(cm);
 
-                if (depen.Count > 0)
-                    {
-                    foreach (nom_tr drow in depen)
-                        {
-                        nom_tr sd = new nom_tr();
-                        sd.fbirth_date = drow.fbirth_date;
-                        sd.fnfirstname = drow.fnfirstname;
-                        sd.fnothname = drow.fnothname; 
-                        sd.fnsurname = drow.fnsurname; 
-                        sd.fnom_ssno = drow.fnom_ssno;  
-                        sd.fnomsex = drow.fnomsex; 
-                        sd.frelation = drow.frelation;  
-                        sd.fres_addr = drow.fres_addr; 
-                        sd.fper_addr = drow.fper_addr; 
-
-                        alldependants.Add(sd);
-                        }
-                    }
-                else
-                    {
-
-                    }
-
+                
                 }
 
 
@@ -182,8 +183,12 @@ namespace NAPSOMIS_Webpoint.Controllers
                 {
 
                 XtraReportPreviewMember mydocument = new XtraReportPreviewMember();
+
+                XRSubreport detailReport = mydocument.Bands[BandKind.ReportFooter].FindControl("DependSubreport", true) as XRSubreport;
+                detailReport.ReportSource.DataSource = alldependants;
+
                 mydocument.MemberDataSource.DataSource = fmd;
-                
+
                 mydocument.CreateDocument();
 
                 return View("PrintPreview", mydocument);
@@ -230,7 +235,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
 
         [HttpPost]
-        public ActionResult PrintCheckList(PrintCheckListTemplate c)
+        public ActionResult PrintCheckList_Print(PrintCheckListTemplate c)
             {
 
             List<PrintCheckListTemplate> ctemp = new List<PrintCheckListTemplate>();
@@ -238,7 +243,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             List<ViewModels.MemberCheckListViewModel> fmd = new List<ViewModels.MemberCheckListViewModel>();
 
-            var dmember = from s in db.mem_tr join sa in db.parentals on s.fref_no equals sa.fref_no join p in db.provinces on s.fprovince equals p.fcode join d in db.districts on s.fdist equals d.d_code join ch in db.chiefdoms on s.fchief equals ch.fc_code join occ in db.occupates on s.foccupation equals occ.fcode join dep in db.nom_tr on s.fref_no equals dep.fref_no join rel in db.rel_mst on dep.frelation equals rel.frel_code where s.CreatedOn >= c.StartDate && s.CreatedOn <= c.EndDate select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc };
+            var dmember = from s in db.mem_tr join sa in db.parentals on s.fref_no equals sa.fref_no join p in db.provinces on s.fprovince equals p.fcode join d in db.districts on s.fdist equals d.d_code join ch in db.chiefdoms on s.fchief equals ch.fc_code join occ in db.occupates on s.foccupation equals occ.fcode join dep in db.nom_tr on s.fref_no equals dep.fref_no join rel in db.rel_mst on dep.frelation equals rel.frel_code where s.CreatedOn >= c.StartDate where s.CreatedOn <= c.EndDate select new { s.fref_no, s.fssno, s.fsurname, s.firstname, s.fothname, s.fper_addr, s.fcur_addr, s.fm_stat, s.fnation, s.fb_country, s.fsex, fprovince = p.fdesc, fdist = d.d_desc, fchief = ch.fdescr, s.ftown, s.fb_date, s.fjoindate, s.fincome, s.fnat_income, foccupation = occ.fdescr, s.femp_name, s.ferno, s.femp_addr, s.ftel_no, sa.ffirstname, sa.ffsurname, sa.ffothname, sa.fmfirstname, sa.fmsurname, sa.fmothname, dep.fbirth_date, dep.fnfirstname, dep.fnomsex, dep.fnom_ssno, dep.fnothname, dep.fnsurname, fper_addr_dependant = dep.fper_addr, fres_addr_dependant = dep.fres_addr, frelation = rel.frel_desc };
 
             var fullmember = dmember.ToList();
 
@@ -340,7 +345,11 @@ namespace NAPSOMIS_Webpoint.Controllers
                 }
             else
                 {
-                return RedirectToAction("ListMembersCheckList");
+
+                ViewBag.Message = "NO RECORD WAS FOUND IN THE DATES SPECIFIED.";
+                return View("PrintCheckList", c);
+
+                //return RedirectToAction("ListMembersCheckList");
                 }
 
             }

@@ -1,0 +1,226 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.GenerateSunTransactionViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "Generate Sun Transaction";
+}
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/korganizer-3.png" style="width:70px; height:60px; padding-left:10px;" />
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Generate Sun Transaction</text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Please enter the receipt date below and click search</text>
+    <br />
+    <br />
+
+</div>
+
+
+@using (Html.BeginForm("GenerateSunTransaction_OK", "AccountPayment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddTabbedGroupItem(tab =>
+    {
+        tab.Name = "tablayout";
+        tab.Caption = "Bank Lodgment";
+        tab.ColSpan = 2;
+
+        tab.Items.AddGroupItem(group =>
+        {
+            group.Name = "GenerateSunTransactiongroup";
+            group.Caption = "Capture Bank Logement";
+            group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            group.ColSpan = 2;
+            group.ColCount = 2;
+
+
+
+            group.Items.AddGroupItem(group2 =>
+            {
+                group2.Name = "secondgroup";
+                group2.Caption = "Search";
+                group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                group2.ColSpan = 2;
+                group2.ColCount = 2;
+
+                group2.Items.Add(b => b.receiptdate).NestedExtension().DateEdit(c =>
+                {
+                    c.Name = "receiptdate";
+
+                });
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btseach";
+                    bt.ShowCaption = DefaultBoolean.False;
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdsearch";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Search";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "GenerateSunTransaction_Search" };
+                        b.UseSubmitBehavior = true;
+
+                    });
+
+                });
+            });
+
+            if (Model.totalreceipt != null)
+                {
+
+                group.Items.AddGroupItem(group2 =>
+                {
+                    group2.Name = "displaygroup";
+                    group2.Caption = "Summary";
+                    group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                    group2.ColSpan = 2;
+                    group2.ColCount = 1;
+
+                    group2.Items.Add(b => b.totalreceipt).NestedExtension().TextBox(c =>
+                    {
+                        c.Name = "totalreceipt";
+                        c.ReadOnly = true;
+                        c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.White;
+                        c.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                        c.Properties.DisplayFormatString = "N2";
+                        c.Properties.ReadOnlyStyle.Font.Size = 11;
+                    });
+
+                    group2.Items.Add(b => b.totalbanked).NestedExtension().TextBox(c =>
+                    {
+                        c.Name = "totalbanked";
+                        c.ReadOnly = true;
+                        c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.White;
+                        c.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                        c.Properties.DisplayFormatString = "N2";
+                        c.Properties.ReadOnlyStyle.Font.Size = 11;
+                    });
+
+                    group2.Items.Add(b => b.journaltransfer).NestedExtension().TextBox(c =>
+                    {
+                        c.Name = "journaltransfer";
+                        c.ReadOnly = true;
+                        c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.White;
+                        c.Properties.ReadOnlyStyle.ForeColor = System.Drawing.Color.Red;
+                        c.Properties.DisplayFormatString = "N2";
+                        c.Properties.ReadOnlyStyle.Font.Size = 11;
+                    });
+
+                    group2.Items.Add(b => b.balance).NestedExtension().TextBox(c =>
+                    {
+                        c.Name = "balance";
+                        c.ReadOnly = true;
+                        c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                        c.Properties.DisplayFormatString = "N2";
+                        c.Properties.ReadOnlyStyle.Font.Size = 11;
+                    });
+
+                });
+
+                }
+
+
+            group.Items.AddGroupItem(group2 =>
+            {
+
+                group2.Name = "buttongroup";
+                group2.Caption = "Actions";
+                group2.GroupBoxDecoration = GroupBoxDecoration.Box;
+                group2.ColSpan = 2;
+                group2.ColCount = 2;
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btgroup";
+                    bt.ShowCaption = DefaultBoolean.False;
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdGenerateSunTransactionreset";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Clear";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "GenerateSunTransaction" };
+                        b.UseSubmitBehavior = false;
+
+                    });
+
+                });
+
+
+                group2.Items.Add(bt =>
+                {
+                    bt.Name = "btgroup";
+                    bt.ShowCaption = DefaultBoolean.True;
+                    bt.Caption = "";
+
+                    bt.NestedExtension().Button(b =>
+                    {
+                        b.Name = "cmdGenerateSunTransactioncomplete";
+                        b.Width = Unit.Pixel(100);
+                        b.Text = "Generate";
+                        b.RouteValues = new { Controller = "AccountPayment", Action = "GenerateSunTransaction_Generate" };
+                        b.UseSubmitBehavior = true;
+
+
+                        if (Model.totalreceipt != null)
+                            {
+                            b.Enabled = true;
+                            }
+                        else
+                            {
+                            b.Enabled = false;
+                            }
+                    });
+
+                });
+
+            });
+
+
+
+        });
+
+    });
+
+
+
+
+}).GetHtml()
+
+
+    }

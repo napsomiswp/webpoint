@@ -1,0 +1,86 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.ChangeStaffCategoryListViewModel>
+
+
+@{
+    ViewBag.Title = "Establishmemt Members";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;"> 
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+           
+            <th class=whitesmokeheader>Actions</th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fssno)
+            </th> 
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fsurname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.firstname)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fothername)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fperiod)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcurrentcat)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fcontribution)
+            </th>
+           
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                         
+                        <td>
+                            @Html.ActionLink("Change", "ChangeStaffCategory_ChangeLoad", new { id = item.recordid }) |
+                            @Html.ActionLink("Delete", "ChangeStaffCategory_Delete", new { Controller = "Contribution", id = item.recordid })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fssno)
+                        </td>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fsurname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fothername)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fperiod)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcurrentcat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fcontribution)
+                        </td>
+                       
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

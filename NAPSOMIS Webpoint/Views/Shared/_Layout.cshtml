@@ -47,9 +47,25 @@
 
 <body>
 
+    <style type="text/css">
+        .bgimg {
+            background-image: url(../../Content/Images/Background/snow_white.jpg);
+            background-size:cover;
+           
+        }
+
+         .headerimg {
+            background-image: url(../../Content/Images/Background/headerpanel.png);
+            background-size:contain;
+         
+        }
+
+    </style>
+
+
 
     <div class="wrapper">
-        <header>
+        <header class="headerimg" style="background-color:whitesmoke"  >
             <div class="container">
                 @Html.DevExpress().Panel(p =>
            {
@@ -60,7 +76,7 @@
                p.SettingsCollapsing.ExpandButton.GlyphType = PanelExpandButtonGlyphType.Strips;
                p.Styles.ExpandBar.CssClass = "expandBar";
                p.Styles.ExpandedPanel.CssClass = "expandedPanel";
-
+               
                p.SetExpandBarTemplateContent(c =>
                {
                    ViewContext.Writer.Write("<div class='title'><a href='" + Url.Action("Home", "Pages") + "'>NAPSOMIS</a><p class='small'>NASSIT on the go</p></div>");
@@ -70,24 +86,25 @@
             </div>
         </header>
 
-        <div class="content" style="background-color:whitesmoke;">
+        <div class="content" style="background-color: white;">
 
             <script type="text/javascript">
                 function ShowTime() {
-                 
+
                     var dt = new Date();
-                    
-                    var labelref = document.getElementById("lbltime"); 
+
+                    var labelref = document.getElementById("lbltime");
                     labelref.innerText = dt.toLocaleTimeString();
-  
+
                     window.setTimeout("ShowTime()", 1000);
                 }
             </script>
 
 
-            <script type="text/javascript"> 
-               
+            <script type="text/javascript">
+
                 window.setTimeout("ShowTime()", 1000);
+
             </script>
 
             @*@using (Html.BeginForm()) {
@@ -138,12 +155,14 @@
                 }).GetHtml()
                  }*@
 
+           
 
-            <div class="col-md-1" style="background-color:whitesmoke; font-size:small;">
+            <div class="col-md-1 bgimg" style="background-color:whitesmoke; font-size:small;">
 
                 @{
                     if (Session["UserName"] != null)
                         {
+                        <p><H4 style="color:darkorange;">C.R.I.D</H4></p>
                         <p><H4 style="color:darkblue;">Welcome</H4></p>
                         <p>Name: @Session["FullNameofUser"]</p>
                         <p>User Group: @Session["UserGroup"]</p>
@@ -157,29 +176,32 @@
                         <p>Login Time:@Session["LoginTime"]</p>
 
                         <p></p>
-                        <p><H4 style="color:darkblue;">Time</H4></p>
+                        <p><H5 style="color:darkorange;">Time</H5></p>
 
-                        @Html.DevExpress().FormLayout(settings =>
-                   {
-                       settings.Name = "myset112";
-                       settings.ColCount = 1;
-                       settings.Items.Add(b =>
+                             @Html.DevExpress().FormLayout(settings =>
                        {
-
-                           b.NestedExtension().Label(c =>
+                           settings.Name = "myset112";
+                           settings.ColCount = 1;
+                         
+                           settings.Items.Add(b =>
                            {
-                               b.Caption = "";
-                               b.ShowCaption = DefaultBoolean.False;
 
-                               c.Name = "lbltime";
-                               c.ControlStyle.Font.Size = 11;
-                               c.ControlStyle.Font.Bold = true;
-                               c.ControlStyle.Font.Name = "Segoe UI";
-                             
+                               b.NestedExtension().Label(c =>
+                               {
+                                   b.Caption = "";
+                                   b.ShowCaption = DefaultBoolean.False;
+
+                                   c.Name = "lbltime";
+                                   c.ControlStyle.Font.Size = 11;
+                                   c.ControlStyle.Font.Bold = true;
+                                   c.ControlStyle.Font.Name = "Segoe UI";
+
+                               });
                            });
-                       });
 
-                   }).GetHtml()
+                       }).GetHtml()
+                       
+
 
                         @*<label id="lbltime" onwaiting="ShowTime();">12:00:41</label>*@
 
@@ -231,7 +253,7 @@
         <footer style="background-color: darkslateblue; color:white">
             <div class="footerDown" style="background-color: darkslateblue; color:white">
                 <div class="container">
-                    <p>@DateTime.Today.Year.ToString() &copy; NASSIT - 32 Walpole Street, P.O. BOX 29, Freetown, Sierra Leone / 225365/223814 / publicaffairs@nassitsl.org   <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+                    <p>@DateTime.Today.Year.ToString() &copy; NASSIT - 32 Walpole Street, P.O. BOX 29, Freetown, Sierra Leone / 225365/223814 / publicaffairs@nassitsl.org   <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>  - Developed by CRID (SL)</p>
                 </div>
             </div>
         </footer>

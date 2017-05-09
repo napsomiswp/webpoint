@@ -1,0 +1,64 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.ViewModels.ChequePaymentBreakdownViewModel>
+
+ 
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+           
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fChequeNo)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fDate)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fAmount)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fBank)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fBranch)
+            </th>
+           
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fChequeNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fBank)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fBranch)
+                        </td>
+                      
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>
+

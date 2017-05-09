@@ -1,0 +1,207 @@
+﻿@model NAPSOMIS_Webpoint.Models.dir_mst
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "ReActivate Establishment";
+}
+
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/contact_new_2.png" style="width:60px; height:50px; padding-left:10px;" />
+
+</div>
+
+<div class="col-md-11" style="background-color:white; font-size:small;">
+    <br />
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Add Directors for Est: @TempData.Peek("DirectorERNo").ToString() </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Register directors for this establishment using the form below</text>
+
+
+    <br />
+
+</div>
+
+
+<script type="text/javascript">
+    function OnSelectedIndexChanged(s, e) {
+        var employervalue = femp_name.GetValue().split(";");
+
+        ferno.SetText(employervalue[0])
+
+    }
+
+</script>
+
+
+@using (Html.BeginForm("RegisterNew_DirectorSave", "Establishment", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(s =>
+{
+
+    s.Name = "EstablishmentFormLayout";
+    s.ColCount = 3;
+
+    if (ViewBag.Message != null)
+        {
+        s.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        s.Items.AddEmptyItem();
+        s.Items.AddEmptyItem();
+
+        }
+
+    s.Items.AddTabbedGroupItem(group =>
+    {
+        group.ColSpan = 3;
+        group.Name = "CaptureTab";
+
+        group.Items.AddGroupItem(sb =>
+        {
+            sb.Caption = "Establishment Details";
+            sb.Name = "firsttab";
+            sb.ColSpan = 3;
+            sb.ColCount = 3;
+
+            sb.Items.AddGroupItem(dg =>
+            {
+                dg.Name = "group1";
+                dg.Caption = "Director's Details";
+                dg.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+                dg.Items.Add(m => m.ferno).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "ferno";
+                    b.ReadOnly = true;
+                    b.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+                });
+
+                dg.Items.AddEmptyItem();
+                dg.Items.AddEmptyItem();
+
+                dg.Items.Add(m => m.fdir_name).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "fdir_name";
+
+                });
+
+                dg.Items.Add(m => m.fdir_addr).NestedExtension().TextBox(b =>
+                {
+                    b.Name = "fdir_addr";
+
+                });
+
+
+            });
+
+
+        });
+
+
+    });
+
+    s.Items.AddGroupItem(sb =>
+    {
+        sb.ColSpan = 3;
+        sb.ColCount = 3;
+        sb.Caption = "";
+        sb.GroupBoxDecoration = GroupBoxDecoration.None;
+
+        sb.ShowCaption = DefaultBoolean.False;
+        sb.Paddings.PaddingBottom = 6;
+        sb.Paddings.PaddingLeft = 0;
+        sb.Paddings.PaddingTop = 5;
+        sb.UseDefaultPaddings = false;
+
+        sb.Name = "cleargroup";
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "clear";
+                b.Text = "Complete";
+                b.UseSubmitBehavior = false;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "RegisterNew", ParamValue = "" };
+            });
+        });
+
+
+        sb.Items.Add(i =>
+        {
+            i.Caption = " ";
+            i.NestedExtension().Button(b =>
+            {
+                b.Name = "savedir";
+                b.Text = "Save";
+                b.UseSubmitBehavior = true;
+                b.Width = Unit.Pixel(140);
+                b.RouteValues = new { Controller = "Establishment", Action = "RegisterNew_DirectorSave", ParamValue = "" };
+            });
+        });
+
+    });
+
+}).GetHtml()
+
+    }
+
+
+@{
+    if (Model.ferno != null)
+        {
+
+        @Html.DevExpress().RoundPanel(settings =>
+   {
+       settings.Name = "paneldirectors";
+       settings.HeaderText = "List of Registered Directors for Establishment";
+       settings.AllowCollapsingByHeaderClick = true;
+       settings.EnableAnimation = true;
+       //settings.ShowCollapseButton = true;
+
+       settings.SetContent(() =>
+       {
+           try
+               {
+
+               NAPSOMISModel db = new NAPSOMISModel();
+
+               List<dir_mst> dm = new List<dir_mst>();
+               String theferno = Model.ferno;
+
+               dm = db.dir_mst.Where(b => b.ferno == theferno).ToList();
+
+               IEnumerable<dir_mst> dirlist = (IEnumerable<dir_mst>)dm;
+
+               Html.RenderPartial("DirectorsTableView", dirlist);
+
+               }
+
+           catch (Exception)
+               {
+
+               }
+
+       });
+   }).GetHtml()
+
+
+        }
+}

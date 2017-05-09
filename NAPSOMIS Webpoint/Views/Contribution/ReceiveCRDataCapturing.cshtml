@@ -1,4 +1,4 @@
-﻿@model NAPSOMIS_Webpoint.Models.EmployMastersheet
+﻿@model NAPSOMIS_Webpoint.Models.emp_mst
 
 @using NAPSOMIS_Webpoint.ViewModels
 @using NAPSOMIS_Webpoint.Models;
@@ -22,6 +22,7 @@
     <text style="font-size:small; padding-left:10px;">Please enter the Establishment Registration No below</text>
 
     <br />
+    <br />
 
 </div>
 
@@ -38,7 +39,7 @@
     {
         group.Name = "firstgroup";
         group.Caption = "Basic Details";
-        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
         group.ColSpan = 3;
         group.ColCount = 3;
 
@@ -73,6 +74,8 @@
             c.ReadOnly = true;
             c.Width = Unit.Pixel(250);
             c.Height = Unit.Pixel(50);
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
 
         });
 
@@ -121,15 +124,15 @@
     setting.SetContent(() =>
     {
 
-        if (Model.ferno != "")
+        if (Model.ferno != null)
             {
 
             NAPSOMIS_Webpoint.Models.NAPSOMISModel db = new NAPSOMIS_Webpoint.Models.NAPSOMISModel();
-            List<CRSReg> c = new List<CRSReg>();
+            List<crsreg> c = new List<crsreg>();
 
-            c = db.CRSRegs.Where(b => b.ferno == Model.ferno).Where(b => b.fstatus == "N").ToList();
+            c = db.crsregs.Where(b => b.ferno == Model.ferno).Where(b => b.fstatus == "N").ToList();
             
-            IEnumerable<CRSReg> penum = (IEnumerable<CRSReg>)c;
+            IEnumerable<crsreg> penum = (IEnumerable<crsreg>)c;
 
             @Html.RenderPartial("DataCapturingSearchView", penum);
 

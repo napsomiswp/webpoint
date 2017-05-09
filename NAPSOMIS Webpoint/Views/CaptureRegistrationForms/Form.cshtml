@@ -68,6 +68,7 @@
     function OnPrevButtonClick(s, e) {
         SetActiveTabByIndexIncrement(-1);
     }
+
     function OnNextButtonClick(s, e) {
         SetActiveTabByIndexIncrement(1);
     }
@@ -203,10 +204,10 @@
                 g.ColSpan = 3;
                 g.ColCount = 3;
 
-                g.Items.Add(m => m.fper_addr).NestedExtension().Memo(b =>
+                g.Items.Add(m => m.fper_addr).NestedExtension().TextBox(b =>
                 {
                     b.Name = "fper_addr";
-                    b.Height = 70;
+                    //b.Height = 70;
                     b.Properties.CaptionSettings.Position = EditorCaptionPosition.Top;
                     b.Properties.CaptionSettings.VerticalAlign = EditorCaptionVerticalAlign.Top;
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fcur_addr.Focus();}";
@@ -218,10 +219,10 @@
                     b.Properties.HelpTextSettings.DisplayMode = HelpTextDisplayMode.Popup;
                 });
 
-                g.Items.Add(m => m.fcur_addr).NestedExtension().Memo(b =>
+                g.Items.Add(m => m.fcur_addr).NestedExtension().TextBox(b =>
                 {
                     b.Name = "fcur_addr";
-                    b.Height = 70;
+                    //b.Height = 70;
                     b.Properties.ClientSideEvents.KeyDown = "function(s,e){if(ASPxClientUtils.GetKeyCode(e.htmlEvent) == 13)fm_stat.Focus();}";
 
                     b.Properties.HelpText = "Enter the Current Address of the Member here";

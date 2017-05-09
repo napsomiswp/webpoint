@@ -18,8 +18,7 @@ namespace NAPSOMIS_Webpoint.Models
 
         [Column(TypeName = "numeric")]
         public decimal? ftotcr { get; set; }
-
-        [Column(TypeName = "smalldatetime")]
+ 
         public DateTime? fdateupd { get; set; }
 
         [StringLength(1)]

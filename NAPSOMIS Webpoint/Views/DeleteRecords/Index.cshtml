@@ -1,24 +1,26 @@
-﻿@model NAPSOMIS_Webpoint.Models.MemberTransaction
+﻿@model NAPSOMIS_Webpoint.Models.mem_tr
 
 @{
     ViewBag.Title = "Delete Record";
 }
- 
+
 
 <div class="col-md-1" style="background-color:white; font-size:small;">
     <br />
-    <img src="~/Content/Images/view_pim_contacts.png" style="width:60px; height:50px; padding-left:10px;" />
+    <img src="~/Content/Images/edit_delete_3.png" style="width:70px; height:60px; padding-left:10px;" />
 
 </div>
 
 <div class="col-md-11" style="background-color:white; font-size:small;">
     <br />
-    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Delete Record </text>
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> Delete Member Record </text>
     <br />
-    <text style="font-size:small; padding-left:10px;">Please search for a record below</text>
-
-
+    <text style="font-size:small; padding-left:10px;">Please search for a member record by providing the </text>
     <br />
+    <text style="font-size:small; padding-left:10px;">
+        Reference below
+
+        <br />
 
 </div>
 
@@ -29,6 +31,27 @@
 
     settings.Name = "deletelayout";
     settings.ColCount = 3;
+
+    if (ViewBag.Message != null)
+        {
+        settings.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        //settings.Items.AddEmptyItem();
+        //settings.Items.AddEmptyItem();
+
+        }
 
     settings.Items.AddGroupItem(g =>
     {
@@ -67,14 +90,14 @@
         g.Caption = "Details";
         g.ColSpan = 3;
 
-        g.Items.Add(b => b.fsurname).NestedExtension().TextBox(d => { d.Name = "fsurname"; d.ReadOnly = true; });
-        g.Items.Add(b => b.firstname).NestedExtension().TextBox(d => { d.Name = "firstname"; d.ReadOnly = true; });
-        g.Items.Add(b => b.fothname).NestedExtension().TextBox(d => { d.Name = "fothname"; d.ReadOnly = true; });
-        g.Items.Add(b => b.fb_date).NestedExtension().DateEdit(d => { d.Name = "fb_date"; d.ReadOnly = true; });
+        g.Items.Add(b => b.fsurname).NestedExtension().TextBox(d => { d.Name = "fsurname"; d.ReadOnly = true; d.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+        g.Items.Add(b => b.firstname).NestedExtension().TextBox(d => { d.Name = "firstname"; d.ReadOnly = true; d.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+        g.Items.Add(b => b.fothname).NestedExtension().TextBox(d => { d.Name = "fothname"; d.ReadOnly = true; d.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
+        g.Items.Add(b => b.fb_date).NestedExtension().DateEdit(d => { d.Name = "fb_date"; d.ReadOnly = true; d.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray; });
     });
 
     settings.Items.AddEmptyItem();
-   
+
     settings.Items.Add(bt =>
     {
         bt.Caption = "";
@@ -86,6 +109,16 @@
             b.Width = Unit.Pixel(100);
             b.UseSubmitBehavior = true;
             b.RouteValues = new { Controller = "DeleteRecords", Action = "Delete" };
+            b.Enabled = false;
+
+            if (Model.firstname != null)
+                {
+                b.Enabled = true;
+                }
+            else
+                {
+                b.Enabled = false;
+                }
 
         });
 
@@ -109,6 +142,6 @@
 
 }).GetHtml()
 
-    }
+        }
 
- 
+

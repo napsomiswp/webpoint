@@ -1,0 +1,63 @@
+﻿@model IEnumerable<NAPSOMIS_Webpoint.Models.dir_mst>
+
+@{
+    ViewBag.Title = "Members";
+}
+
+
+<div class="content" style="width:inherit; height:inherit; overflow-y:auto; overflow-x:auto;">
+
+    <table class="table table-condensed table-hover table-responsive table-bordered" style="white-space:nowrap; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+        <tr>
+            <th class=whitesmokeheader>
+               Action
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fdir_name)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.fdir_addr)
+            </th>
+            <th class=whitesmokeheader>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            
+        </tr>
+
+        @{
+            try
+                {
+                foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+
+                            @Html.ActionLink("Edit", "UpdateDirector_Edit", new { Controller = "Establishment", id = item.ID_SBTS }) |
+                            @Html.ActionLink("Delete", "UpdateDirector_Delete", new { Controller = "Establishment", id = item.ID_SBTS }) |
+
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fdir_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.fdir_addr)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                         
+                    </tr>
+                    }
+
+                }
+            catch (Exception)
+                {
+
+
+                }
+        }
+
+
+    </table>
+</div>

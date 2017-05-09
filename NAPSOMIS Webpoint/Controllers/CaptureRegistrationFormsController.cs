@@ -791,7 +791,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                     CaptureMemRegViewModel mvm = new CaptureMemRegViewModel();
 
-                    if (mt.Count == 0) return View("EditForm");
+                    if (mt.Count == 0) return View("EditForm", memb);
 
                     mvm.fref_no = mt[0].fref_no;
                     mvm.firstname = mt[0].firstname;
@@ -836,13 +836,18 @@ namespace NAPSOMIS_Webpoint.Controllers
                     List<parental> p = new List<parental>();
                     p = db.parentals.Where(b => b.fref_no == refno).ToList();
 
-                    mvm.ffirstname = p[0].ffirstname;
-                    mvm.ffothname = p[0].ffothname;
-                    mvm.ffsurname = p[0].ffsurname;
+                    if (p.Count > 0)
+                        {
 
-                    mvm.fmfirstname = p[0].fmfirstname;
-                    mvm.fmothname = p[0].fmothname;
-                    mvm.fmsurname = p[0].fmsurname;
+                        mvm.ffirstname = p[0].ffirstname;
+                        mvm.ffothname = p[0].ffothname;
+                        mvm.ffsurname = p[0].ffsurname;
+
+                        mvm.fmfirstname = p[0].fmfirstname;
+                        mvm.fmothname = p[0].fmothname;
+                        mvm.fmsurname = p[0].fmsurname;
+
+                        }
 
 
                     List<prevname> prev = new List<prevname>();
@@ -889,7 +894,9 @@ namespace NAPSOMIS_Webpoint.Controllers
             List<parental> searchparental = new List<parental>();
             searchparental = db.parentals.Where(b => b.fref_no == c.fref_no).ToList();
 
-            parental p = new parental();
+            if (searchparental.Count > 0)
+                {
+parental p = new parental();
             p = searchparental[0];
 
             p.ffirstname = c.ffirstname;
@@ -910,17 +917,17 @@ namespace NAPSOMIS_Webpoint.Controllers
             var entry = db.Entry(p);
             entry.State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
-
-
-
-
-
+                }
+            
+              
             mem_tr m = new mem_tr();
 
             List<mem_tr> searchmember = new List<mem_tr>();
             searchmember = db.mem_tr.Where(b => b.fref_no == c.fref_no).ToList();
 
-            m = searchmember[0];
+            if (searchmember.Count > 0)
+                {
+ m = searchmember[0];
 
             m.fref_no = c.fref_no;
 
@@ -964,6 +971,8 @@ namespace NAPSOMIS_Webpoint.Controllers
             dentry.State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
+                }
+           
 
             List<prevname> prev = new List<prevname>();
             prev = db.prevnames.Where(r => r.fref_no == m.fref_no).ToList();

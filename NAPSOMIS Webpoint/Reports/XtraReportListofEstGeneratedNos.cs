@@ -209,7 +209,7 @@ public class XtraReportListofEstGeneratedNos : DevExpress.XtraReports.UI.XtraRep
             this.xrLabel66,
             this.xrPictureBox1});
             this.TopMargin.Dpi = 100F;
-            this.TopMargin.HeightF = 162F;
+            this.TopMargin.HeightF = 149.5F;
             this.TopMargin.Name = "TopMargin";
             this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -453,7 +453,7 @@ public class XtraReportListofEstGeneratedNos : DevExpress.XtraReports.UI.XtraRep
             this.MembersDataSource,
             this.SearchDataSource});
             this.DataSource = this.MembersDataSource;
-            this.Margins = new System.Drawing.Printing.Margins(29, 40, 162, 31);
+            this.Margins = new System.Drawing.Printing.Margins(29, 40, 150, 31);
             this.SnapToGrid = false;
             this.Version = "16.1";
             ((System.ComponentModel.ISupportInitialize)(this.SearchDataSource)).EndInit();

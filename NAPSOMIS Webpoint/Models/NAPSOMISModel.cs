@@ -385,8 +385,8 @@ namespace NAPSOMIS_Webpoint.Models
 
         public virtual DbSet<NASSITPercentage> NASSITPercentages { get; set; }
         public virtual DbSet<ReferenceNo> ReferenceNos { get; set; }
-
-
+        public virtual DbSet<trnfile> trnfiles { get; set; }
+ 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
             {
             modelBuilder.Entity<acct_chart>()

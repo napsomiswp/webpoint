@@ -1,0 +1,209 @@
+﻿@model NAPSOMIS_Webpoint.ViewModels.ListInvalidNumbersViewModel
+
+@using NAPSOMIS_Webpoint.ViewModels
+@using NAPSOMIS_Webpoint.Models
+
+@{
+    ViewBag.Title = "List of Invalid Numbers";
+}
+<br />
+
+<div class="col-md-1" style="background-color:white; font-size:small;">
+    <br />
+    <img src="~/Content/Images/document_open_8.png" width:60px; height:50px; padding-left:10px;" />
+    <br />
+</div>
+
+<div class="col-md-10" style="background-color:white; font-size:small;">
+
+    <text style="color:midnightblue; padding-left:10px; font-size:large;"> List of Invalid Numbers </text>
+    <br />
+    <text style="font-size:small; padding-left:10px;">Produce list of invalid numbers by using the form below</text>
+    <br />
+</div>
+
+
+<script type="text/javascript">
+    function SelectedIndexChanged(s, e) {
+
+        var thetype = ListBy.GetText();
+
+        if (thetype == "Period") {
+            
+            //periodgroup.SetVisible(true);
+           
+        } else {
+
+            //BeginPeriod.readOnly(true);
+            //BeginPeriod.SetText("")
+            
+        }
+    }
+
+</script>
+
+
+@using (Html.BeginForm("ListInvalidNumbers_OK", "Contribution", FormMethod.Post))
+    {
+
+    @Html.AntiForgeryToken()
+    @Html.DevExpress().FormLayout(setting =>
+{
+    setting.Name = "receivecrlayout";
+    setting.ColCount = 2;
+
+    if (ViewBag.Message != null)
+        {
+        setting.Items.Add(b =>
+        {
+            b.ShowCaption = DefaultBoolean.False;
+            b.Name = "MessageGroup";
+
+            b.NestedExtension().Label(lb =>
+            {
+                lb.Name = "lblmessage";
+                lb.Text = ViewBag.Message;
+                lb.ControlStyle.ForeColor = System.Drawing.Color.Red;
+            });
+
+        });
+
+        setting.Items.AddEmptyItem();
+
+        }
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "firstgroup";
+        group.Caption = "Basic Search";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(m => m.ListBy).NestedExtension().ComboBox(b =>
+        {
+
+            b.Name = "ListBy";
+            b.Properties.Items.Add("Period", "Period");
+            b.Properties.Items.Add("All Transactions", "All Transactions");
+            b.Properties.Items.Add("Distinct Transactions", "Distinct Transactions");
+            b.Properties.EnableClientSideAPI = true;
+            b.Properties.ClientSideEvents.SelectedIndexChanged = "SelectedIndexChanged";
+
+        });
+
+        group.Items.AddEmptyItem();
+
+        group.Items.Add(b => b.ferno).NestedExtension().TextBox(c =>
+        {
+            c.Name = "ferno";
+
+        });
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btloadssno";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdloadernodata";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Load";
+                b.RouteValues = new { Controller = "Contribution", Action = "ListInvalidNumbers_LoadERNo" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+        group.Items.Add(b => b.EstablishmentName).NestedExtension().TextBox(c =>
+        {
+            c.Name = "EstablishmentName";
+            c.ReadOnly = true;
+            c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+
+    });
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+        group.Name = "periodgroup";
+        group.Caption = "Periods";
+        group.GroupBoxDecoration = GroupBoxDecoration.Box;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+        group.Items.Add(b => b.BeginPeriod).NestedExtension().TextBox(c =>
+        {
+            c.Name = "BeginPeriod";
+            //c.ReadOnly = true;
+            //c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+
+        });
+
+        group.Items.Add(b => b.EndPeriod).NestedExtension().TextBox(c =>
+        {
+            c.Name = "EndPeriod";
+            //c.ReadOnly = true;
+            //c.Properties.ReadOnlyStyle.BackColor = System.Drawing.Color.LightGray;
+        });
+
+    });
+
+
+    setting.Items.AddGroupItem(group =>
+    {
+
+        group.Name = "buttongroup";
+        group.Caption = "Actions";
+        group.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+        group.ColSpan = 2;
+        group.ColCount = 2;
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.False;
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdreset";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Start New Entry";
+                b.RouteValues = new { Controller = "Contribution", Action = "ListInvalidNumbers" };
+                b.UseSubmitBehavior = false;
+
+            });
+
+        });
+
+
+        group.Items.Add(bt =>
+        {
+            bt.Name = "btgroup";
+            bt.ShowCaption = DefaultBoolean.True;
+            bt.Caption = "";
+
+            bt.NestedExtension().Button(b =>
+            {
+                b.Name = "cmdcomplete";
+                b.Width = Unit.Pixel(100);
+                b.Text = "Accept";
+                b.RouteValues = new { Controller = "Contribution", Action = "ListInvalidNumbers_OK" };
+                b.UseSubmitBehavior = true;
+
+            });
+
+        });
+
+    });
+
+}).GetHtml()
+
+
+        }

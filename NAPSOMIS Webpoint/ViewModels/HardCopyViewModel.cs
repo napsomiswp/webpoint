@@ -10,6 +10,9 @@ namespace NAPSOMIS_Webpoint.ViewModels
     public class HardCopyViewModel
         {
 
+        //The Last Selected Tab Index of the Tabbed Group
+        public int TabIndex { get; set; }
+
         //SUMMARY TAB
         [StringLength(25)]
         [Display(Name = "ERNo")]
@@ -24,7 +27,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "No of Workers")]
         public int? fnoofworkers { get; set; }
 
-        [Display(Name = "Total Salary")]
+        [Display(Name = "Total Salary/Contribution")]
         public decimal? ftotalsalaryorcontribution { get; set; }
 
         [Display(Name = "ERNo")]
@@ -77,7 +80,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "First Contribution Period")]
         public string fAddFirstContributionPeriod { get; set; }
 
-        [Display(Name = "Salary")]
+        [Display(Name = "Salary/Contribution")]
         public decimal fAddContributionorSalary { get; set; }
 
 
@@ -108,7 +111,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "Period")]
         public string fEditPeriod { get; set; }
 
-        [Display(Name = "Contribution")]
+        [Display(Name = "Salary/Contribution")]
         public decimal? fEditContributionorSalary { get; set; }
 
         [Display(Name = "Edit Name")]
@@ -141,7 +144,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "Period")]
         public string fEditAllPeriod { get; set; }
 
-        [Display(Name = "Contribution")]
+        [Display(Name = "Salary/Contribution")]
         public decimal? fEditAllContributionorSalary { get; set; }
 
         [Display(Name = "Skip In-Active Staff")]
@@ -158,6 +161,7 @@ namespace NAPSOMIS_Webpoint.ViewModels
         [Display(Name = "Select CR")]
         public string fmasterperiod { get; set; }
 
+
         [Display(Name = "Period")]
         public string fmasterperiodtext { get; set; }
 
@@ -166,6 +170,34 @@ namespace NAPSOMIS_Webpoint.ViewModels
 
         [Display(Name = "Total No of Workers")]
         public int? fmasterperiodnoofworkers { get; set; }
+
+
+        //EXPECTED FROM C.R. CONTROL
+        [Display(Name = "Period")]
+        public string fmasterperiodCRControltext { get; set; }
+
+        [Display(Name = "Total Contribution")]
+        public decimal? fmastercontributionCRControltext { get; set; }
+
+        [Display(Name = "Total No of Workers")]
+        public int? fmasterperiodnoofworkersCRControl { get; set; }
+
+
+        //BACKPAY FIELD
+        [Display(Name = "Debit Period")]
+        public string fdebitperiod { get; set; }
+
+        [Display(Name = "Backpay Begin Period")]
+        public string fAddbackpaybeginperiod { get; set; }
+
+        [Display(Name = "Backpay End Period")]
+        public string fAddbackpayendperiod { get; set; }
+
+         [Display(Name = "Backpay Begin Period")]
+        public string fEditbackpaybeginperiod { get; set; }
+
+        [Display(Name = "Backpay End Period")]
+        public string fEditbackpayendperiod { get; set; }
 
         }
     }

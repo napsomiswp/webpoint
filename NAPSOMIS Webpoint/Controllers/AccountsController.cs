@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using NAPSOMIS_Webpoint.ViewModels;
 using System.Data;
 using System.Configuration;
-using NAPSOMIS_Webpoint.Models; 
+using NAPSOMIS_Webpoint.Models;
 
 namespace NAPSOMIS_Webpoint.Controllers
     {
@@ -94,13 +94,23 @@ namespace NAPSOMIS_Webpoint.Controllers
             DataTable mytable = new DataTable();
 
             string myConn = ConfigurationManager.ConnectionStrings["ReferenceNoModel"].ToString();
-            string Query = "Select AccountID, FirstName, MiddleName, LastName, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!', UserGroup) AS NVARCHAR(1000)) AS UserGroup, AccountStatus, Branch, Department, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!',AccessibleFeatures) AS NVARCHAR(4000)) AS AccessibleFeatures, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!', RecordAccessLevel) AS NVARCHAR(1000)) AS RecordAccessLevel From mainlogin Where Username = '" + username + "' And Convert(nvarchar(100), DECRYPTBYPASSPHRASE(N'mYpas4word!', Password)) = @Password ";
+            string Query = "Select AccountID, FirstName, MiddleName, LastName, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!', UserGroup) AS NVARCHAR(1000)) AS UserGroup, AccountStatus, Branch, Department, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!',AccessibleFeatures) AS NVARCHAR(4000)) AS AccessibleFeatures, CAST(DECRYPTBYPASSPHRASE(N'mYpas4word!', RecordAccessLevel) AS NVARCHAR(1000)) AS RecordAccessLevel From mainlogin Where Username = @username And Convert(nvarchar(100), DECRYPTBYPASSPHRASE(N'mYpas4word!', Password)) = @Password ";
             System.Data.SqlClient.SqlDataAdapter dp = new System.Data.SqlClient.SqlDataAdapter(Query, myConn);
+
             dp.SelectCommand.Parameters.AddWithValue("@Password", password);
+            dp.SelectCommand.Parameters.AddWithValue("@username", username);
 
-            dp.Fill(mytable);
+            if (password != null && username != null)
+                {
+                dp.Fill(mytable);
 
-            return mytable;
+                return mytable;
+                }
+            else
+                {
+                return mytable;
+                }
+
 
             }
 
@@ -108,7 +118,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
         public ActionResult Messenger()
             {
-            
+
             return View("Messenger");
 
             }
@@ -178,7 +188,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
                     PDCTemplate ct = new PDCTemplate();
                     ct.Code = myp.Field<String>("AccountID");
-                    ct.Name =  FullName;
+                    ct.Name = FullName;
 
                     mylist.Add(ct);
 
@@ -213,7 +223,7 @@ namespace NAPSOMIS_Webpoint.Controllers
 
             }
 
-         public ActionResult Messenger_View(int id)
+        public ActionResult Messenger_View(int id)
             {
             ViewBag.Operation = "View";
             return View("Messenger", new Message() { MessageID = id });
